@@ -232,7 +232,11 @@
 
     draw(ns + "-bar", {
       chart: { type: "bar", spacingTop: 14 },
-      title: { text: wrapTitle(shortTitle(ind, 70) + " by " + group.toLowerCase(), 64) },
+      // "by residence" where there is a breakdown, and nothing where there is
+      // not: a title reading "Forms of controlling behaviours by " is worse
+      // than no qualifier at all.
+      title: { text: wrapTitle(shortTitle(ind, 70) +
+                               (group ? " by " + group.toLowerCase() : ""), 64) },
       xAxis: categoryAxis(cats.map(function (c) { return wrapLabel(c, 26); })),
       yAxis: valueAxis(unit, all),
       plotOptions: { bar: { groupPadding: 0.14, pointPadding: 0.03, borderWidth: 0,
@@ -554,12 +558,14 @@
       var indSel = val(ns + "-indicator");
       var indIdx = indSel === null ? (p.chartable[0] || 0) : p.ind.indexOf(indSel);
       if (indIdx < 0) indIdx = p.chartable[0] || 0;
-      var group = val(ns + "-group") || p.groups[0];
+      // A table with no heading over its rows has one unnamed block, and "" is
+      // what that block is called in the data, so it selects perfectly well.
+      var group = val(ns + "-group") || p.groups[0] || "";
       var year = val(ns + "-year") || p.years[0];
 
       if (!what || what === "all" || what === "indicator") drawCards(p, ns, indIdx);
       if (!what || what === "all" || what === "indicator" || what === "group") {
-        if (p.groups.length) drawBar(p, ns, indIdx, group);
+        if (p.groups.length || p.plain) drawBar(p, ns, indIdx, group);
       }
       if (!what || what === "all" || what === "indicator" || what === "year") {
         if (p.ctyRows.length) { drawMap(p, ns, indIdx, year); drawRank(p, ns, indIdx, year); }
@@ -1620,13 +1626,90 @@
     if (showPage(el.dataset.page)) window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // The search on the opening page, and the one in every chapter rail.
-  document.addEventListener("change", function (e) {
+  // The search on the opening page ----------------------------------------------------------------
+
+  // A text field and a list under it. The whole survey is already in the page,
+  // so there is nothing to fetch and no library to load: a hundred and eighty
+  // titles filter faster than a keystroke.
+  //
+  // Matching is on every word typed, in any order and anywhere in the entry, so
+  // "net household" finds "Household possession of mosquito nets" and does not
+  // ask a reader to guess the published word order.
+  var SEARCH_AT = -1;
+
+  function searchHits(q) {
+    var words = String(q).toLowerCase().split(/\s+/).filter(Boolean);
+    if (!words.length || !INDEX.search) return [];
+    return INDEX.search.filter(function (r) {
+      var hay = (r.t + " " + r.c + " " + r.b).toLowerCase();
+      return words.every(function (w) { return hay.indexOf(w) !== -1; });
+    }).slice(0, 12);
+  }
+
+  function paintSearch(q) {
+    var list = document.getElementById("search-results");
+    if (!list) return;
+    var hits = searchHits(q);
+    SEARCH_AT = -1;
+    if (!hits.length) {
+      list.innerHTML = q.trim()
+        ? '<li class="site-search__miss">Nothing matches ' + esc(q) + "</li>" : "";
+      list.hidden = !q.trim();
+      return;
+    }
+    list.innerHTML = hits.map(function (r, i) {
+      return '<li><button type="button" class="site-search__hit" data-i="' + i + '" ' +
+             'data-page="' + esc(r.p) + '" data-theme="' + esc(r.th) + '" ' +
+             'data-anchor="' + esc(r.a) + '">' +
+             '<span class="site-search__title">' + esc(r.t) + "</span>" +
+             '<span class="site-search__where">' + esc(r.c) + " \u00b7 Table " +
+             esc(r.b) + "</span></button></li>";
+    }).join("");
+    list.hidden = false;
+  }
+
+  function closeSearch() {
+    var list = document.getElementById("search-results");
+    if (list) { list.hidden = true; list.innerHTML = ""; }
+    SEARCH_AT = -1;
+  }
+
+  function takeHit(btn) {
+    if (!btn) return;
+    var box = document.getElementById("search");
+    if (box) box.value = "";
+    closeSearch();
+    goTo(btn.dataset.page, btn.dataset.theme, btn.dataset.anchor);
+  }
+
+  document.addEventListener("input", function (e) {
     if (e.target.id !== "search") return;
-    var bits = String(e.target.value).split("|");
-    if (bits.length < 3) return;
-    goTo("ch" + bits[0], bits[1], bits[2]);
-    e.target.value = "";
+    paintSearch(e.target.value);
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.target.id !== "search") return;
+    var list = document.getElementById("search-results");
+    var hits = list ? list.querySelectorAll(".site-search__hit") : [];
+    if (e.key === "Escape") { e.target.value = ""; closeSearch(); return; }
+    if (!hits.length) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      SEARCH_AT += (e.key === "ArrowDown" ? 1 : -1);
+      if (SEARCH_AT < 0) SEARCH_AT = hits.length - 1;
+      if (SEARCH_AT >= hits.length) SEARCH_AT = 0;
+      hits.forEach(function (h, i) { h.classList.toggle("is-on", i === SEARCH_AT); });
+      hits[SEARCH_AT].scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      takeHit(hits[SEARCH_AT >= 0 ? SEARCH_AT : 0]);
+    }
+  });
+
+  document.addEventListener("click", function (e) {
+    var hit = e.target.closest ? e.target.closest(".site-search__hit") : null;
+    if (hit) { e.preventDefault(); takeHit(hit); return; }
+    if (!e.target.closest || !e.target.closest(".site-search")) closeSearch();
   });
 
   // Inside a chapter the themes are panes too, marked the way bslib marks them,

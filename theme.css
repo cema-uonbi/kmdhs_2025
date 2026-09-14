@@ -103,7 +103,10 @@ a { color: var(--blue-600); text-decoration-thickness: 1px; text-underline-offse
 a:hover { color: var(--orange-600); }
 
 .eyebrow { color: var(--blue-600); display: block; margin-bottom: 10px; }
-.lead { color: var(--ink-soft); max-width: 64ch; }
+/* No artificial measure on any of the running text. A cap of 64 characters put
+   a break in the middle of a one-line caption while there was half a screen of
+   white space beside it; text now wraps when it actually runs out of room. */
+.lead { color: var(--ink-soft); max-width: none; }
 .text-small { color: var(--ink-soft); }
 .text-tiny { color: var(--ink-faint); }
 
@@ -295,22 +298,26 @@ a:hover { color: var(--orange-600); }
   pointer-events: none;
 }
 
+/* One column, and no minimum height. The band was two columns tall enough to
+   hold the report cover beside the words; with the cover gone that left a title,
+   a search box and two thirds of a screen of empty blue. It is now as tall as
+   what is in it. */
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.32fr) minmax(0, 0.68fr);
-  gap: clamp(30px, 4vw, 80px);
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  align-items: start;
   position: relative;
   z-index: 1;
-  min-height: clamp(460px, 62vh, 640px);
-  padding: clamp(40px, 5vh, 72px) 0 clamp(44px, 5.5vh, 78px);
+  min-height: 0;
+  padding: clamp(22px, 2.6vh, 34px) 0 clamp(24px, 2.8vh, 38px);
 }
 .hero-copy { min-width: 0; }
 
 .hero .eyebrow { color: rgba(255, 255, 255, 0.88); }
 /* The headline had a column and a half to itself and was breaking at a third
    of it, leaving a field of blue between the words and the cover. */
-.page-title { margin: 0 0 22px; max-width: 34ch; color: #fff; }
+.page-title { margin: 0 0 14px; max-width: none; color: #fff; }
 .page-title em { font-style: normal; color: #FFDCBB; }
 .hero-lead {
   color: rgba(255, 255, 255, 0.94);
@@ -337,7 +344,7 @@ a:hover { color: var(--orange-600); }
 
 /* ---- the way in ---- */
 
-.hero-search { max-width: 720px; }
+.hero-search { max-width: 860px; }
 .hero-search__label {
   display: block;
   font-family: var(--font-body);
@@ -528,7 +535,7 @@ a:hover { color: var(--orange-600); }
 .chapter-entry:hover .chapter-entry__arrow { transform: translateX(5px); color: var(--orange); }
 
 .reading-note { padding: clamp(36px, 4.5vh, 64px) 0 clamp(28px, 3.5vh, 46px); }
-.reading-note p { max-width: 96ch; margin: 0; }
+.reading-note p { max-width: none; margin: 0; }
 
 /* ---------------------------------------------------------------------------
    A CHAPTER
@@ -537,8 +544,10 @@ a:hover { color: var(--orange-600); }
 /* padding-block, not the shorthand: .shell sets the side gutter and a shorthand
    here silently zeroed it, which is why the chapter title sat flush against the
    left edge of the window while everything under it was inset. */
-.chapter-head { padding-block: clamp(40px, 5vh, 68px) clamp(24px, 3vh, 38px); }
-.chapter-title { margin: 0 0 18px; max-width: 22ch; }
+/* Tightened. The chapter opened with two thirds of a screen of title and white
+   space, so the first chart was below the fold on a laptop. */
+.chapter-head { padding-block: clamp(22px, 2.6vh, 34px) clamp(8px, 1vh, 14px); }
+.chapter-title { margin: 0 0 10px; max-width: none; }
 
 .chapter-layout {
   display: grid;
@@ -669,8 +678,8 @@ a:hover { color: var(--orange-600); }
   display: block;
   margin-bottom: 8px;
 }
-.area-title { margin: 0 0 14px; max-width: 34ch; }
-.area__lead { color: var(--ink-soft); max-width: 88ch; font-size: var(--size-small); line-height: 1.55; }
+.area-title { margin: 0 0 8px; max-width: none; }
+.area__lead { color: var(--ink-soft); max-width: none; font-size: var(--size-small); line-height: 1.5; margin: 0 0 10px; }
 
 /* Who the figures are about, said once above the row rather than four times
    inside it. */
@@ -1504,3 +1513,115 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
   .topic-bar .rail-filter { margin-left: 0; width: 100%; }
   .topic-bar .rail-link { max-width: 100%; }
 }
+
+/* ==================================================================================
+   TIGHTENING THE TOP OF A PAGE, AND LETTING A SENTENCE BE A SENTENCE
+   Two related complaints, one cause. Headings and captions were capped at a
+   character count, so they broke early and left white space beside them, and the
+   gaps between them were set for a page with much less on it. A reader opening a
+   topic should see the chart, not the title of the chart.
+   ================================================================================== */
+
+/* No truncation anywhere in the running text. The earlier one-line caption cut
+   itself off with an ellipsis; a caption that reaches the edge of the page now
+   wraps, which is what a reader expects a sentence to do. */
+.lead--one {
+  max-width: none;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  margin: 0;
+}
+
+.section-head .lead, .chapter-head .lead { margin-top: 0; }
+.topic-bar { margin: 10px 0 16px; padding-bottom: 12px; }
+.area__no { margin-bottom: 2px; }
+.area .area-stats { margin-top: 14px; }
+.area .controls { margin-block: 10px; }
+.figure-note { max-width: none; }
+.next-strip__say { max-width: none; }
+
+/* The pickers read as part of the same row of controls as the sub-tabs above
+   them, so they are set in the same face at the same size. A select styled by
+   the browser sits at 13px in a different family and looks like a form dropped
+   into a page rather than part of it. */
+.controls select,
+.controls .form-select,
+.controls select.form-control,
+.county-pick select,
+.table-block__head select {
+  font-family: var(--font-body);
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-medium);
+  color: var(--ink);
+  line-height: 1.25;
+  border-radius: 999px;
+  padding: 8px 34px 8px 14px;
+  border: 1px solid var(--rule-strong);
+  background-color: var(--paper);
+}
+.controls select:focus, .controls .form-select:focus {
+  outline: 0; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-100);
+}
+.controls label, .county-pick label {
+  font-family: var(--font-body);
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-semibold);
+  color: var(--ink-soft);
+  margin-bottom: 5px;
+}
+
+/* ==================================================================================
+   THE SEARCH BOX ON A PAGE WITH NO SERVER
+   Shiny's version of this box is a selectize widget. Without Shiny there is no
+   selectize, and the same markup arrives as a bare dropdown of a hundred and eighty
+   entries carrying a placeholder promising a search. So the static build renders a
+   real field and these are its clothes.
+   ================================================================================== */
+
+.site-search { position: relative; }
+.site-search__input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: var(--size-small);
+  font-weight: var(--weight-medium);
+  color: var(--ink);
+  padding: 14px 18px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: var(--paper);
+}
+.site-search__input::placeholder { color: var(--ink-faint); font-weight: var(--weight-regular); }
+.site-search__input:focus {
+  outline: 0; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-100);
+}
+
+.site-search__list {
+  position: absolute;
+  z-index: 40;
+  left: 0; right: 0; top: calc(100% + 7px);
+  margin: 0; padding: 6px;
+  list-style: none;
+  max-height: 58vh; overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: 0 18px 44px rgba(12, 17, 22, 0.16);
+}
+.site-search__list[hidden] { display: none; }
+.site-search__hit {
+  display: flex; flex-direction: column; gap: 2px;
+  width: 100%; text-align: left;
+  padding: 9px 13px;
+  border: 0; border-radius: var(--radius-sm);
+  background: none; cursor: pointer;
+}
+.site-search__hit:hover, .site-search__hit.is-on { background: var(--blue-050); }
+.site-search__title {
+  font-family: var(--font-body);
+  font-size: var(--size-small);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+}
+.site-search__where { font-size: var(--size-tiny); color: var(--ink-faint); }
+.site-search__miss { padding: 11px 13px; font-size: var(--size-small); color: var(--ink-soft); }

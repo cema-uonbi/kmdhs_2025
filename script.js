@@ -69,22 +69,6 @@
       setTimeout(reflowCharts, 240);
     });
   }
-
-  //' A section in a theme that is not showing does not exist in the page until
-  //' Shiny has swapped that theme in, so the scroll waits for it rather than
-  //' firing at nothing.
-  function scrollWhenReady(anchor, tries) {
-    var el = document.getElementById(anchor);
-    if (el && el.offsetParent !== null) {
-      syncPinned();
-      scrollToEl(el);
-      setTimeout(reflowSoon, 260);
-      return;
-    }
-    if ((tries || 0) > 30) return;
-    setTimeout(function () { scrollWhenReady(anchor, (tries || 0) + 1); }, 60);
-  }
-
   // --- say which theme is showing -------------------------------------------
   function markTheme(theme) {
     document.querySelectorAll(".rail-theme[data-theme]").forEach(function (b) {
@@ -119,22 +103,6 @@
     var links = document.querySelector('.rail-links[data-links-for="' + theme + '"]');
     var first = links && links.querySelector(".rail-link:not(.is-hidden)");
     if (first) showArea(first.getAttribute("data-anchor"));
-  }
-
-  //' A theme's panel does not exist in the page until Shiny has swapped it in,
-  //' so the scroll waits for the panel itself rather than for a timer. Landing
-  //' on the theme's own heading, not on the top of the stream, which is several
-  //' hundred pixels further up and reads as having gone to the wrong place.
-  function scrollToThemeWhenReady(theme, tries) {
-    var pane = document.querySelector('.tab-pane[data-value="' + theme + '"]');
-    if (pane && pane.offsetParent !== null) {
-      syncPinned();
-      scrollToEl(pane.querySelector(".theme-open") || pane);
-      setTimeout(reflowSoon, 260);
-      return;
-    }
-    if ((tries || 0) > 30) return;
-    setTimeout(function () { scrollToThemeWhenReady(theme, (tries || 0) + 1); }, 60);
   }
 
   // --- the address bar ------------------------------------------------------
@@ -345,7 +313,15 @@
       }
       if (m.anchor) {
         writeUrl(m.page, m.anchor);
-        scrollWhenReady(m.anchor, 0);
+        //' A topic is shown now rather than scrolled to: only one is on the
+        //' page at a time, and the one the search picked may not be it.
+        (function land(tries) {
+          if (showArea(m.anchor) || tries > 30) {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            syncPinned(); reflowSoon(); return;
+          }
+          setTimeout(function () { land(tries + 1); }, 60);
+        })(0);
       } else {
         writeUrl(m.page, null);
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -369,6 +345,18 @@
   function updateActive() {
     spyQueued = false;
     if (!spyAreas.length) return;
+    //' A chapter now shows one topic at a time, so there is nothing for a
+    //' scroll to spy on: the topic being read is the one the buttons chose, and
+    //' a spy would only fight them for the highlight. The machinery stays
+    //' because the URL still follows the topic.
+    if (document.querySelector(".area-page")) {
+      var only = spyAreas.filter(function (a) { return a.offsetParent !== null; })[0];
+      if (only && only.id !== lastUrlTopic) {
+        lastUrlTopic = only.id;
+        writeUrl(currentPage(), only.id);
+      }
+      return;
+    }
 
     var edge = pinnedHeight() + 40;
     var current = null;
