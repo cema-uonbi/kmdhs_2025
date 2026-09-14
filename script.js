@@ -95,6 +95,32 @@
     });
   }
 
+  //' One topic on the page at a time. Every topic is in the document, which is
+  //' what lets a link land on any of them, but only the chosen one is shown.
+  //' The button that chose it is lit at the same moment, because a second of
+  //' the page showing one topic and the buttons saying another is the kind of
+  //' thing a reader reads as a bug.
+  function showArea(aid) {
+    var target = document.querySelector('.area-page[data-area="' + aid + '"]');
+    if (!target) return false;
+    var stream = target.closest(".tab-pane") || target.parentNode;
+    stream.querySelectorAll(".area-page").forEach(function (el) {
+      el.classList.toggle("is-on", el === target);
+    });
+    document.querySelectorAll(".rail-link").forEach(function (a) {
+      a.classList.toggle("is-active", a.getAttribute("data-anchor") === aid);
+    });
+    return true;
+  }
+
+  //' Switching part of a chapter lands on the first topic in it, so a click on
+  //' a theme always shows something rather than a row of buttons and a blank.
+  function showFirstArea(theme) {
+    var links = document.querySelector('.rail-links[data-links-for="' + theme + '"]');
+    var first = links && links.querySelector(".rail-link:not(.is-hidden)");
+    if (first) showArea(first.getAttribute("data-anchor"));
+  }
+
   //' A theme's panel does not exist in the page until Shiny has swapped it in,
   //' so the scroll waits for the panel itself rather than for a timer. Landing
   //' on the theme's own heading, not on the top of the stream, which is several
@@ -128,8 +154,55 @@
   //' Which page is showing, written on the body so the stylesheet can put the
   //' tabs under the introduction on the opening page and at the top everywhere
   //' else without either copy having to move.
+  //' Opening a theme shows its chapters. Every theme's row is already in the
+  //' page, so this is a class change and nothing is fetched.
+  //'
+  //' Both bars are updated together. The opening page carries an inline copy of
+  //' the navigation and the pinned one sits above every chapter, and a theme
+  //' opened in one that stayed shut in the other is the kind of small wrongness
+  //' that makes a page feel broken without anyone being able to say why.
+  function openTheme(order, exclusive) {
+    document.querySelectorAll("[data-theme-group]").forEach(function (b) {
+      var on = String(b.dataset.themeGroup) === String(order);
+      b.classList.toggle("is-open", exclusive ? on : b.classList.contains("is-open") || on);
+    });
+    document.querySelectorAll("[data-chapters-for]").forEach(function (row) {
+      var on = String(row.dataset.chaptersFor) === String(order);
+      row.classList.toggle("is-open", exclusive ? on : row.classList.contains("is-open") || on);
+    });
+  }
+
+  //' Which theme a chapter belongs to, read off the markup rather than held in
+  //' a second list that could disagree with it.
+  function themeOfPage(page) {
+    var tab = document.querySelector('[data-chapters-for] [data-page="' + page + '"]');
+    var row = tab && tab.closest("[data-chapters-for]");
+    return row ? row.dataset.chaptersFor : null;
+  }
+
+  //' A theme is a way in, not a folder. Clicking one opens its row of chapters
+  //' and goes straight to the first of them, so a click always lands somewhere
+  //' rather than leaving a reader looking at a second row of buttons wondering
+  //' which is the front door. Clicking the theme you are already in takes you
+  //' back to its first chapter, which is the only sensible thing left for it
+  //' to do.
+  document.addEventListener("click", function (event) {
+    var el = event.target.closest("[data-theme-group]");
+    if (!el) return;
+    openTheme(el.dataset.themeGroup, true);
+    var row = document.querySelector(
+      '[data-chapters-for="' + el.dataset.themeGroup + '"]');
+    var first = row && row.querySelector(".chapter-tab[data-page]");
+    if (first && !first.classList.contains("is-active")) first.click();
+    syncPinned();
+  });
+
   function markPage(page) {
     document.body.classList.toggle("on-overview", page === "overview");
+    //' Arriving at a chapter opens the theme it sits in, so the second row
+    //' always shows where you are rather than where you last clicked.
+    var order = themeOfPage(page);
+    if (order) openTheme(order, true);
     document.querySelectorAll(".chapter-tab").forEach(function (tab) {
       tab.classList.toggle("is-active", tab.getAttribute("data-page") === page);
     });
@@ -183,23 +256,27 @@
       Shiny.setInputValue(el.getAttribute("data-theme-input"), theme, { priority: "event" });
     }
     markTheme(theme);
-    //' Marked at once rather than waiting for the scroll to settle and the
-    //' observer to catch up, or the section you just asked for spends a second
-    //' showing some other section as the one you are in.
-    if (anchor) {
-      document.querySelectorAll(".rail-link").forEach(function (a) {
-        a.classList.toggle("is-active", a.getAttribute("data-anchor") === anchor);
-      });
-    }
 
     if (anchor) {
       writeUrl(currentPage(), anchor);
-      scrollWhenReady(anchor, 0);
+      //' The panel may not be in the page yet on a theme Shiny has not swapped
+      //' in, so the switch is retried for as long as it takes rather than once.
+      (function land(tries) {
+        if (showArea(anchor) || tries > 30) { syncPinned(); reflowSoon(); return; }
+        setTimeout(function () { land(tries + 1); }, 60);
+      })(0);
     } else {
       writeUrl(currentPage(), null);
-      scrollToThemeWhenReady(theme, 0);
+      (function land(tries) {
+        var links = document.querySelector('.rail-links[data-links-for="' + theme + '"]');
+        var first = links && links.querySelector(".rail-link");
+        if (first && showArea(first.getAttribute("data-anchor"))) {
+          syncPinned(); reflowSoon(); return;
+        }
+        if (tries > 30) return;
+        setTimeout(function () { land(tries + 1); }, 60);
+      })(0);
     }
-    setTimeout(bindScrollspy, 900);
   });
 
   // --- searching one chapter -------------------------------------------------
@@ -215,26 +292,30 @@
     var query = (q || "").trim().toLowerCase();
     var active = rail.querySelector(".rail-theme.is-active");
     var openTheme = active ? active.getAttribute("data-theme") : null;
-    var shown = 0;
+    var shown = 0, firstHit = null;
 
-    rail.querySelectorAll(".rail-group").forEach(function (g) {
+    rail.querySelectorAll(".rail-links[data-links-for]").forEach(function (links) {
+      var tid = links.getAttribute("data-links-for");
+      var btn = rail.querySelector('.rail-theme[data-theme="' + tid + '"]');
       var hits = 0;
-      g.querySelectorAll(".rail-link").forEach(function (a) {
+      links.querySelectorAll(".rail-link").forEach(function (a) {
         var hit = !query || a.textContent.toLowerCase().indexOf(query) !== -1;
         a.classList.toggle("is-hidden", !hit);
         if (hit) hits++;
       });
       shown += hits;
-
-      var links = g.querySelector(".rail-links");
-      if (query) {
-        g.classList.toggle("is-hidden", hits === 0);
-        if (links) links.classList.add("is-open");
-      } else {
-        g.classList.remove("is-hidden");
-        if (links) links.classList.toggle("is-open", links.getAttribute("data-links-for") === openTheme);
-      }
+      if (btn) btn.classList.toggle("is-hidden", !!query && hits === 0);
+      if (hits && !firstHit) firstHit = tid;
+      links.classList.toggle("is-open", query ? false : tid === openTheme);
     });
+
+    //' While a search is running the strip shown is the first one with anything
+    //' left in it, because a match three themes down sitting inside a closed
+    //' strip reads as no match at all.
+    if (query && firstHit) {
+      var f = rail.querySelector('.rail-links[data-links-for="' + firstHit + '"]');
+      if (f) f.classList.add("is-open");
+    }
     rail.classList.toggle("is-empty", query.length > 0 && shown === 0);
   }
 

@@ -3,8 +3,8 @@
 // The tour
 // ==================================================================================
 //
-// A first visit lands on fifteen chapters, a hundred and sixty seven topics and
-// a search box, with nothing saying which of them to touch first. So the first
+// A first visit lands on six themes, fifteen chapters behind them, a hundred and
+// eighty topics and a search box, with nothing saying which to touch first. So the first
 // visit gets walked through it once, and only once. Every step can be left at
 // any point, leaving is remembered exactly as finishing is, and the footer
 // carries a link for anyone who wants it again.
@@ -17,9 +17,19 @@
 
   var steps = [
     {
-      sel: ".chapter-bar--inline, .chapter-bar--top",
-      title: "Fifteen chapters",
-      body: "The survey arrives as fifteen chapters and each one is a tab. This row is the whole of the navigation, so whatever you are reading you are one click from anywhere else."
+      sel: ".chapter-bar--inline .chapter-bar__inner, .chapter-bar--top .chapter-bar__inner",
+      title: "Six themes, not fifteen chapters",
+      body: "The survey's fifteen chapters are grouped into six themes. This row is the whole of the navigation, so wherever you are you are one click from anywhere else."
+    },
+    {
+      sel: "[data-theme-group]",
+      title: "Open a theme",
+      body: "Clicking a theme shows the chapters inside it and opens the first one straight away, so a click always lands on something rather than on more buttons."
+    },
+    {
+      sel: ".chapter-tab--aside",
+      title: "Three pages that cut across",
+      body: "Counties, Comparison of indicators and Trends do not belong to any one chapter. Counties reads the survey one county at a time, Comparison puts two measures on one pair of axes, and Trends shows what has moved since 2014."
     },
     {
       sel: ".hero-search",
@@ -52,9 +62,9 @@
     },
     {
       page: "ch2",
-      sel: ".table-block",
-      title: "The published table",
-      body: "Under every topic is the table as the report prints it, searchable and ready to download as a CSV or an Excel file."
+      sel: ".table-block__head",
+      title: "The table, when you want it",
+      body: "The published table is not drawn until you ask for it, which keeps the page quick. Show the table opens it, and the two links beside it download it as a CSV or the whole topic as an Excel file."
     }
   ];
 

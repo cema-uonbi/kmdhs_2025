@@ -55,7 +55,7 @@
   --shell: 1980px;
   --gutter: clamp(16px, 2.2vw, 40px);
   --rail-width: 250px;
-  --header-h: 90px;
+  --header-h: 112px;
   /* the tab bar wraps, so the offset an anchor has to clear is measured at
      runtime by script.js and written back here */
   --pinned: 176px;
@@ -144,8 +144,12 @@ a:hover { color: var(--orange-600); }
   gap: 12px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
-.brand-mark { height: 48px; width: auto; display: block; }
-.brand-mark--small { height: 42px; }
+/* The KNBS mark is the survey's own and the masthead is its header, so it is
+   given the room to be read rather than being tucked in as a favicon. The
+   masthead's height follows it; everything pinned below reads that height from
+   the same variable, so nothing has to be adjusted twice. */
+.brand-mark { height: 72px; width: auto; display: block; }
+.brand-mark--small { height: 60px; }
 
 .brand-name {
   font-family: var(--font-display);
@@ -530,12 +534,15 @@ a:hover { color: var(--orange-600); }
    A CHAPTER
    ------------------------------------------------------------------------- */
 
-.chapter-head { padding: clamp(40px, 5vh, 68px) 0 clamp(24px, 3vh, 38px); }
+/* padding-block, not the shorthand: .shell sets the side gutter and a shorthand
+   here silently zeroed it, which is why the chapter title sat flush against the
+   left edge of the window while everything under it was inset. */
+.chapter-head { padding-block: clamp(40px, 5vh, 68px) clamp(24px, 3vh, 38px); }
 .chapter-title { margin: 0 0 18px; max-width: 22ch; }
 
 .chapter-layout {
   display: grid;
-  grid-template-columns: var(--rail-width) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(26px, 2.6vw, 54px);
   align-items: start;
   padding-bottom: clamp(56px, 7vh, 108px);
@@ -1001,7 +1008,7 @@ table.dataTable tbody tr.grouprow td {
 }
 
 @media (max-width: 820px) {
-  :root { --header-h: 62px; --pinned: 24px; }
+  :root { --header-h: 76px; --pinned: 24px; }
   /* Fourteen tabs wrap into seven rows on a phone, and seven rows pinned to the
      top of a small screen leaves almost nothing to read. On a narrow screen the
      navigation scrolls away with the page instead. */
@@ -1018,7 +1025,7 @@ table.dataTable tbody tr.grouprow td {
 @media (max-width: 560px) {
   .highlight-grid, .chapter-index { grid-template-columns: minmax(0, 1fr); }
   .brand-plate { padding: 4px 7px; gap: 8px; }
-  .brand-mark { height: 26px; }
+  .brand-mark { height: 44px; }
   .table-block__head { align-items: flex-start; }
 }
 
@@ -1102,6 +1109,49 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 .county-filters .shiny-input-container { flex: 1 1 300px; min-width: 200px; }
 
 /* ---------------------------------------------------------------------------
+   THEMES OVER CHAPTERS
+   The top row is six themes. Opening one drops its chapters into a second row
+   underneath, in the same blue, so the two read as one block of navigation
+   rather than as a bar with something stuck under it.
+   ------------------------------------------------------------------------- */
+
+.theme-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: var(--size-nav-link);
+  font-weight: var(--weight-semibold);
+  padding: 10px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.1;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.theme-tab:hover { background: rgba(255, 255, 255, 0.16); }
+.theme-tab.is-open {
+  background: var(--paper);
+  color: var(--blue-800);
+  box-shadow: 0 2px 10px rgba(8, 30, 44, 0.18);
+}
+
+/* The chapters of the open theme. Every theme's row is in the page and all but
+   one are hidden, so opening a theme is a class change and not a request. */
+.chapter-bar__second { padding: 0; }
+.chapter-bar__chapters {
+  display: none;
+  flex-wrap: wrap;
+  gap: 4px 2px;
+  align-items: center;
+  padding: 8px 0 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+}
+.chapter-bar__chapters.is-open { display: flex; }
+.chapter-bar__chapters .chapter-tab { font-size: var(--size-rail-link); padding: 7px 13px; }
+
+/* ---------------------------------------------------------------------------
    THE TOUR
    A dim over the page, a hole where the thing being talked about is, and a
    card beside it. Shown on a first visit and never again, and leaving counts
@@ -1181,3 +1231,276 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 .footer-top { justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .footer-top .tour-again { border-color: var(--blue-200); color: var(--blue-600); }
 .footer-top .tour-again:hover { border-color: var(--blue); color: var(--blue-800); }
+
+/* ==================================================================================
+   THE THREE CROSS-CUTTING PAGES
+   Counties, Compare and Trends are read differently from a chapter: a chapter is
+   scrolled, these are steered. So the controls sit close to what they change and
+   every chart is followed by the sentence that says what it shows, rather than
+   leaving a reader to work out the finding from the picture on their own.
+   ================================================================================== */
+
+.cross .shell, .trends .shell { padding-block: 8px 56px; }
+
+/* The reading beside a chart. Two weights: the finding, and the caution. */
+.cross-read {
+  display: flex; flex-direction: column; gap: 18px;
+  align-self: start;
+  padding: 22px 24px;
+  background: var(--paper-tint);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+.cross-read__line {
+  font-family: var(--font-display);
+  font-size: var(--size-lead);
+  line-height: 1.32;
+  color: var(--ink);
+  margin: 0;
+}
+.cross-read__fine {
+  font-size: var(--size-small);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.cross-read__fine + .cross-read__fine { color: var(--ink-faint); }
+
+/* The scatter and its reading, side by side on a wide screen and stacked on a
+   narrow one. The chart keeps the room; the words are the column that gives way. */
+.cross-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  gap: 26px;
+  align-items: start;
+}
+@media (max-width: 1100px) {
+  .cross-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* The trends reading runs the full width, because the slope chart under it does. */
+.trend-read {
+  display: flex; flex-direction: column; gap: 12px;
+  margin: 22px 0 6px;
+  padding: 22px 24px;
+  background: var(--paper-tint);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+}
+.trend-read .cross-read__line { font-size: var(--size-lead); }
+
+/* The line under a chart that says what the chart cannot: how wide the spread is,
+   how many counties reported, what a rank is worth here. */
+.figure-note {
+  font-size: var(--size-small);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 92ch;
+  margin: 14px 0 26px;
+}
+
+/* A second button that is plainly secondary to the one beside it. */
+.go-btn--quiet {
+  background: transparent;
+  color: var(--blue-600);
+  border: 1px solid var(--rule-strong);
+}
+.go-btn--quiet:hover { border-color: var(--blue); color: var(--blue-800); }
+
+/* The action that sits in a row of pickers lines up with them rather than with
+   the labels above them. */
+.controls__action { display: flex; align-items: flex-end; padding-bottom: 2px; }
+
+/* ----------------------------------------------------------------------------------
+   Trends, two charts abreast
+   Kenya on the left and the groups inside it on the right, because the second chart
+   answers the question the first one raises and scrolling between them loses that.
+   Below about 1150px there is not enough width for two charts to be worth reading,
+   so they stack.
+   ---------------------------------------------------------------------------------- */
+.trend-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 30px;
+  align-items: start;
+  margin-top: 8px;
+}
+.trend-grid__col { display: flex; flex-direction: column; min-width: 0; }
+@media (max-width: 1150px) {
+  .trend-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+
+/* The movement, said once and said large, so nobody has to read two data labels
+   off a chart and subtract them. */
+.trend-read__big {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 2.4vw, 38px);
+  line-height: 1.12;
+  font-weight: var(--weight-bold);
+  color: var(--ink);
+  margin: 0;
+}
+.trend-read--up { border-left-color: var(--blue); }
+.trend-read--down { border-left-color: var(--orange); }
+.trend-read--flat { border-left-color: var(--rule-strong); }
+
+/* One line per group, in order of how far it moved. A list, because that is what
+   it is: a short list of statements, not a paragraph pretending to be prose. */
+.trend-list { list-style: none; margin: 0; padding: 0; display: flex;
+              flex-direction: column; gap: 9px; }
+.trend-list__item {
+  font-size: var(--size-small);
+  line-height: 1.5;
+  color: var(--ink);
+  padding-left: 20px;
+  position: relative;
+}
+.trend-list__item::before {
+  content: "";
+  position: absolute; left: 0; top: 0.58em;
+  width: 9px; height: 9px; border-radius: 50%;
+}
+.trend-list__item--up::before { background: var(--blue); }
+.trend-list__item--down::before { background: var(--orange); }
+.trend-list__item--flat::before { background: var(--rule-strong); }
+.trend-list__item b { font-weight: var(--weight-semibold); }
+
+/* A table that is not drawn until it is asked for needs a button that reads as a
+   switch rather than as another download, which is why the download links now say
+   the word download and this one does not. */
+.dl-btn--toggle {
+  background: var(--blue-050);
+  border-color: var(--blue-200);
+  color: var(--blue-800);
+}
+.dl-btn--toggle:hover { background: var(--blue-100); border-color: var(--blue); }
+
+/* ==================================================================================
+   THE CHAPTER'S OWN NAVIGATION, ACROSS THE TOP
+   Two rows: which part of the chapter, then which topic in it. A side rail asked a
+   reader to hold eight themes and twenty three topics in their eye at once, in a
+   250 pixel column; this says the same thing in the order it is used and leaves the
+   page its full width for the charts.
+   ================================================================================== */
+
+/* The base .rail rules made a sticky, scrolling column of it. This is a bar, so
+   it takes none of that back: no sticky, no height cap, no inner scroller. */
+.topic-bar {
+  position: static;
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 4px 0 26px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.topic-bar__row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+/* Row one. The part of the chapter, in the blue that says navigation everywhere
+   else on the page. */
+.topic-bar .rail-theme {
+  /* The side rail made these full-width blocks stacked down a column. In a row
+     they size to their own text, so the resets have to be explicit. */
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  flex: 0 0 auto;
+  text-align: center;
+  margin: 0;
+  padding: 9px 16px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: var(--size-small);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.topic-bar .rail-theme:hover { border-color: var(--blue); color: var(--blue-800); }
+.topic-bar .rail-theme.is-active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.topic-bar .rail-theme.is-hidden { display: none; }
+
+/* Row two. The topics inside the part. Orange, because it is a different kind of
+   choice from the row above it and a reader should never have to work out which
+   row they just clicked. The one being read is filled, not underlined: an
+   underline on a row of eight is easy to miss and that was the whole complaint. */
+.topic-bar .rail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  border: 0;
+  margin: 0;
+  padding: 2px 0 0;
+}
+.topic-bar .rail-links:not(.is-open) { display: none; }
+.topic-bar .rail-link {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 7px 14px;
+  border: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper-tint);
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-medium);
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  max-width: 42ch;
+  white-space: normal;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.topic-bar .rail-link:hover {
+  border-color: var(--orange-300);
+  background: var(--orange-050);
+  color: var(--ink);
+}
+.topic-bar .rail-link.is-active {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
+  font-weight: var(--weight-semibold);
+}
+.topic-bar .rail-link.is-hidden { display: none; }
+
+/* The chapter search sits at the end of the first row rather than above both. */
+.topic-bar .rail-filter { margin: 0 0 0 auto; min-width: 210px; }
+.topic-bar .rail-filter input { padding-block: 8px; }
+
+/* One topic on the page at a time. */
+.area-page { display: none; }
+.area-page.is-on { display: block; }
+
+/* The chapter's one-line caption. It is a caption for the chapter, not a
+   paragraph about it, and a caption that wraps stops reading as one. */
+.lead--one {
+  max-width: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+  /* Nowhere near enough width to keep a sentence on one line, so on a phone it
+     wraps rather than being cut off at four words. */
+  .lead--one { white-space: normal; overflow: visible; }
+  .topic-bar .rail-filter { margin-left: 0; width: 100%; }
+  .topic-bar .rail-link { max-width: 100%; }
+}
