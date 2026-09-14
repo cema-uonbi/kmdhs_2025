@@ -163,6 +163,24 @@ a:hover { color: var(--orange-600); }
   color: #fff;
   white-space: nowrap;
 }
+/* The full survey name is four times the length of the old one, so it runs on
+   one line beside the mark rather than stacking a subtitle under it, and it
+   gives way on a narrow screen instead of forcing the masthead wide. */
+.brand-name--long {
+  font-size: clamp(17px, 1.5vw, 25px);
+  line-height: 1.15;
+  white-space: normal;
+}
+.brand-name--long .brand-name__years {
+  display: inline;
+  font-family: var(--font-display);
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+  color: #FFDCBB;
+}
+
 .brand-name span {
   display: block;
   font-family: var(--font-body);
@@ -1625,3 +1643,61 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 }
 .site-search__where { font-size: var(--size-tiny); color: var(--ink-faint); }
 .site-search__miss { padding: 11px 13px; font-size: var(--size-small); color: var(--ink-soft); }
+
+/* ==================================================================================
+   THE THREE THINGS A DHS MEASURES
+   Health, nutrition and demographics, said as three bands rather than as one row of
+   unlabelled numbers. The heading is the quiet kind: it names the band and gets out
+   of the way, because the figures under it are what a reader came for.
+   ================================================================================== */
+
+.band-head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin: 26px 0 12px;
+}
+.band-head::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--rule);
+}
+.band-title {
+  font-family: var(--font-body);
+  font-size: var(--size-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--blue-600);
+  margin: 0;
+}
+.highlight-grid + .band-head { margin-top: 34px; }
+
+/* The ready-made comparisons. Quieter than the sub-tabs inside a chapter, because
+   these are suggestions rather than the page's own navigation. */
+.preset-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin: 10px 0 4px;
+}
+.preset-row__label {
+  font-family: var(--font-body);
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-right: 2px;
+}
+.preset {
+  font-family: var(--font-body);
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-medium);
+  color: var(--blue-800);
+  background: var(--blue-050);
+  border: 1px solid var(--blue-200);
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.preset:hover { background: var(--blue-100); border-color: var(--blue); }
+.preset.is-on { background: var(--blue); border-color: var(--blue); color: #fff; }

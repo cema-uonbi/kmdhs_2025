@@ -3,7 +3,7 @@
 // The tour
 // ==================================================================================
 //
-// A first visit lands on six themes, fifteen chapters behind them, a hundred and
+// A first visit lands on four themes, fifteen chapters behind them, a hundred and
 // eighty topics and a search box, with nothing saying which to touch first. So the first
 // visit gets walked through it once, and only once. Every step can be left at
 // any point, leaving is remembered exactly as finishing is, and the footer
@@ -18,8 +18,8 @@
   var steps = [
     {
       sel: ".chapter-bar--inline .chapter-bar__inner, .chapter-bar--top .chapter-bar__inner",
-      title: "Six themes, not fifteen chapters",
-      body: "The survey's fifteen chapters are grouped into six themes. This row is the whole of the navigation, so wherever you are you are one click from anywhere else."
+      title: "Four themes, not fifteen chapters",
+      body: "The survey's fifteen chapters are grouped into four themes. This row is the whole of the navigation, so wherever you are you are one click from anywhere else."
     },
     {
       sel: "[data-theme-group]",
@@ -27,9 +27,14 @@
       body: "Clicking a theme shows the chapters inside it and opens the first one straight away, so a click always lands on something rather than on more buttons."
     },
     {
-      sel: ".chapter-tab--aside",
-      title: "Three pages that cut across",
-      body: "Counties, Comparison of indicators and Trends do not belong to any one chapter. Counties reads the survey one county at a time, Comparison puts two measures on one pair of axes, and Trends shows what has moved since 2014."
+      sel: "[data-theme-group]",
+      title: "Health, nutrition, demographics",
+      body: "The three things a Demographic and Health Survey measures, each holding the chapters that report it. Health opens on mortality, because the outcome comes before the care that produced it."
+    },
+    {
+      sel: "[data-theme-group]:last-of-type",
+      title: "And Analytics",
+      body: "The fourth theme belongs to no chapter. Counties reads the survey one county at a time, Comparison of indicators puts two measures on one pair of axes across the 47, and Trends shows what has moved since 2014."
     },
     {
       sel: ".hero-search",

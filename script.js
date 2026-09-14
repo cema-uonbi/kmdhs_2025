@@ -105,6 +105,29 @@
     if (first) showArea(first.getAttribute("data-anchor"));
   }
 
+  //' The ready-made comparisons -------------------------------------------------
+  //'
+  //' A preset sets both pickers and then tells the page they moved. Setting a
+  //' select's value in script does not fire a change event on its own, so
+  //' Shiny's binding and the static site's own listener would both sit there
+  //' with the new value on screen and the old chart under it.
+  document.addEventListener("click", function (event) {
+    var el = event.target.closest ? event.target.closest("[data-preset-for]") : null;
+    if (!el) return;
+    event.preventDefault();
+    var ns = el.getAttribute("data-preset-for");
+    [["x", "data-preset-x"], ["y", "data-preset-y"]].forEach(function (pair) {
+      var sel = document.getElementById(ns + "-" + pair[0]);
+      var want = el.getAttribute(pair[1]);
+      if (!sel || want === null) return;
+      sel.value = want;
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+    document.querySelectorAll("[data-preset-for='" + ns + "']").forEach(function (b) {
+      b.classList.toggle("is-on", b === el);
+    });
+  });
+
   // --- the address bar ------------------------------------------------------
   //' So a chapter or a single topic can be sent to someone, or cited. Written
   //' with replaceState rather than pushState: these are the same page, and

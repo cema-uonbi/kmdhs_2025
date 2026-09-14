@@ -24,9 +24,9 @@
       <div class="brand-plate">
         <img src="knbs.jpeg?v=1789388716" class="brand-mark" alt="Kenya National Bureau of Statistics"/>
       </div>
-      <div class="brand-name">
-        Kenya Mini DHS
-        <span>2025/26</span>
+      <div class="brand-name brand-name--long">
+        The Kenya Mini Demographic and Health Survey, 
+        <span class="brand-name__years">2025 to 2026</span>
       </div>
     </div>
     <div class="header-spacer"></div>
@@ -36,53 +36,20 @@
   <div class="shell chapter-bar__inner">
     <span class="chapter-bar__label">Themes</span>
     <button type="button" class="chapter-tab is-active" data-page="overview" data-nav-input="nav">Overview</button>
-    <button type="button" class="theme-tab" data-theme-group="1" data-nav-theme="nav">Population</button>
-    <button type="button" class="theme-tab" data-theme-group="2" data-nav-theme="nav">Fertility</button>
-    <button type="button" class="theme-tab" data-theme-group="3" data-nav-theme="nav">Mother and child</button>
-    <button type="button" class="theme-tab" data-theme-group="4" data-nav-theme="nav">Nutrition</button>
-    <button type="button" class="theme-tab" data-theme-group="5" data-nav-theme="nav">Environment</button>
-    <button type="button" class="theme-tab" data-theme-group="6" data-nav-theme="nav">Violence and mortality</button>
-    <button type="button" class="chapter-tab chapter-tab--aside" data-page="counties" data-nav-input="nav">Counties</button>
-    <button type="button" class="chapter-tab chapter-tab--aside" data-page="compare" data-nav-input="nav">Comparison of indicators</button>
-    <button type="button" class="chapter-tab chapter-tab--aside" data-page="trends" data-nav-input="nav">Trends</button>
+    <button type="button" class="theme-tab" data-theme-group="1" data-nav-theme="nav">Health</button>
+    <button type="button" class="theme-tab" data-theme-group="2" data-nav-theme="nav">Nutrition</button>
+    <button type="button" class="theme-tab" data-theme-group="3" data-nav-theme="nav">Demographics</button>
+    <button type="button" class="theme-tab" data-theme-group="90" data-nav-theme="nav">Analytics</button>
   </div>
   <div class="shell chapter-bar__second">
     <div class="chapter-bar__chapters" data-chapters-for="1">
-      <button type="button" class="chapter-tab" data-page="ch1" data-nav-input="nav">
-        <span class="chapter-tab__no">1</span>
-        Introduction
-      </button>
-      <button type="button" class="chapter-tab" data-page="ch2" data-nav-input="nav">
-        <span class="chapter-tab__no">2</span>
-        Households
-      </button>
-      <button type="button" class="chapter-tab" data-page="ch3" data-nav-input="nav">
-        <span class="chapter-tab__no">3</span>
-        Respondents
-      </button>
-    </div>
-    <div class="chapter-bar__chapters" data-chapters-for="2">
-      <button type="button" class="chapter-tab" data-page="ch4" data-nav-input="nav">
-        <span class="chapter-tab__no">4</span>
-        Marriage
-      </button>
-      <button type="button" class="chapter-tab" data-page="ch5" data-nav-input="nav">
-        <span class="chapter-tab__no">5</span>
-        Fertility
-      </button>
-      <button type="button" class="chapter-tab" data-page="ch6" data-nav-input="nav">
-        <span class="chapter-tab__no">6</span>
-        Preferences
-      </button>
-      <button type="button" class="chapter-tab" data-page="ch7" data-nav-input="nav">
-        <span class="chapter-tab__no">7</span>
-        Family planning
-      </button>
-    </div>
-    <div class="chapter-bar__chapters" data-chapters-for="3">
       <button type="button" class="chapter-tab" data-page="ch8" data-nav-input="nav">
         <span class="chapter-tab__no">8</span>
         Child mortality
+      </button>
+      <button type="button" class="chapter-tab" data-page="ch15" data-nav-input="nav">
+        <span class="chapter-tab__no">15</span>
+        Adult mortality
       </button>
       <button type="button" class="chapter-tab" data-page="ch9" data-nav-input="nav">
         <span class="chapter-tab__no">9</span>
@@ -92,32 +59,59 @@
         <span class="chapter-tab__no">10</span>
         Child health
       </button>
+      <button type="button" class="chapter-tab" data-page="ch12" data-nav-input="nav">
+        <span class="chapter-tab__no">12</span>
+        Malaria
+      </button>
     </div>
-    <div class="chapter-bar__chapters" data-chapters-for="4">
+    <div class="chapter-bar__chapters" data-chapters-for="2">
       <button type="button" class="chapter-tab" data-page="ch11" data-nav-input="nav">
         <span class="chapter-tab__no">11</span>
         Nutrition
       </button>
     </div>
-    <div class="chapter-bar__chapters" data-chapters-for="5">
-      <button type="button" class="chapter-tab" data-page="ch12" data-nav-input="nav">
-        <span class="chapter-tab__no">12</span>
-        Malaria
+    <div class="chapter-bar__chapters" data-chapters-for="3">
+      <button type="button" class="chapter-tab" data-page="ch5" data-nav-input="nav">
+        <span class="chapter-tab__no">5</span>
+        Fertility
+      </button>
+      <button type="button" class="chapter-tab" data-page="ch6" data-nav-input="nav">
+        <span class="chapter-tab__no">6</span>
+        Preferences
+      </button>
+      <button type="button" class="chapter-tab" data-page="ch4" data-nav-input="nav">
+        <span class="chapter-tab__no">4</span>
+        Marriage
+      </button>
+      <button type="button" class="chapter-tab" data-page="ch7" data-nav-input="nav">
+        <span class="chapter-tab__no">7</span>
+        Family planning
+      </button>
+      <button type="button" class="chapter-tab" data-page="ch3" data-nav-input="nav">
+        <span class="chapter-tab__no">3</span>
+        Respondents
+      </button>
+      <button type="button" class="chapter-tab" data-page="ch2" data-nav-input="nav">
+        <span class="chapter-tab__no">2</span>
+        Households
       </button>
       <button type="button" class="chapter-tab" data-page="ch13" data-nav-input="nav">
         <span class="chapter-tab__no">13</span>
         WASH
       </button>
-    </div>
-    <div class="chapter-bar__chapters" data-chapters-for="6">
       <button type="button" class="chapter-tab" data-page="ch14" data-nav-input="nav">
         <span class="chapter-tab__no">14</span>
         Online violence
       </button>
-      <button type="button" class="chapter-tab" data-page="ch15" data-nav-input="nav">
-        <span class="chapter-tab__no">15</span>
-        Adult mortality
+      <button type="button" class="chapter-tab" data-page="ch1" data-nav-input="nav">
+        <span class="chapter-tab__no">1</span>
+        Introduction
       </button>
+    </div>
+    <div class="chapter-bar__chapters" data-chapters-for="90">
+      <button type="button" class="chapter-tab" data-page="counties" data-nav-input="nav">Counties</button>
+      <button type="button" class="chapter-tab" data-page="compare" data-nav-input="nav">Comparison of indicators</button>
+      <button type="button" class="chapter-tab" data-page="trends" data-nav-input="nav">Trends</button>
     </div>
   </div>
 </nav>
@@ -128,10 +122,9 @@
         <div class="shell">
           <div class="hero-grid">
             <div class="hero-copy">
-              <span class="eyebrow">Kenya National Bureau of Statistics</span>
               <h1 class="page-title">
-                The Kenya Mini Demographic and Health Survey, 
-                <em>2025 to 2026</em>
+                Kenya Mini DHS 
+                <em>2025/26</em>
               </h1>
               <div class="hero-search">
                 <label class="hero-search__label" for="search">Go straight to any topic</label>
@@ -155,53 +148,20 @@
         <div class="shell chapter-bar__inner">
           <span class="chapter-bar__label">Themes</span>
           <button type="button" class="chapter-tab is-active" data-page="overview" data-nav-input="nav">Overview</button>
-          <button type="button" class="theme-tab" data-theme-group="1" data-nav-theme="nav">Population</button>
-          <button type="button" class="theme-tab" data-theme-group="2" data-nav-theme="nav">Fertility</button>
-          <button type="button" class="theme-tab" data-theme-group="3" data-nav-theme="nav">Mother and child</button>
-          <button type="button" class="theme-tab" data-theme-group="4" data-nav-theme="nav">Nutrition</button>
-          <button type="button" class="theme-tab" data-theme-group="5" data-nav-theme="nav">Environment</button>
-          <button type="button" class="theme-tab" data-theme-group="6" data-nav-theme="nav">Violence and mortality</button>
-          <button type="button" class="chapter-tab chapter-tab--aside" data-page="counties" data-nav-input="nav">Counties</button>
-          <button type="button" class="chapter-tab chapter-tab--aside" data-page="compare" data-nav-input="nav">Comparison of indicators</button>
-          <button type="button" class="chapter-tab chapter-tab--aside" data-page="trends" data-nav-input="nav">Trends</button>
+          <button type="button" class="theme-tab" data-theme-group="1" data-nav-theme="nav">Health</button>
+          <button type="button" class="theme-tab" data-theme-group="2" data-nav-theme="nav">Nutrition</button>
+          <button type="button" class="theme-tab" data-theme-group="3" data-nav-theme="nav">Demographics</button>
+          <button type="button" class="theme-tab" data-theme-group="90" data-nav-theme="nav">Analytics</button>
         </div>
         <div class="shell chapter-bar__second">
           <div class="chapter-bar__chapters" data-chapters-for="1">
-            <button type="button" class="chapter-tab" data-page="ch1" data-nav-input="nav">
-              <span class="chapter-tab__no">1</span>
-              Introduction
-            </button>
-            <button type="button" class="chapter-tab" data-page="ch2" data-nav-input="nav">
-              <span class="chapter-tab__no">2</span>
-              Households
-            </button>
-            <button type="button" class="chapter-tab" data-page="ch3" data-nav-input="nav">
-              <span class="chapter-tab__no">3</span>
-              Respondents
-            </button>
-          </div>
-          <div class="chapter-bar__chapters" data-chapters-for="2">
-            <button type="button" class="chapter-tab" data-page="ch4" data-nav-input="nav">
-              <span class="chapter-tab__no">4</span>
-              Marriage
-            </button>
-            <button type="button" class="chapter-tab" data-page="ch5" data-nav-input="nav">
-              <span class="chapter-tab__no">5</span>
-              Fertility
-            </button>
-            <button type="button" class="chapter-tab" data-page="ch6" data-nav-input="nav">
-              <span class="chapter-tab__no">6</span>
-              Preferences
-            </button>
-            <button type="button" class="chapter-tab" data-page="ch7" data-nav-input="nav">
-              <span class="chapter-tab__no">7</span>
-              Family planning
-            </button>
-          </div>
-          <div class="chapter-bar__chapters" data-chapters-for="3">
             <button type="button" class="chapter-tab" data-page="ch8" data-nav-input="nav">
               <span class="chapter-tab__no">8</span>
               Child mortality
+            </button>
+            <button type="button" class="chapter-tab" data-page="ch15" data-nav-input="nav">
+              <span class="chapter-tab__no">15</span>
+              Adult mortality
             </button>
             <button type="button" class="chapter-tab" data-page="ch9" data-nav-input="nav">
               <span class="chapter-tab__no">9</span>
@@ -211,39 +171,69 @@
               <span class="chapter-tab__no">10</span>
               Child health
             </button>
+            <button type="button" class="chapter-tab" data-page="ch12" data-nav-input="nav">
+              <span class="chapter-tab__no">12</span>
+              Malaria
+            </button>
           </div>
-          <div class="chapter-bar__chapters" data-chapters-for="4">
+          <div class="chapter-bar__chapters" data-chapters-for="2">
             <button type="button" class="chapter-tab" data-page="ch11" data-nav-input="nav">
               <span class="chapter-tab__no">11</span>
               Nutrition
             </button>
           </div>
-          <div class="chapter-bar__chapters" data-chapters-for="5">
-            <button type="button" class="chapter-tab" data-page="ch12" data-nav-input="nav">
-              <span class="chapter-tab__no">12</span>
-              Malaria
+          <div class="chapter-bar__chapters" data-chapters-for="3">
+            <button type="button" class="chapter-tab" data-page="ch5" data-nav-input="nav">
+              <span class="chapter-tab__no">5</span>
+              Fertility
+            </button>
+            <button type="button" class="chapter-tab" data-page="ch6" data-nav-input="nav">
+              <span class="chapter-tab__no">6</span>
+              Preferences
+            </button>
+            <button type="button" class="chapter-tab" data-page="ch4" data-nav-input="nav">
+              <span class="chapter-tab__no">4</span>
+              Marriage
+            </button>
+            <button type="button" class="chapter-tab" data-page="ch7" data-nav-input="nav">
+              <span class="chapter-tab__no">7</span>
+              Family planning
+            </button>
+            <button type="button" class="chapter-tab" data-page="ch3" data-nav-input="nav">
+              <span class="chapter-tab__no">3</span>
+              Respondents
+            </button>
+            <button type="button" class="chapter-tab" data-page="ch2" data-nav-input="nav">
+              <span class="chapter-tab__no">2</span>
+              Households
             </button>
             <button type="button" class="chapter-tab" data-page="ch13" data-nav-input="nav">
               <span class="chapter-tab__no">13</span>
               WASH
             </button>
-          </div>
-          <div class="chapter-bar__chapters" data-chapters-for="6">
             <button type="button" class="chapter-tab" data-page="ch14" data-nav-input="nav">
               <span class="chapter-tab__no">14</span>
               Online violence
             </button>
-            <button type="button" class="chapter-tab" data-page="ch15" data-nav-input="nav">
-              <span class="chapter-tab__no">15</span>
-              Adult mortality
+            <button type="button" class="chapter-tab" data-page="ch1" data-nav-input="nav">
+              <span class="chapter-tab__no">1</span>
+              Introduction
             </button>
+          </div>
+          <div class="chapter-bar__chapters" data-chapters-for="90">
+            <button type="button" class="chapter-tab" data-page="counties" data-nav-input="nav">Counties</button>
+            <button type="button" class="chapter-tab" data-page="compare" data-nav-input="nav">Comparison of indicators</button>
+            <button type="button" class="chapter-tab" data-page="trends" data-nav-input="nav">Trends</button>
           </div>
         </div>
       </nav>
       <div class="shell">
         <div class="section-head">
           <span class="eyebrow">Kenya at a glance</span>
-          <p class="lead">The national figures of the 2025/26 round, each against 2022. Open any one to reach its chapter.</p>
+          <p class="lead">What the 2025/26 round found, against the round before it wherever the published table printed one. Open any figure to reach the chapter it came from.</p>
+        </div>
+        <div class="band-head">
+          <h3 class="band-title">Health</h3>
         </div>
         <div class="highlight-grid">
           <button type="button" class="hl" data-page="ch15" data-nav-input="nav">
@@ -252,7 +242,16 @@
               <p class="hl__value">263</p>
               <span class="hl__label">Maternal mortality ratio</span>
               <span class="hl__note">per 100 000 live births</span>
-              <span class="hl__move hl__move--flat">Not comparable with 2022</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
+            </div>
+          </button>
+          <button type="button" class="hl" data-page="ch8" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.6" r="4.2"/><path d="M10.2 6.8h.01M13.8 6.8h.01"/><path d="M5.6 20.6a6.4 6.4 0 0 1 12.8 0"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">37</p>
+              <span class="hl__label">Under-five mortality</span>
+              <span class="hl__note">per 1 000 live births</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
             </div>
           </button>
           <button type="button" class="hl" data-page="ch8" data-nav-input="nav">
@@ -267,24 +266,6 @@
               </span>
             </div>
           </button>
-          <button type="button" class="hl" data-page="ch8" data-nav-input="nav">
-            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.6" r="4.2"/><path d="M10.2 6.8h.01M13.8 6.8h.01"/><path d="M5.6 20.6a6.4 6.4 0 0 1 12.8 0"/></svg></div>
-            <div class="hl__body">
-              <p class="hl__value">37</p>
-              <span class="hl__label">Under-five mortality</span>
-              <span class="hl__note">per 1 000 live births</span>
-              <span class="hl__move hl__move--flat">Not comparable with 2022</span>
-            </div>
-          </button>
-          <button type="button" class="hl" data-page="ch15" data-nav-input="nav">
-            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3.6"/><path d="M12 10.8V20"/><path d="M8.6 16.4h6.8"/></svg></div>
-            <div class="hl__body">
-              <p class="hl__value">3.3</p>
-              <span class="hl__label">Total fertility rate</span>
-              <span class="hl__note">births per woman</span>
-              <span class="hl__move hl__move--flat">Not comparable with 2022</span>
-            </div>
-          </button>
           <button type="button" class="hl" data-page="ch9" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.2 12 3.4l8.4 6.8"/><path d="M5.6 9.4V20h12.8V9.4"/><path d="M10 20v-5.4h4V20"/></svg></div>
             <div class="hl__body">
@@ -294,7 +275,86 @@
               </p>
               <span class="hl__label">Births in a health facility</span>
               <span class="hl__note">live births</span>
-              <span class="hl__move hl__move--flat">Not comparable with 2022</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
+            </div>
+          </button>
+          <button type="button" class="hl" data-page="ch12" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 19.2 6v5.6c0 4.4-3.1 8.2-7.2 9.8-4.1-1.6-7.2-5.4-7.2-9.8V6z"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                32.3
+                <small>%</small>
+              </p>
+              <span class="hl__label">Slept under a treated net</span>
+              <span class="hl__note">the population</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
+            </div>
+          </button>
+        </div>
+        <div class="band-head">
+          <h3 class="band-title">Nutrition</h3>
+        </div>
+        <div class="highlight-grid">
+          <button type="button" class="hl" data-page="ch11" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.6" r="4.2"/><path d="M10.2 6.8h.01M13.8 6.8h.01"/><path d="M5.6 20.6a6.4 6.4 0 0 1 12.8 0"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                62.8
+                <small>%</small>
+              </p>
+              <span class="hl__label">Put to the breast within an hour</span>
+              <span class="hl__note">of being born</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
+            </div>
+          </button>
+          <button type="button" class="hl" data-page="ch11" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3S4.7 15.8 4.7 10.7a3.9 3.9 0 0 1 7.3-2 3.9 3.9 0 0 1 7.3 2c0 5.1-7.3 9.6-7.3 9.6z"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                35.7
+                <small>%</small>
+              </p>
+              <span class="hl__label">Fed a minimum acceptable diet</span>
+              <span class="hl__note">age 6 to 23 months</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
+            </div>
+          </button>
+          <button type="button" class="hl" data-page="ch11" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3S4.7 15.8 4.7 10.7a3.9 3.9 0 0 1 7.3-2 3.9 3.9 0 0 1 7.3 2c0 5.1-7.3 9.6-7.3 9.6z"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                46.6
+                <small>%</small>
+              </p>
+              <span class="hl__label">Fed a minimum dietary diversity</span>
+              <span class="hl__note">age 6 to 23 months</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
+            </div>
+          </button>
+          <button type="button" class="hl" data-page="ch11" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V9"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                49
+                <small>%</small>
+              </p>
+              <span class="hl__label">Weighed and measured</span>
+              <span class="hl__note">children under 5</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
+            </div>
+          </button>
+        </div>
+        <div class="band-head">
+          <h3 class="band-title">Demographics</h3>
+        </div>
+        <div class="highlight-grid">
+          <button type="button" class="hl" data-page="ch15" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3.6"/><path d="M12 10.8V20"/><path d="M8.6 16.4h6.8"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">3.3</p>
+              <span class="hl__label">Total fertility rate</span>
+              <span class="hl__note">births per woman</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
             </div>
           </button>
           <button type="button" class="hl" data-page="ch7" data-nav-input="nav">
@@ -306,7 +366,7 @@
               </p>
               <span class="hl__label">Women using a modern method</span>
               <span class="hl__note">currently married</span>
-              <span class="hl__move hl__move--flat">Not comparable with 2022</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
             </div>
           </button>
           <button type="button" class="hl" data-page="ch5" data-nav-input="nav">
@@ -318,7 +378,7 @@
               </p>
               <span class="hl__label">Teenagers who have been pregnant</span>
               <span class="hl__note">age 15 to 19</span>
-              <span class="hl__move hl__move--flat">Not comparable with 2022</span>
+              <span class="hl__move hl__move--flat">No earlier round printed</span>
             </div>
           </button>
           <button type="button" class="hl" data-page="ch13" data-nav-input="nav">
@@ -334,18 +394,6 @@
                 <span class="hl__arrow">&uarr;</span>
                 from 67.9% in 2022
               </span>
-            </div>
-          </button>
-          <button type="button" class="hl" data-page="ch12" data-nav-input="nav">
-            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 19.2 6v5.6c0 4.4-3.1 8.2-7.2 9.8-4.1-1.6-7.2-5.4-7.2-9.8V6z"/></svg></div>
-            <div class="hl__body">
-              <p class="hl__value">
-                32.3
-                <small>%</small>
-              </p>
-              <span class="hl__label">Slept under a treated net</span>
-              <span class="hl__note">the population</span>
-              <span class="hl__move hl__move--flat">Not comparable with 2022</span>
             </div>
           </button>
         </div>
@@ -681,6 +729,14 @@
           Kenya's own figures, so the quadrant a county falls in says whether it is 
           ahead or behind the country on each.
         </p>
+        <div class="preset-row">
+          <span class="preset-row__label">Start with</span>
+          <button type="button" class="preset" data-preset-for="compare" data-preset-x="9.7||Percentage delivered in a health facility" data-preset-y="7.4.2||Any modern method">Facility births and modern contraception</button>
+          <button type="button" class="preset" data-preset-for="compare" data-preset-x="2.10.1||More than secondary" data-preset-y="9.7||Percentage delivered in a health facility">Facility births and women's schooling</button>
+          <button type="button" class="preset" data-preset-for="compare" data-preset-x="2.10.1||More than secondary" data-preset-y="5.12||Percentage of women age 15-19 who · Have ever been pregnant">Teenage pregnancy and women's schooling</button>
+          <button type="button" class="preset" data-preset-for="compare" data-preset-x="13.2||At least basic service" data-preset-y="13.4||At least basic service">Drinking water and sanitation</button>
+          <button type="button" class="preset" data-preset-for="compare" data-preset-x="9.1||Percentage receiving ANC from a skilled provider" data-preset-y="9.7||Percentage delivered in a health facility">Antenatal care and facility birth</button>
+        </div>
         <div class="controls">
           <div class="form-group field">
             <label class="control-label" id="compare-x-label" for="compare-x">Across the bottom</label>
