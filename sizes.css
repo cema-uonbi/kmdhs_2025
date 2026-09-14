@@ -1,0 +1,105 @@
+/* ===========================================================================
+   FONT SIZES - every size in the app resolves to a variable here
+   ===========================================================================
+
+   Set generously and set evenly. This gets read on a projector in a county
+   meeting and on a laptop by someone who is not going to lean in, so the base
+   is 19px rather than the usual 16, and there is no small print hiding
+   anywhere: the smallest thing on the page is 15px and it is a footnote.
+
+   Anything that scales is clamped - clamp(floor, preferred, ceiling) - so it
+   grows with the window without collapsing on a phone or running away on a
+   wide monitor.
+   =========================================================================== */
+
+:root {
+  /* ---- body text ---- */
+  --size-base: 19px;      /* default body copy */
+  --size-small: 17px;     /* secondary text, captions, chart notes */
+  --size-tiny: 15px;      /* footnotes and source lines, the smallest here */
+  --size-lead: clamp(21px, 1.7vw, 25px);   /* the standfirst under a heading */
+
+  /* ---- display type ---- */
+  --size-page-title: clamp(38px, 4.3vw, 66px);
+  --size-chapter-title: clamp(29px, 3vw, 44px);
+  --size-theme-title: clamp(25px, 2.3vw, 34px);
+  --size-area-title: clamp(23px, 1.9vw, 29px);
+  --size-eyebrow: 14px;
+
+  /* ---- the big numbers ---- */
+  --size-stat: clamp(36px, 3.2vw, 46px);
+  --size-stat-label: 18px;
+  --size-stat-note: 16px;
+
+  /* ---- navigation ---- */
+  --size-nav-link: 19px;    /* the chapter tabs are the whole of the navigation */
+  --size-rail-theme: 17px;
+  --size-rail-link: 17px;
+  --size-brand: 19px;
+
+  /* ---- controls ---- */
+  --size-label: 18px;
+  --size-input: 19px;
+  --size-button: 18px;
+
+  /* ---- charts ---- */
+  --size-chart-title: 22px;
+  --size-chart-subtitle: 17px;
+  --size-chart-axis-title: 17px;
+  --size-chart-axis-label: 16px;
+  --size-chart-legend: 16px;
+  --size-chart-tooltip: 17px;
+  --size-chart-datalabel: 15px;
+
+  /* ---- tables ---- */
+  --size-table-header: 17px;
+  --size-table-cell: 17px;
+}
+
+/* on a narrow screen everything steps down one notch, together */
+@media (max-width: 768px) {
+  :root {
+    --size-base: 17px;
+    --size-small: 16px;
+    --size-tiny: 14px;
+    --size-stat-label: 16px;
+    --size-rail-link: 16px;
+    --size-table-cell: 16px;
+    --size-table-header: 16px;
+  }
+}
+
+body { font-size: var(--size-base); }
+
+.page-title { font-size: var(--size-page-title); }
+.chapter-title { font-size: var(--size-chapter-title); }
+.theme-title { font-size: var(--size-theme-title); }
+.area-title { font-size: var(--size-area-title); }
+.eyebrow { font-size: var(--size-eyebrow); }
+.lead { font-size: var(--size-lead); }
+.text-small { font-size: var(--size-small); }
+.text-tiny { font-size: var(--size-tiny); }
+
+.stat-value { font-size: var(--size-stat); }
+.stat-label { font-size: var(--size-stat-label); }
+.stat-note { font-size: var(--size-stat-note); }
+.stats-note { font-size: var(--size-small); }
+
+.chapter-tab { font-size: var(--size-nav-link); font-weight: var(--weight-medium); }
+.rail-theme { font-size: var(--size-rail-theme); }
+.rail-link { font-size: var(--size-rail-link); }
+.brand-name { font-size: var(--size-brand); }
+
+label,
+.control-label,
+.shiny-input-container > label,
+.selectize-control .item { font-size: var(--size-label); }
+
+.form-control,
+.selectize-input,
+.dropdown-menu li a { font-size: var(--size-input); }
+
+.btn { font-size: var(--size-button); }
+
+table.dataTable thead th { font-size: var(--size-table-header); }
+table.dataTable tbody td { font-size: var(--size-table-cell); }

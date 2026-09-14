@@ -1,0 +1,1183 @@
+/* ===========================================================================
+   THE GROUND THE APP SITS ON - colour, navigation, layout, tables
+   ===========================================================================
+
+   The CEMA blue is the brand, so it does the load bearing: the masthead is a
+   solid plate of it and the opening band runs from it into the deep navy. Once
+   past the opening, everything is white, because the maps and the bars are the
+   point of the page and they need the quietest ground there is.
+
+   Orange is never decoration. It marks one thing at a time - the tab you are
+   on, the section you are reading, the value being pointed at.
+
+   There is deliberately no grey text. Secondary copy is a deep slate blue,
+   which reads as quieter without reading as switched off. Grey survives only
+   in hairlines.
+   =========================================================================== */
+
+:root {
+  /* ---- CEMA primaries ---- */
+  --blue: #27AAE1;
+  --blue-050: #F2FAFE;
+  --blue-100: #D2EDF9;
+  --blue-200: #AEDFF5;
+  --blue-300: #7DCBED;
+  --blue-600: #1A88B8;
+  --blue-800: #0D465E;
+
+  --orange: #FE7501;
+  --orange-050: #FFF6EE;
+  --orange-100: #FFE4CC;
+  --orange-300: #FEAD67;
+  --orange-600: #CB5F01;
+
+  /* ---- the rest of the palette, for chart series only ---- */
+  --navy: #084887;
+  --navy-900: #052B4F;
+  --teal: #006D77;
+  --yellow: #EFCA08;
+  --green: #2E7D32;
+  --purple: #8E44AD;
+  --pink: #D11060;
+
+  /* ---- ink. no greys. ---- */
+  --ink: #0C1116;
+  --ink-soft: #2E4E60;
+  --ink-faint: #4B7188;
+
+  /* ---- ground and lines ---- */
+  --paper: #FFFFFF;
+  --paper-tint: #F6FBFD;
+  --rule: #E3E9EC;
+  --rule-strong: #C9D4DA;
+
+  /* ---- measure and rhythm ---- */
+  --shell: 1980px;
+  --gutter: clamp(16px, 2.2vw, 40px);
+  --rail-width: 250px;
+  --header-h: 90px;
+  /* the tab bar wraps, so the offset an anchor has to clear is measured at
+     runtime by script.js and written back here */
+  --pinned: 176px;
+  --stack: clamp(76px, 6vh, 108px);
+
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow-sm: 0 2px 10px rgba(12, 17, 22, 0.05);
+  --shadow-md: 0 16px 38px rgba(12, 17, 22, 0.10);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* clip rather than hidden: hidden makes the body a scroll container, and a
+     sticky element nested inside one stops sticking */
+  overflow-x: clip;
+}
+
+/* A hidden navset panel that still took up room was why the page scrolled far
+   past the end of its content. Belt and braces: not displayed, and no height
+   to contribute even if something else tries to show it. */
+.tab-content > .tab-pane:not(.active) {
+  display: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* A hidden navset still prints its own list of panes. bslib hides it through
+   Bootstrap, but there are 62 of these across the app and if that rule ever
+   fails to reach them the page gains a column of empty bullets and several
+   hundred pixels of height that belong to nothing. */
+.nav.nav-hidden, ul.nav-hidden { display: none !important; }
+
+[id] { scroll-margin-top: var(--pinned); }
+
+p { margin: 0 0 1em; }
+a { color: var(--blue-600); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--orange-600); }
+
+.eyebrow { color: var(--blue-600); display: block; margin-bottom: 10px; }
+.lead { color: var(--ink-soft); max-width: 64ch; }
+.text-small { color: var(--ink-soft); }
+.text-tiny { color: var(--ink-faint); }
+
+.shell { max-width: var(--shell); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ---------------------------------------------------------------------------
+   THE MASTHEAD - a solid plate of the brand blue, pinned
+   ------------------------------------------------------------------------- */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  height: var(--header-h);
+  background: var(--blue);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.app-header__inner {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* The two official marks were drawn for white paper, so each keeps a white
+   plate of its own rather than being knocked out onto the blue. */
+.brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
+.brand-plate {
+  background: #fff;
+  border-radius: 9px;
+  padding: 7px 13px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+.brand-mark { height: 48px; width: auto; display: block; }
+.brand-mark--small { height: 42px; }
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: 23px;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.08;
+  color: #fff;
+  white-space: nowrap;
+}
+.brand-name span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.header-spacer { flex: 1 1 auto; }
+
+/* ---------------------------------------------------------------------------
+   THE CHAPTER BAR, pinned under the masthead
+   ---------------------------------------------------------------------------
+   Fourteen tabs will not fit across a laptop. They wrap onto a second line
+   rather than scrolling sideways, because a tab that has scrolled off the end
+   is a chapter the reader never learns exists.
+   ------------------------------------------------------------------------- */
+
+/* The tabs sit on the same blue as the masthead above them and the opening
+   band below, so the page reads as one blue block and then white, rather than
+   as blue, white, blue, white down the screen. */
+.chapter-bar {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 55;
+  background: var(--blue);
+  border-bottom: 5px solid var(--orange);
+}
+
+.chapter-bar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px 5px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+.chapter-bar__label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  padding: 0 14px 0 2px;
+  margin-right: 2px;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+/* the one tab that is not a chapter is set apart from the numbered run */
+.chapter-tab--aside {
+  margin-left: 10px;
+  padding-left: 21px;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.chapter-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.92);
+  padding: 10px 21px 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+  border-radius: var(--radius-sm);
+  transition: color 140ms ease, background 140ms ease;
+}
+.chapter-tab:hover { color: #fff; background: rgba(255, 255, 255, 0.18); }
+
+.chapter-tab::after {
+  content: "";
+  position: absolute;
+  left: 21px; right: 21px; bottom: 3px;
+  height: 3px;
+  border-radius: 3px;
+  background: transparent;
+  transition: background 160ms ease;
+}
+/* the tab you are on is the one piece of white in the blue block */
+.chapter-tab.is-active {
+  color: var(--ink);
+  font-weight: var(--weight-bold);
+  background: var(--paper);
+  box-shadow: 0 2px 8px rgba(2, 15, 29, 0.18);
+}
+.chapter-tab.is-active::after { background: var(--orange); }
+
+.chapter-tab__no {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--weight-semibold);
+  color: rgba(255, 255, 255, 0.72);
+  margin-right: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.chapter-tab.is-active .chapter-tab__no { color: var(--orange-600); }
+
+/* ---------------------------------------------------------------------------
+   THE OPENING BAND
+   ---------------------------------------------------------------------------
+   The one part of the app that is not on white. It carries the title, the one
+   paragraph that says what this is, the way in, and the cover of the report
+   itself, which is a better picture of the survey than any chart could be.
+   ------------------------------------------------------------------------- */
+
+/* The opening band is a solid plate of the brand blue, as tall as the report
+   cover standing beside it. Solid rather than graded: the colour is the mark,
+   and a gradient reads as a decoration of it. */
+.hero {
+  background: var(--blue);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  margin-top: -1px;
+}
+/* The orange rule closes the whole blue block - masthead, band and tabs - so it
+   sits under the tabs rather than between the band and them. */
+/* a wash of white at the top right, so a plate this large is not perfectly
+   flat behind the cover */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -20%; right: -6%;
+  width: 60%; height: 140%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.16), transparent);
+  pointer-events: none;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 0.68fr);
+  gap: clamp(30px, 4vw, 80px);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  min-height: clamp(460px, 62vh, 640px);
+  padding: clamp(40px, 5vh, 72px) 0 clamp(44px, 5.5vh, 78px);
+}
+.hero-copy { min-width: 0; }
+
+.hero .eyebrow { color: rgba(255, 255, 255, 0.88); }
+/* The headline had a column and a half to itself and was breaking at a third
+   of it, leaving a field of blue between the words and the cover. */
+.page-title { margin: 0 0 22px; max-width: 34ch; color: #fff; }
+.page-title em { font-style: normal; color: #FFDCBB; }
+.hero-lead {
+  color: rgba(255, 255, 255, 0.94);
+  max-width: 72ch;
+  font-family: var(--font-display);
+  font-size: var(--size-lead);
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+/* the cover of the report, standing as tall as the plate it sits on */
+.hero-cover { min-width: 0; display: flex; justify-content: center; align-items: center; }
+.hero-cover img {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  box-shadow: 0 30px 70px rgba(2, 15, 29, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.3);
+  transform: rotate(-2.2deg);
+  transition: transform 420ms ease;
+}
+.hero-cover img:hover { transform: rotate(0deg) scale(1.02); }
+
+/* ---- the way in ---- */
+
+.hero-search { max-width: 720px; }
+.hero-search__label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--size-small);
+  font-weight: var(--weight-semibold);
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 10px;
+}
+.hero-search .shiny-input-container { width: 100%; margin: 0; }
+.hero-search .selectize-input {
+  border: 0 !important;
+  border-radius: 999px !important;
+  padding: 15px 22px 15px 52px !important;
+  background: #fff !important;
+  box-shadow: 0 10px 30px rgba(2, 15, 29, 0.28) !important;
+  font-size: var(--size-input) !important;
+  color: var(--ink) !important;
+  min-height: 0 !important;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A88B8' stroke-width='2.1' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: 20px center !important;
+  background-size: 20px 20px !important;
+}
+.hero-search .selectize-input.focus { box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.45) !important; }
+.hero-search .selectize-input input { font-size: var(--size-input) !important; }
+
+.hero-hint {
+  margin: 12px 0 0;
+  font-size: var(--size-tiny);
+  color: rgba(255, 255, 255, 0.78);
+}
+.hero-hint b { color: #fff; font-weight: var(--weight-semibold); }
+
+/* the dropdown, shared by the hero box and any other search in the app */
+.selectize-dropdown {
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  font-size: var(--size-small);
+  overflow: hidden;
+  color: var(--ink);
+}
+.selectize-dropdown .optgroup-header {
+  font-size: 12px; font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  color: var(--blue-600); padding: 12px 18px 5px; background: var(--paper);
+}
+.selectize-dropdown .option { padding: 10px 18px; color: var(--ink); }
+.selectize-dropdown .active { background: var(--blue-050); color: var(--ink); }
+/* nothing matched: say so in words rather than showing an empty white box */
+.selectize-dropdown .no-results {
+  padding: 16px 18px;
+  color: var(--ink-soft);
+  font-size: var(--size-small);
+  line-height: 1.5;
+}
+.selectize-dropdown .no-results b { color: var(--ink); }
+.selectize-dropdown .no-results span { display: block; color: var(--ink-faint); font-size: var(--size-tiny); margin-top: 5px; }
+
+/* ---------------------------------------------------------------------------
+   KENYA AT A GLANCE
+   ------------------------------------------------------------------------- */
+
+.section-head { padding: clamp(46px, 6vh, 84px) 0 clamp(22px, 3vh, 34px); }
+.section-head h2 { margin: 0 0 12px; }
+
+.highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(272px, 1fr));
+  gap: clamp(12px, 1.1vw, 18px);
+}
+
+.hl {
+  appearance: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 20px 20px 18px;
+  transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease;
+}
+.hl:hover { transform: translateY(-3px); border-color: var(--blue-300); box-shadow: var(--shadow-md); }
+
+.hl__icon { width: 32px; height: 32px; flex: 0 0 32px; color: var(--blue); margin-top: 5px; }
+.hl__icon svg { width: 100%; height: 100%; display: block; }
+.hl:hover .hl__icon { color: var(--orange); }
+
+.hl__body { min-width: 0; }
+.hl__value {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: clamp(32px, 2.7vw, 44px);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-tight);
+  color: var(--ink);
+  margin: 0 0 4px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.hl__value small {
+  font-size: 0.42em; font-family: var(--font-body);
+  font-weight: var(--weight-semibold); color: var(--ink-faint); margin-left: 3px;
+}
+.hl__label { display: block; font-weight: var(--weight-semibold); color: var(--ink); font-size: var(--size-small); line-height: 1.3; }
+.hl__note { display: block; color: var(--ink-faint); font-size: var(--size-tiny); margin-bottom: 9px; }
+
+.hl__move { display: inline-flex; align-items: center; gap: 6px; font-size: var(--size-tiny); font-weight: var(--weight-medium); color: var(--ink-faint); line-height: 1.35; }
+.hl__arrow { font-size: 15px; font-weight: var(--weight-bold); }
+/* whether a move is welcome depends on the indicator, which is why the
+   direction is named in the registry rather than guessed from the sign */
+.hl__move--good { color: var(--green); }
+.hl__move--bad { color: var(--orange-600); }
+.hl__move--flat { color: var(--ink-faint); }
+
+/* ---------------------------------------------------------------------------
+   THE CHAPTER CARDS
+   ------------------------------------------------------------------------- */
+
+.chapter-index {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(318px, 1fr));
+  gap: clamp(14px, 1.2vw, 22px);
+}
+
+.chapter-entry {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: left;
+  appearance: none;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  padding: 28px 26px 20px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+.chapter-entry::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--blue-100);
+  transform: scaleX(0.16);
+  transform-origin: left;
+  transition: transform 280ms ease, background 200ms ease;
+}
+.chapter-entry:hover { transform: translateY(-4px); border-color: var(--blue-300); box-shadow: var(--shadow-md); }
+.chapter-entry:hover::before { transform: scaleX(1); background: var(--orange); }
+
+.chapter-entry__no {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: var(--weight-bold);
+  color: var(--orange);
+  background: var(--orange-050);
+  border-radius: 50%;
+  width: 36px; height: 36px;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 15px;
+  font-variant-numeric: tabular-nums;
+  transition: background 200ms ease, color 200ms ease;
+}
+.chapter-entry:hover .chapter-entry__no { background: var(--orange); color: #fff; }
+
+.chapter-entry__name {
+  font-family: var(--font-display);
+  font-size: 23px;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.18;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 9px;
+}
+.chapter-entry__blurb { color: var(--ink-soft); font-size: var(--size-small); line-height: 1.5; margin: 0 0 18px; flex: 1 1 auto; }
+.chapter-entry__go {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 13px; border-top: 1px solid var(--rule);
+  color: var(--ink-faint); font-size: var(--size-tiny); font-weight: var(--weight-semibold);
+}
+.chapter-entry__arrow { font-size: 19px; color: var(--blue-600); transition: transform 200ms ease, color 200ms ease; }
+.chapter-entry:hover .chapter-entry__arrow { transform: translateX(5px); color: var(--orange); }
+
+.reading-note { padding: clamp(36px, 4.5vh, 64px) 0 clamp(28px, 3.5vh, 46px); }
+.reading-note p { max-width: 96ch; margin: 0; }
+
+/* ---------------------------------------------------------------------------
+   A CHAPTER
+   ------------------------------------------------------------------------- */
+
+.chapter-head { padding: clamp(40px, 5vh, 68px) 0 clamp(24px, 3vh, 38px); }
+.chapter-title { margin: 0 0 18px; max-width: 22ch; }
+
+.chapter-layout {
+  display: grid;
+  grid-template-columns: var(--rail-width) minmax(0, 1fr);
+  gap: clamp(26px, 2.6vw, 54px);
+  align-items: start;
+  padding-bottom: clamp(56px, 7vh, 108px);
+}
+
+/* ---- the rail ---- */
+
+.rail {
+  position: sticky;
+  top: calc(var(--pinned) - 24px);
+  max-height: calc(100vh - var(--pinned) - 20px);
+  overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-width: thin;
+}
+
+/* filtering one chapter, which is a different job from searching all thirteen */
+.rail-filter { position: relative; margin-bottom: 16px; }
+.rail-filter input {
+  width: 100%;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  padding: 9px 14px 9px 36px;
+  font-family: var(--font-body);
+  font-size: var(--size-tiny);
+  color: var(--ink);
+  background: var(--paper);
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234B7188' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 13px center;
+  background-size: 15px 15px;
+}
+.rail-filter input:focus { outline: 0; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-100); }
+/* Shown only when a filter has actually excluded everything. It used to be in
+   the page at all times, announcing that nothing matched before anything had
+   been typed. */
+.rail-empty {
+  display: none;
+  padding: 14px 12px;
+  color: var(--ink-soft);
+  font-size: var(--size-tiny);
+  line-height: 1.5;
+  background: var(--blue-050);
+  border-radius: var(--radius-sm);
+}
+.rail.is-empty .rail-empty { display: block; }
+/* A theme with nothing left in it steps aside whole, heading and all, which is
+   one class rather than two elements being juggled on every keystroke. */
+.rail-group.is-hidden { display: none; }
+
+/* A theme is a chapter's section heading and the one you are in has to be
+   unmistakable, so it takes a filled plate rather than a change of colour. */
+.rail-theme {
+  font-family: var(--font-body);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0;
+  color: var(--ink-soft);
+  padding: 9px 12px;
+  margin: 12px 0 4px;
+  line-height: 1.3;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color 140ms ease, background 140ms ease;
+}
+.rail-theme:first-child { margin-top: 0; }
+.rail-theme:hover { color: var(--ink); background: var(--blue-050); }
+.rail-theme.is-active { color: #fff; background: var(--blue-600); }
+
+.rail-links { border-left: 2px solid var(--rule); margin-left: 12px; }
+.rail-links:not(.is-open) { display: none; }
+
+.rail-link {
+  display: block;
+  padding: 8px 10px 8px 14px;
+  margin-left: -2px;
+  border-left: 2px solid transparent;
+  color: var(--ink-soft);
+  text-decoration: none;
+  line-height: 1.35;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: color 130ms ease, border-color 130ms ease, background 130ms ease;
+}
+.rail-link:hover { color: var(--ink); background: var(--blue-050); }
+/* the section being read: orange spine, bold, and a tinted plate */
+.rail-link.is-active {
+  color: var(--orange-600);
+  font-weight: var(--weight-semibold);
+  border-left-color: var(--orange);
+  background: var(--orange-050);
+}
+.rail-link.is-hidden { display: none; }
+/* one pathological title - table 2.7 arrived with a whole paragraph where its
+   name should be - must not be allowed to fill the rail */
+.rail-link {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.rail-link.is-hidden { display: none; }
+
+/* ---- the stream ---- */
+
+.area-stream { min-width: 0; }
+.area-stream > .area:first-child { padding-top: 2px; }
+.area { padding-bottom: var(--stack); scroll-margin-top: var(--pinned); }
+
+.theme-open { padding: 4px 0 clamp(22px, 2.6vh, 34px); scroll-margin-top: var(--pinned); }
+.theme-title { margin: 0; color: var(--ink); }
+.theme-open .rule { height: 3px; width: 72px; background: var(--orange); border-radius: 3px; margin-bottom: 18px; display: block; }
+
+.area__no {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--blue-600);
+  display: block;
+  margin-bottom: 8px;
+}
+.area-title { margin: 0 0 14px; max-width: 34ch; }
+.area__lead { color: var(--ink-soft); max-width: 88ch; font-size: var(--size-small); line-height: 1.55; }
+
+/* Who the figures are about, said once above the row rather than four times
+   inside it. */
+.stats-note {
+  color: var(--ink-soft);
+  font-weight: var(--weight-medium);
+  margin: 22px 0 0;
+}
+.stats-note + .area-stats { margin-top: 12px; }
+
+/* Four figures, four tiles. They are the one place a card earns its keep, so
+   they are given room, a tinted disc for the icon, a hairline of blue along
+   the top and a quiet line at the foot that says which way the figure moved.
+   The first tile in every set takes the orange, because one thing at a time. */
+.area-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  gap: 18px;
+  margin: 26px 0 32px;
+}
+.stat {
+  position: relative;
+  /* one or two figures should not be stretched across the page to fill a row
+     built for four */
+  max-width: 520px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 24px 24px 22px;
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(12, 17, 22, 0.04);
+  transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+}
+.stat::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--blue);
+}
+.stat--accent::before { background: var(--orange); }
+.stat:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue-200);
+  box-shadow: 0 10px 24px rgba(13, 70, 94, 0.09);
+}
+.stat__icon {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  width: 46px;
+  height: 46px;
+  margin-top: 4px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: var(--blue-600);
+  background: var(--blue-050);
+  border: 1px solid var(--blue-100);
+}
+.stat__icon svg { width: 23px; height: 23px; display: block; }
+.stat--accent .stat__icon {
+  color: var(--orange-600);
+  background: var(--orange-050);
+  border-color: var(--orange-100);
+}
+.stat__body { min-width: 0; flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; }
+.stat-value {
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.stat-value small {
+  font-size: 0.42em;
+  font-family: var(--font-body);
+  font-weight: var(--weight-semibold);
+  color: var(--ink-faint);
+  margin-left: 5px;
+  letter-spacing: 0;
+}
+.stat-label { color: var(--ink-soft); font-weight: var(--weight-semibold); line-height: 1.35; margin-bottom: 10px; }
+.stat-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 5px 12px 5px 9px;
+  border-radius: 999px;
+  background: var(--paper-tint);
+  border: 1px solid var(--rule);
+  color: var(--ink-faint);
+  line-height: 1.25;
+}
+.stat-note__arrow { font-weight: var(--weight-bold); line-height: 1; }
+.stat-note--up { background: var(--blue-050); border-color: var(--blue-100); color: var(--blue-800); }
+.stat-note--down { background: var(--orange-050); border-color: var(--orange-100); color: var(--orange-600); }
+.stat-note--flat, .stat-note--none { background: var(--paper-tint); border-color: var(--rule); color: var(--ink-soft); }
+
+/* ---- the pickers ---- */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 26px;
+  align-items: flex-end;
+  padding: 16px 0 20px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 28px;
+}
+/* A picker is as wide as it needs to be. Stretching one select across the page
+   makes a control that governs a single chart look like the page's own header,
+   and the words inside it end up marooned at the far left. */
+.controls .shiny-input-container {
+  margin-bottom: 0;
+  flex: 0 1 auto;
+  width: auto;
+  min-width: 240px;
+  max-width: 440px;
+}
+.controls .shiny-input-container > .form-control,
+.controls .shiny-input-container > .selectize-control { width: 100%; }
+.controls .shiny-input-container > label {
+  font-family: var(--font-body);
+  font-weight: var(--weight-semibold);
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  display: block;
+  line-height: 1.3;
+}
+.controls .form-select, .controls .form-control, .controls select {
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: var(--ink);
+  background-color: var(--paper);
+  /* left to itself a select sizes to its longest option, and on a phone the
+     longest indicator name is wider than the screen */
+  width: 100% !important;
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+.controls .form-select:focus, .controls .form-control:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-100); }
+
+/* A map wants the whole width. A bar chart does not: a bar running thirteen
+   hundred pixels for a value of ninety per cent is a thin line across the page,
+   so bar charts stop short of it and sit left. */
+.plot { min-width: 0; margin-bottom: clamp(26px, 3vh, 46px); }
+.plot .highchart { width: 100% !important; }
+.plot--bars { max-width: 1240px; }
+
+/* ---------------------------------------------------------------------------
+   TABLES, set the way the report sets them
+   ------------------------------------------------------------------------- */
+
+.table-block { margin-top: 10px; }
+.table-block__head {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 18px; flex-wrap: wrap; padding-bottom: 12px;
+}
+.table-block__title {
+  font-family: var(--font-body);
+  font-weight: var(--weight-semibold);
+  font-size: var(--size-small);
+  color: var(--ink);
+}
+.table-block__tools { display: flex; gap: 11px; align-items: center; flex-wrap: wrap; }
+.table-block__head .shiny-input-container { width: auto; margin: 0; }
+.table-block__head .radio-inline, .table-block__head .form-check-inline { margin-right: 14px; }
+.table-block__head .form-check-label, .table-block__head label {
+  font-size: var(--size-tiny); color: var(--ink-soft); font-weight: var(--weight-medium);
+}
+.table-block__head .form-check-input:checked { background-color: var(--orange); border-color: var(--orange); }
+
+.dl-btn {
+  appearance: none;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper);
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 8px 17px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transition: all 150ms ease;
+  white-space: nowrap;
+}
+.dl-btn:hover { border-color: var(--orange); color: var(--orange-600); background: var(--orange-050); }
+
+/* Sized to its own contents rather than stretched across the page: table 8.1
+   has two columns and filling the full width with them reads as a mistake. A
+   table wider than the column gets a scroll of its own instead. */
+table.dataTable {
+  border-collapse: collapse !important;
+  width: auto !important;
+  max-width: 100%;
+}
+.dataTables_wrapper { width: 100%; }
+table.dataTable thead th {
+  font-family: var(--font-body);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+  background: var(--paper);
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding: 11px 14px;
+  vertical-align: bottom;
+}
+table.dataTable tbody td { border: 0; border-bottom: 1px solid var(--rule); padding: 9px 14px; color: var(--ink); }
+table.dataTable tbody tr:last-child td { border-bottom: 2px solid var(--ink); }
+table.dataTable tbody tr:hover td { background: var(--blue-050); }
+table.dataTable td.num, table.dataTable th.num { text-align: right; }
+table.dataTable tbody tr.grouprow td {
+  font-weight: var(--weight-semibold); font-style: italic;
+  color: var(--blue-800); background: var(--blue-050);
+}
+
+/* The box sat hard against its label, stretched itself wide, and took the
+   browser's own focus ring rather than the one the rest of the app uses. */
+.dataTables_wrapper .dataTables_filter { float: none; text-align: right; margin: 0 0 14px; }
+.dataTables_wrapper .dataTables_filter label {
+  display: inline-flex; align-items: center; gap: 10px; margin: 0;
+  font-weight: var(--weight-medium);
+}
+.dataTables_wrapper .dataTables_filter input {
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  padding: 8px 16px;
+  margin: 0;
+  width: 280px;
+  max-width: 100%;
+  font-size: var(--size-tiny);
+  color: var(--ink);
+  background: var(--paper);
+}
+.dataTables_wrapper .dataTables_filter input:focus,
+.dataTables_wrapper .dataTables_length select:focus {
+  outline: 0;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-100);
+}
+.dataTables_wrapper .dataTables_length { margin-bottom: 6px; }
+.dataTables_wrapper .dataTables_length select {
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  padding: 5px 9px;
+  margin: 0 6px;
+}
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter label,
+.dataTables_wrapper .dataTables_paginate { color: var(--ink-soft) !important; font-size: var(--size-tiny); }
+.dataTables_wrapper .paginate_button.current {
+  background: var(--blue) !important; border-color: var(--blue) !important;
+  color: #fff !important; border-radius: var(--radius-sm);
+}
+
+.footnotes { margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--rule); }
+.footnotes p { margin: 0 0 5px; color: var(--ink-faint); font-size: var(--size-tiny); line-height: 1.5; }
+
+/* ---------------------------------------------------------------------------
+   MOVING ON, AND THE FOOTER
+   ------------------------------------------------------------------------- */
+
+.next-strip {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 24px; flex-wrap: wrap;
+  padding: 30px 0; border-top: 2px solid var(--ink); margin-top: 16px;
+}
+.next-strip__say { color: var(--ink-soft); max-width: 62ch; font-size: var(--size-small); }
+
+.go-btn {
+  appearance: none; border: 0; background: var(--ink); color: #fff;
+  border-radius: 999px; padding: 14px 26px;
+  font-family: var(--font-body); font-size: var(--size-button); font-weight: var(--weight-semibold);
+  cursor: pointer; display: inline-flex; align-items: center; gap: 12px;
+  transition: background 160ms ease, transform 160ms ease;
+}
+.go-btn:hover { background: var(--orange); transform: translateX(3px); }
+.go-btn__arrow { font-size: 1.1em; }
+
+.app-footer { border-top: 1px solid var(--rule); background: var(--paper-tint); padding: clamp(36px, 4.5vh, 58px) 0 38px; }
+.footer-grid {
+  display: grid; grid-template-columns: minmax(230px, 1fr) minmax(0, 2fr);
+  gap: clamp(28px, 3.5vw, 64px); align-items: start;
+}
+.footer-logo { height: 46px; width: auto; display: block; }
+.footer-marks { display: flex; align-items: center; gap: 24px; margin-bottom: 16px; }
+.app-footer p { color: var(--ink-faint); }
+.app-footer a { color: var(--blue-600); }
+/* the way back to the top is a line in the footer rather than a disc floating
+   over the page, which is one less thing sitting on top of the maps */
+.footer-top {
+  margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--rule);
+  display: flex; justify-content: flex-end;
+}
+.footer-top button {
+  appearance: none; border: 1px solid var(--rule-strong); background: var(--paper);
+  color: var(--ink-soft); border-radius: 999px; padding: 9px 20px;
+  font-family: var(--font-body); font-size: var(--size-tiny); font-weight: var(--weight-semibold);
+  cursor: pointer; transition: all 150ms ease;
+}
+.footer-top button:hover { border-color: var(--orange); color: var(--orange-600); }
+
+/* ---------------------------------------------------------------------------
+   NARROWER SCREENS
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 1320px) {
+  :root { --rail-width: 224px; }
+}
+
+@media (max-width: 1120px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); }
+  .hero-cover { display: none; }
+  .hero-search { max-width: none; }
+}
+
+@media (max-width: 1040px) {
+  .chapter-layout { grid-template-columns: minmax(0, 1fr); }
+  .rail {
+    position: static; max-height: none; overflow: visible;
+    padding: 0 0 18px; margin-bottom: 26px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .rail-theme { margin: 10px 0 4px; }
+  .rail-links { display: flex; flex-wrap: wrap; gap: 4px 8px; border-left: 0; margin-left: 0; }
+  .rail-links:not(.is-open) { display: none; }
+  .rail-link { border-left: 0; border-bottom: 2px solid transparent; padding: 5px 9px; margin-left: 0; border-radius: var(--radius-sm); }
+  .rail-link.is-active { border-left: 0; border-bottom-color: var(--orange); }
+}
+
+@media (max-width: 820px) {
+  :root { --header-h: 62px; --pinned: 24px; }
+  /* Fourteen tabs wrap into seven rows on a phone, and seven rows pinned to the
+     top of a small screen leaves almost nothing to read. On a narrow screen the
+     navigation scrolls away with the page instead. */
+  .app-header, .chapter-bar { position: static; }
+  .brand-name { display: none; }
+  .footer-grid { grid-template-columns: minmax(0, 1fr); }
+  .controls .shiny-input-container { flex: 1 1 100%; min-width: 0; }
+  .area-stats { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .stat { padding: 18px 18px 16px; gap: 13px; }
+  .stat__icon { width: 40px; height: 40px; border-radius: 12px; }
+  .stat__icon svg { width: 20px; height: 20px; }
+}
+
+@media (max-width: 560px) {
+  .highlight-grid, .chapter-index { grid-template-columns: minmax(0, 1fr); }
+  .brand-plate { padding: 4px 7px; gap: 8px; }
+  .brand-mark { height: 26px; }
+  .table-block__head { align-items: flex-start; }
+}
+
+/* Shiny's own furniture we do not want */
+.shiny-output-error { color: var(--orange-600); font-size: var(--size-small); }
+.shiny-output-error:before { content: "This chart could not be drawn. "; }
+.recalculating { opacity: 0.35; transition: opacity 200ms ease; }
+
+/* A picker that sits with the chart it governs needs less room around it than
+   the row at the head of a section. */
+.controls--tight {
+  border-top: 0;
+  padding-top: 0;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  max-width: 1060px;
+}
+.controls--tight .shiny-input-container { flex: 0 1 320px; min-width: 220px; }
+
+/* the round picker, when it has to sit in a table's own header row */
+.table-year .shiny-input-container { margin: 0; }
+.table-year select, .table-year .form-select {
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-semibold);
+  color: var(--ink-soft);
+  background-color: var(--paper);
+}
+
+/* The tabs live in the page twice and only one copy is ever shown: under the
+   introduction on the opening page, at the top once you are inside a chapter.
+   script.js marks the body with which page is showing. */
+body.on-overview .chapter-bar--top { display: none; }
+body:not(.on-overview) .chapter-bar--inline { display: none; }
+/* placed below the opening band, it pins as the reader scrolls past it */
+.chapter-bar--inline { border-top: 0; }
+
+/* ---------------------------------------------------------------------------
+   ONE COUNTY AT A TIME
+   ------------------------------------------------------------------------- */
+
+.county-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(28px, 3.5vw, 70px);
+  align-items: center;
+  padding: clamp(36px, 4.5vh, 62px) var(--gutter) clamp(26px, 3vh, 40px);
+}
+.county-head__copy { min-width: 0; }
+.county-head__map { min-width: 0; }
+
+.county-pick { max-width: 380px; margin-top: 22px; }
+.county-pick .shiny-input-container { width: 100%; margin: 0; }
+.county-pick label {
+  font-family: var(--font-body);
+  font-weight: var(--weight-semibold);
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  display: block;
+}
+.county-pick select, .county-pick .form-select {
+  width: 100% !important;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  padding: 11px 15px;
+  font-size: var(--size-input);
+  color: var(--ink);
+  background-color: var(--paper);
+}
+.county-pick select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-100); }
+
+@media (max-width: 1040px) {
+  .county-head { grid-template-columns: minmax(0, 1fr); }
+  .county-head__map { display: none; }
+}
+
+/* the two pickers that narrow a county's five hundred figures */
+.county-filters { max-width: 760px; border-top: 1px solid var(--rule); padding-top: 16px; }
+.county-filters .shiny-input-container { flex: 1 1 300px; min-width: 200px; }
+
+/* ---------------------------------------------------------------------------
+   THE TOUR
+   A dim over the page, a hole where the thing being talked about is, and a
+   card beside it. Shown on a first visit and never again, and leaving counts
+   as having seen it.
+   ------------------------------------------------------------------------- */
+
+/* The scrim is there to be clicked, not to be seen. The dimming is the hole's
+   own enormous outer shadow, which is what leaves a clean bright window over
+   the thing being pointed at. */
+.tour-scrim {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 4000;
+}
+.tour-hole {
+  position: fixed;
+  z-index: 4001;
+  border-radius: 14px;
+  pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(8, 30, 44, 0.55), 0 0 0 3px var(--orange);
+  transition: top 0.28s ease, left 0.28s ease, width 0.28s ease, height 0.28s ease;
+}
+.tour-card {
+  position: fixed;
+  z-index: 4002;
+  background: var(--paper);
+  border-radius: 16px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 24px 60px rgba(8, 30, 44, 0.3);
+  border: 1px solid var(--rule);
+  animation: tour-in 0.25s ease;
+}
+.tour-card__step {
+  margin: 0 0 8px;
+  color: var(--blue-600);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+.tour-card__title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  color: var(--ink);
+  line-height: 1.2;
+}
+.tour-card__body { margin: 0 0 18px; color: var(--ink-soft); line-height: 1.5; }
+.tour-card__row { display: flex; align-items: center; gap: 10px; }
+.tour-card__spacer { flex: 1 1 auto; }
+.tour-card button {
+  font-family: var(--font-body);
+  border-radius: 999px;
+  padding: 9px 18px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.tour-next { background: var(--blue); color: #fff; font-weight: var(--weight-semibold); }
+.tour-next:hover { background: var(--blue-600); }
+.tour-back { background: var(--paper); border-color: var(--rule-strong); color: var(--ink-soft); }
+.tour-back:hover { border-color: var(--blue); color: var(--blue-800); }
+.tour-skip { background: transparent; color: var(--ink-faint); padding-left: 0; }
+.tour-skip:hover { color: var(--orange-600); text-decoration: underline; }
+.tour-card button:focus-visible { outline: 3px solid var(--blue-200); outline-offset: 2px; }
+
+/* Deliberately no scroll lock. The tour scrolls the page to each step, and a
+   locked body would leave every step below the fold unreachable. */
+
+@keyframes tour-in { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 620px) {
+  .tour-card { left: 16px !important; right: 16px; width: auto !important; }
+  .tour-card__row { flex-wrap: wrap; }
+}
+
+/* the way back in, for anyone who skipped it or wants it again. It sits at the
+   other end of the footer rule from the button back to the top. */
+.footer-top { justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.footer-top .tour-again { border-color: var(--blue-200); color: var(--blue-600); }
+.footer-top .tour-again:hover { border-color: var(--blue); color: var(--blue-800); }

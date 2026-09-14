@@ -1,0 +1,90 @@
+/* ===========================================================================
+   FONT FAMILIES - the one place that decides what the app is set in
+   ===========================================================================
+
+   On Cambria. It is a Microsoft system font rather than a web font, so it
+   renders only for people who happen to have Office installed. Everyone else
+   silently falls back, which on a public dashboard is most of the audience.
+
+   Caladea is the answer. Google commissioned it as a metric-compatible
+   substitute for Cambria: the same shapes, the same widths, and it loads for
+   everybody. Cambria still sits first in the stack, so anyone who has the
+   genuine article gets it.
+
+   Two faces:
+     display  a serif, for the page title, section headings and the big figures
+     body     a sans, for everything read at small size - labels, axes, tables
+
+   Serif numerals look handsome in a headline and get hard to scan in a column
+   of figures, which is the whole reason for the split. To go all-serif, point
+   --font-body at var(--font-display) and the rest follows.
+   =========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Caladea:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-display: Cambria, Caladea, "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-numeric: var(--font-body);
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.09em;
+
+  --leading-tight: 1.12;
+  --leading-snug: 1.3;
+  --leading-normal: 1.62;
+}
+
+body,
+.shiny-input-container,
+.form-control,
+.dataTables_wrapper {
+  font-family: var(--font-body);
+  font-weight: var(--weight-normal);
+  line-height: var(--leading-normal);
+}
+
+h1, h2, h3, h4,
+.page-title,
+.chapter-title,
+.theme-title,
+.area-title,
+.stat-value,
+.highcharts-title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* the small caps label that sits above a heading */
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* the standfirst under a chapter or area heading reads as prose, so it takes
+   the serif at a comfortable measure rather than the sans */
+.lead {
+  font-family: var(--font-display);
+  font-weight: var(--weight-normal);
+  line-height: 1.5;
+}
+
+/* figures line up in columns when the numerals are tabular */
+.stat-value,
+.stat-note,
+table td,
+table th,
+.dataTables_wrapper td,
+.highcharts-axis-labels text {
+  font-variant-numeric: tabular-nums lining-nums;
+}
