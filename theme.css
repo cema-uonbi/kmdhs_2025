@@ -1957,18 +1957,21 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 
 /* What the survey is, for somebody who has never heard of it, with the three
    figures a reader will actually take away set out beside the words. */
+/* The two counts take the width they need and the paragraph takes everything
+   else, so the sentence runs long and shallow rather than sitting in a narrow
+   column with a field of empty brown beside it. */
 .hero-about {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.95fr);
-  gap: clamp(20px, 3vw, 52px);
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: clamp(18px, 2.2vw, 40px);
   align-items: start;
   margin: 0 0 24px;
 }
 .hero-sample {
   margin: 0;
-  max-width: 68ch;
+  max-width: none;
   font-size: var(--size-base);
-  line-height: 1.55;
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.94);
 }
 /* One column for the figures and one for what they are, so the words start at
