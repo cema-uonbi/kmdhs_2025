@@ -17,39 +17,39 @@
 
 :root {
   /* ---- CEMA primaries ---- */
-  --blue: #27AAE1;
-  --blue-050: #F2FAFE;
-  --blue-100: #D2EDF9;
-  --blue-200: #AEDFF5;
-  --blue-300: #7DCBED;
-  --blue-600: #1A88B8;
-  --blue-800: #0D465E;
+  --blue: #AA6340;
+  --blue-050: #FBF6F2;
+  --blue-100: #F3E3D9;
+  --blue-200: #E3C6B4;
+  --blue-300: #CB9877;
+  --blue-600: #8A4F33;
+  --blue-800: #6E402A;
 
-  --orange: #FE7501;
-  --orange-050: #FFF6EE;
-  --orange-100: #FFE4CC;
-  --orange-300: #FEAD67;
-  --orange-600: #CB5F01;
+  --orange: #E7A83E;
+  --orange-050: #FDF7EC;
+  --orange-100: #F3D9A6;
+  --orange-300: #EFC172;
+  --orange-600: #B87F22;
 
   /* ---- the rest of the palette, for chart series only ---- */
-  --navy: #084887;
-  --navy-900: #052B4F;
-  --teal: #006D77;
-  --yellow: #EFCA08;
-  --green: #2E7D32;
-  --purple: #8E44AD;
-  --pink: #D11060;
+  --navy: #4A2A1C;
+  --navy-900: #2A170E;
+  --teal: #6B7A4B;
+  --yellow: #D9B44A;
+  --green: #7A8450;
+  --purple: #7A4A5C;
+  --pink: #A6392C;
 
   /* ---- ink. no greys. ---- */
-  --ink: #0C1116;
-  --ink-soft: #2E4E60;
-  --ink-faint: #4B7188;
+  --ink: #221C13;
+  --ink-soft: #635A46;
+  --ink-faint: #8A7F66;
 
   /* ---- ground and lines ---- */
   --paper: #FFFFFF;
-  --paper-tint: #F6FBFD;
-  --rule: #E3E9EC;
-  --rule-strong: #C9D4DA;
+  --paper-tint: #FAF6EE;
+  --rule: #E1D8BD;
+  --rule-strong: #CDBF9A;
 
   /* ---- measure and rhythm ---- */
   --shell: 1980px;
@@ -1778,3 +1778,265 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 .pick__hit:hover, .pick__hit.is-on { background: var(--blue-050); }
 .pick__hit.is-current { color: var(--blue-800); font-weight: var(--weight-semibold); }
 .pick__miss { padding: 10px 12px; font-size: var(--size-tiny); color: var(--ink-soft); }
+
+/* ==================================================================================
+   THE COUNTY PERFORMANCE MAP, AND THE PAGE THAT LEAVES THE SITE
+   ================================================================================== */
+
+/* Map and ranking side by side: the map says where, the ranking says how far
+   apart, and neither says it alone. They stack below 1150px, where a map squeezed
+   into half a phone is a smudge. */
+.map-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  margin-top: 8px;
+}
+@media (max-width: 1150px) { .map-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* The one page that needs a connection says so while it waits, and says why if
+   it cannot get one. */
+.past-status {
+  font-size: var(--size-small);
+  color: var(--ink-soft);
+  min-height: 1.4em;
+  margin: 6px 0 10px;
+}
+.past-status--warn {
+  color: var(--orange-600);
+  background: var(--orange-050);
+  border-left: 3px solid var(--orange);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+}
+.past .field { display: flex; flex-direction: column; min-width: 240px; flex: 1 1 260px; }
+.past .field label {
+  font-family: var(--font-body);
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-semibold);
+  color: var(--ink-soft);
+  margin-bottom: 5px;
+}
+
+/* ==================================================================================
+   The dashboard assistant
+   ==================================================================================
+   A bubble in the corner and a panel above it. The panel is a column: a band at
+   the top, the conversation in the middle taking whatever height is left, and the
+   question box pinned at the bottom, so a long answer scrolls and the box stays
+   where the reader put their hands. */
+.chat-fab {
+  position: fixed; right: 22px; bottom: 22px; z-index: 200;
+  width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--blue); color: var(--paper);
+  box-shadow: 0 6px 20px rgba(34, 28, 19, .28);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .15s, box-shadow .15s, background .15s;
+}
+.chat-fab:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(34, 28, 19, .34); }
+.chat-fab.is-open { background: var(--blue-800); }
+.chat-fab-dot {
+  position: absolute; top: 5px; right: 5px; width: 11px; height: 11px;
+  border-radius: 50%; background: var(--orange); border: 2px solid var(--paper);
+}
+.chat-panel {
+  position: fixed; right: 22px; bottom: 96px; z-index: 200;
+  width: 420px; max-width: calc(100vw - 32px);
+  height: min(620px, calc(100vh - 150px));
+  background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius);
+  box-shadow: 0 16px 48px rgba(34, 28, 19, .3);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.chat-panel[hidden] { display: none; }
+.chat-head {
+  background-image: linear-gradient(135deg, var(--navy), var(--navy-900));
+  color: var(--paper); padding: 14px 18px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.chat-head-title {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-display); font-size: var(--size-label);
+  font-weight: var(--weight-semibold);
+}
+.chat-head-dot {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--orange);
+  box-shadow: 0 0 0 3px rgba(231, 168, 62, .28); flex-shrink: 0;
+}
+.chat-close {
+  background: none; border: none; color: var(--paper); opacity: .85;
+  font-size: 26px; line-height: 1; cursor: pointer; padding: 0 3px;
+}
+.chat-close:hover { opacity: 1; }
+.chat-body {
+  flex: 1; overflow-y: auto; padding: 16px; background: var(--paper-tint);
+  display: flex; flex-direction: column; gap: 11px;
+}
+.chat-msg {
+  max-width: 90%; font-size: var(--size-small); line-height: 1.55;
+  padding: 10px 14px; border-radius: 13px; word-wrap: break-word;
+}
+.chat-msg.bot {
+  align-self: flex-start; background: var(--paper); border: 1px solid var(--rule);
+  color: var(--ink); border-bottom-left-radius: 3px;
+}
+.chat-msg.user {
+  align-self: flex-end; background: var(--blue); color: var(--paper);
+  border-bottom-right-radius: 3px;
+}
+.chat-msg b { font-weight: var(--weight-bold); }
+.chat-msg .cm-sub {
+  display: block; margin-top: 5px; font-size: var(--size-tiny); color: var(--ink-faint);
+}
+.chat-chips { align-self: flex-start; max-width: 100%; display: flex; flex-wrap: wrap; gap: 7px; }
+.chat-chip {
+  font-family: var(--font-body); font-size: var(--size-tiny); text-align: left;
+  background: var(--paper); border: 1px solid var(--rule-strong); color: var(--blue-800);
+  border-radius: 999px; padding: 7px 13px; cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.chat-chip:hover { background: var(--blue-050); border-color: var(--blue); }
+.chat-input-row {
+  display: flex; align-items: center; gap: 9px; padding: 12px;
+  border-top: 1px solid var(--rule); background: var(--paper); flex-shrink: 0;
+}
+.chat-input {
+  flex: 1; border: 1px solid var(--rule); border-radius: 999px; padding: 10px 16px;
+  font-family: var(--font-body); font-size: var(--size-small);
+  background: var(--paper-tint); color: var(--ink); outline: none;
+}
+.chat-input:focus { border-color: var(--blue); }
+.chat-send {
+  width: 38px; height: 38px; border-radius: 50%; border: none;
+  background: var(--blue); color: var(--paper); flex-shrink: 0; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.chat-send:hover { background: var(--blue-800); }
+.chat-foot {
+  margin: 0; padding: 0 14px 11px; background: var(--paper);
+  font-size: var(--size-tiny); color: var(--ink-faint); flex-shrink: 0;
+}
+@media (max-width: 560px) {
+  .chat-panel { right: 14px; left: 14px; width: auto; bottom: 86px; }
+  .chat-fab { right: 14px; bottom: 14px; }
+}
+
+/* ==================================================================================
+   The opening line, the band notes and the graphic inside a headline figure
+   ==================================================================================
+
+   CEMA's own colours, taken from the brand sheet, and used here and nowhere
+   else. The page itself is KNBS saddle brown because the survey is theirs; the
+   graphics are CEMA's because the reading of them is ours. */
+:root {
+  --cema-blue: #26AAE1;
+  --cema-orange: #FD7501;
+  --cema-navy: #084887;
+  --cema-yellow: #EFCA08;
+  --cema-green: #497048;
+  --cema-teal: #006D77;
+  --cema-purple: #8E44AC;
+  --cema-pink: #EF2A7C;
+}
+
+/* What the survey is, for somebody who has never heard of it, with the three
+   figures a reader will actually take away set out beside the words. */
+.hero-about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.95fr);
+  gap: clamp(20px, 3vw, 52px);
+  align-items: start;
+  margin: 0 0 24px;
+}
+.hero-sample {
+  margin: 0;
+  max-width: 68ch;
+  font-size: var(--size-base);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.94);
+}
+/* One column for the figures and one for what they are, so the words start at
+   the same place whether the number beside them is two digits or six. */
+.hero-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: baseline;
+  gap: 14px 16px;
+  padding-left: clamp(16px, 2vw, 28px);
+  border-left: 2px solid rgba(255, 255, 255, 0.28);
+}
+.hero-fact { display: contents; }
+.hero-fact__n {
+  font-family: var(--font-display);
+  font-size: var(--size-stat);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  color: #FFFFFF;
+  min-width: 3.6ch;
+}
+.hero-fact__what {
+  font-size: var(--size-small);
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.9);
+}
+@media (max-width: 1100px) {
+  .hero-about { grid-template-columns: 1fr; gap: 22px; }
+  .hero-facts {
+    display: flex; flex-wrap: wrap; gap: 8px 32px;
+    border-left: none; padding-left: 0;
+    border-top: 2px solid rgba(255, 255, 255, 0.28); padding-top: 16px;
+  }
+  .hero-fact { display: flex; flex-direction: column; gap: 2px; }
+}
+
+/* One line under a band heading, saying what kind of figure is in it. Outcomes
+   and services read alike and are not alike, and this is where that is said. */
+.band-note {
+  margin: -4px 0 16px;
+  max-width: 92ch;
+  font-size: var(--size-small);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* With the standfirst gone, the eyebrow is the whole of this heading, and the
+   space that was holding a paragraph up should not still be there. */
+.overview .section-head:has(> .eyebrow:only-child) { margin-bottom: 2px; }
+
+/* The rounds, drawn across the foot of the card. Teal where the survey has
+   moved the welcome way, orange where it has not, blue where the question does
+   not have a welcome direction. Which of those it is comes off the indicator
+   rather than off the sign of the change, because mortality falling is good
+   news and vaccination falling is not. */
+.hl__spark {
+  display: block;
+  width: 100%;
+  margin: 12px 0 -6px;
+  overflow: visible;
+}
+.hl__spark-fill { fill: var(--spark); opacity: 0.16; }
+.hl__spark-line { stroke: var(--spark); }
+.hl__spark-axis { stroke: var(--rule); stroke-width: 1; }
+/* Every round the survey has, marked. The earlier ones are hollow so the
+   current one is the only solid mark on the line. */
+.hl__spark-was { fill: var(--paper); stroke: var(--spark); stroke-width: 2.2; }
+.hl__spark-halo { fill: var(--spark); opacity: 0.22; }
+.hl__spark-now { fill: var(--spark); }
+.hl__spark-year {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--weight-medium);
+  fill: var(--ink-faint);
+}
+.hl__spark-year--now { font-weight: var(--weight-bold); fill: var(--spark); }
+.hl__spark--good { --spark: var(--cema-teal); }
+.hl__spark--bad { --spark: var(--cema-orange); }
+.hl__spark--flat { --spark: var(--cema-blue); }
+
+/* The arrow and the figure it came from, in the same colour as the line under
+   them, so a card reads as one thing. */
+.hl__move--good { color: var(--cema-teal); }
+.hl__move--bad { color: var(--cema-orange); }
+.hl__move--flat { color: var(--ink-faint); }
+.hl__move { font-size: var(--size-small); font-weight: var(--weight-semibold); }
+.hl__arrow { font-size: 1.15em; }

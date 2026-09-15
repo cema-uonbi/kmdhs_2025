@@ -109,9 +109,12 @@
       </button>
     </div>
     <div class="chapter-bar__chapters" data-chapters-for="90">
-      <button type="button" class="chapter-tab" data-page="counties" data-nav-input="nav">Counties</button>
-      <button type="button" class="chapter-tab" data-page="compare" data-nav-input="nav">Comparison of indicators</button>
-      <button type="button" class="chapter-tab" data-page="trends" data-nav-input="nav">Trends</button>
+      <button type="button" class="chapter-tab" data-page="trends" data-nav-input="nav">National trends</button>
+      <button type="button" class="chapter-tab" data-page="map" data-nav-input="nav">County performance map</button>
+      <button type="button" class="chapter-tab" data-page="ctrends" data-nav-input="nav">County performance trends</button>
+      <button type="button" class="chapter-tab" data-page="counties" data-nav-input="nav">One county</button>
+      <button type="button" class="chapter-tab" data-page="compare" data-nav-input="nav">Cross-indicator analysis</button>
+      <button type="button" class="chapter-tab" data-page="past" data-nav-input="nav">Get past data</button>
     </div>
   </div>
 </nav>
@@ -122,6 +125,23 @@
         <div class="shell">
           <div class="hero-grid">
             <div class="hero-copy">
+              <div class="hero-about">
+                <p class="hero-sample">The Kenya Mini Demographic and Health Survey is the shorter version of the full surveys the country has run since 1989. It carries a shorter questionnaire, focusing on asking women aged 15 to 49 about pregnancy and childbirth, their children's health and feeding, family planning, and the conditions of the households they live in. Data was collected from November 2025 to February 2026 in a sample powered at the county level.</p>
+                <div class="hero-facts">
+                  <div class="hero-fact">
+                    <span class="hero-fact__n">26,380</span>
+                    <span class="hero-fact__what">households visited</span>
+                  </div>
+                  <div class="hero-fact">
+                    <span class="hero-fact__n">21,231</span>
+                    <span class="hero-fact__what">women age 15 to 49 interviewed</span>
+                  </div>
+                  <div class="hero-fact">
+                    <span class="hero-fact__n">47</span>
+                    <span class="hero-fact__what">counties, all of them</span>
+                  </div>
+                </div>
+              </div>
               <div class="hero-search">
                 <label class="hero-search__label" for="search">Go straight to any topic</label>
                 <div class="site-search">
@@ -217,52 +237,154 @@
             </button>
           </div>
           <div class="chapter-bar__chapters" data-chapters-for="90">
-            <button type="button" class="chapter-tab" data-page="counties" data-nav-input="nav">Counties</button>
-            <button type="button" class="chapter-tab" data-page="compare" data-nav-input="nav">Comparison of indicators</button>
-            <button type="button" class="chapter-tab" data-page="trends" data-nav-input="nav">Trends</button>
+            <button type="button" class="chapter-tab" data-page="trends" data-nav-input="nav">National trends</button>
+            <button type="button" class="chapter-tab" data-page="map" data-nav-input="nav">County performance map</button>
+            <button type="button" class="chapter-tab" data-page="ctrends" data-nav-input="nav">County performance trends</button>
+            <button type="button" class="chapter-tab" data-page="counties" data-nav-input="nav">One county</button>
+            <button type="button" class="chapter-tab" data-page="compare" data-nav-input="nav">Cross-indicator analysis</button>
+            <button type="button" class="chapter-tab" data-page="past" data-nav-input="nav">Get past data</button>
           </div>
         </div>
       </nav>
       <div class="shell">
         <div class="section-head">
           <span class="eyebrow">Kenya at a glance</span>
-          <p class="lead">What the 2025/26 round found, against the round before it wherever the published table printed one. Open any figure to reach the chapter it came from.</p>
         </div>
         <div class="band-head">
-          <h3 class="band-title">Health</h3>
+          <h3 class="band-title">Health outcomes</h3>
         </div>
+        <p class="band-note">What the survey counted happening, rather than what was provided.</p>
         <div class="highlight-grid">
-          <button type="button" class="hl" data-page="ch15" data-nav-input="nav">
+          <button type="button" class="hl" title="362 in the 2014 KDHS and 355 in the 2019 census. The 2022 KDHS carried no maternal mortality module." data-page="ch15" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3S4.7 15.8 4.7 10.7a3.9 3.9 0 0 1 7.3-2 3.9 3.9 0 0 1 7.3 2c0 5.1-7.3 9.6-7.3 9.6z"/></svg></div>
             <div class="hl__body">
               <p class="hl__value">263</p>
               <span class="hl__label">Maternal mortality ratio</span>
-              <span class="hl__note">per 100 000 live births</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
+              <span class="hl__note">deaths per 100 000 live births</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&darr;</span>
+                from 355 in 2019
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,10 120,13 230,52 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,10 120,13 230,52" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="10" r="3.6"></circle>
+                <circle class="hl__spark-was" cx="120" cy="13" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="52" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="52" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2014</text>
+                <text class="hl__spark-year" x="120" y="79" text-anchor="middle">2019</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
-          <button type="button" class="hl" data-page="ch8" data-nav-input="nav">
+          <button type="button" class="hl" title="From the 2022 KDHS trend series." data-page="ch8" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.6" r="4.2"/><path d="M10.2 6.8h.01M13.8 6.8h.01"/><path d="M5.6 20.6a6.4 6.4 0 0 1 12.8 0"/></svg></div>
             <div class="hl__body">
               <p class="hl__value">37</p>
               <span class="hl__label">Under-five mortality</span>
-              <span class="hl__note">per 1 000 live births</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
+              <span class="hl__note">deaths per 1 000 live births</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&darr;</span>
+                from 41 in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,10 120,40.8 230,52 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,10 120,40.8 230,52" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="10" r="3.6"></circle>
+                <circle class="hl__spark-was" cx="120" cy="40.8" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="52" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="52" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2014</text>
+                <text class="hl__spark-year" x="120" y="79" text-anchor="middle">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
-          <button type="button" class="hl" data-page="ch8" data-nav-input="nav">
+          <button type="button" class="hl" title="From the 2022 KDHS trend series." data-page="ch8" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.6" r="4.2"/><path d="M10.2 6.8h.01M13.8 6.8h.01"/><path d="M5.6 20.6a6.4 6.4 0 0 1 12.8 0"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">30</p>
+              <span class="hl__label">Infant mortality</span>
+              <span class="hl__note">deaths per 1 000 live births</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&darr;</span>
+                from 32 in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,10 120,42.7 230,52 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,10 120,42.7 230,52" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="10" r="3.6"></circle>
+                <circle class="hl__spark-was" cx="120" cy="42.7" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="52" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="52" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2014</text>
+                <text class="hl__spark-year" x="120" y="79" text-anchor="middle">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
+            </div>
+          </button>
+          <button type="button" class="hl" title="The 2022 figure is printed on the same table as this one." data-page="ch8" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.6" r="4.2"/><path d="M10.2 6.8h.01M13.8 6.8h.01"/><path d="M5.6 20.6a6.4 6.4 0 0 1 12.8 0"/></svg></div>
             <div class="hl__body">
               <p class="hl__value">19</p>
               <span class="hl__label">Neonatal mortality</span>
-              <span class="hl__note">per 1 000 live births</span>
+              <span class="hl__note">deaths per 1 000 live births</span>
               <span class="hl__move hl__move--good">
                 <span class="hl__arrow">&darr;</span>
                 from 21 in 2022
               </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,10 120,24 230,52 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,10 120,24 230,52" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="10" r="3.6"></circle>
+                <circle class="hl__spark-was" cx="120" cy="24" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="52" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="52" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2014</text>
+                <text class="hl__spark-year" x="120" y="79" text-anchor="middle">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
-          <button type="button" class="hl" data-page="ch9" data-nav-input="nav">
+        </div>
+        <div class="band-head">
+          <h3 class="band-title">Health service coverage</h3>
+        </div>
+        <p class="band-note">What reached the women and children who needed it. A service is not a result.</p>
+        <div class="highlight-grid">
+          <button type="button" class="hl" title="Both stated in the 2022 KDHS report." data-page="ch9" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3S4.7 15.8 4.7 10.7a3.9 3.9 0 0 1 7.3-2 3.9 3.9 0 0 1 7.3 2c0 5.1-7.3 9.6-7.3 9.6z"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                72.4
+                <small>%</small>
+              </p>
+              <span class="hl__label">Four or more antenatal visits</span>
+              <span class="hl__note">for the most recent live birth</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&uarr;</span>
+                from 66% in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 120,28.7 230,10 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 120,28.7 230,10" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-was" cx="120" cy="28.7" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="10" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="10" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2014</text>
+                <text class="hl__spark-year" x="120" y="79" text-anchor="middle">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
+            </div>
+          </button>
+          <button type="button" class="hl" title="Table 9.7 of the 2022 KDHS." data-page="ch9" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.2 12 3.4l8.4 6.8"/><path d="M5.6 9.4V20h12.8V9.4"/><path d="M10 20v-5.4h4V20"/></svg></div>
             <div class="hl__body">
               <p class="hl__value">
@@ -270,114 +392,254 @@
                 <small>%</small>
               </p>
               <span class="hl__label">Births in a health facility</span>
-              <span class="hl__note">live births</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
+              <span class="hl__note">live births in the two years before</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&uarr;</span>
+                from 88.1% in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 230,10 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 230,10" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="10" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="10" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
-          <button type="button" class="hl" data-page="ch12" data-nav-input="nav">
+          <button type="button" class="hl" title="The 2022 KDHS reported it as an SDG indicator." data-page="ch9" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 19.2 6v5.6c0 4.4-3.1 8.2-7.2 9.8-4.1-1.6-7.2-5.4-7.2-9.8V6z"/></svg></div>
             <div class="hl__body">
               <p class="hl__value">
-                32.3
+                91.9
                 <small>%</small>
               </p>
-              <span class="hl__label">Slept under a treated net</span>
-              <span class="hl__note">the population</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
+              <span class="hl__label">Births with a skilled provider</span>
+              <span class="hl__note">live births in the two years before</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&uarr;</span>
+                from 89.3% in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 230,10 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 230,10" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="10" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="10" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
+            </div>
+          </button>
+          <button type="button" class="hl" title="Both stated in the 2022 KDHS report." data-page="ch10" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 19.2 6v5.6c0 4.4-3.1 8.2-7.2 9.8-4.1-1.6-7.2-5.4-7.2-9.8V6z"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                79.5
+                <small>%</small>
+              </p>
+              <span class="hl__label">Fully vaccinated against the basic antigens</span>
+              <span class="hl__note">children age 12 to 23 months</span>
+              <span class="hl__move hl__move--bad">
+                <span class="hl__arrow">&darr;</span>
+                from 80% in 2022
+              </span>
+              <svg class="hl__spark hl__spark--bad" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 120,10 230,12.3 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 120,10 230,12.3" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-was" cx="120" cy="10" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="12.3" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="12.3" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2014</text>
+                <text class="hl__spark-year" x="120" y="79" text-anchor="middle">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
         </div>
         <div class="band-head">
           <h3 class="band-title">Nutrition</h3>
         </div>
+        <p class="band-note">No child in this survey was weighed or measured, so it produces no stunting, wasting or underweight figure. The report's own list of Sustainable Development Goal indicators shows the same gap, carrying dietary diversity alone under zero hunger. The most recent measured figures are the 2022 survey's.</p>
         <div class="highlight-grid">
           <button type="button" class="hl" data-page="ch11" data-nav-input="nav">
-            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.6" r="4.2"/><path d="M10.2 6.8h.01M13.8 6.8h.01"/><path d="M5.6 20.6a6.4 6.4 0 0 1 12.8 0"/></svg></div>
-            <div class="hl__body">
-              <p class="hl__value">
-                62.8
-                <small>%</small>
-              </p>
-              <span class="hl__label">Put to the breast within an hour</span>
-              <span class="hl__note">of being born</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
-            </div>
-          </button>
-          <button type="button" class="hl" data-page="ch11" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3S4.7 15.8 4.7 10.7a3.9 3.9 0 0 1 7.3-2 3.9 3.9 0 0 1 7.3 2c0 5.1-7.3 9.6-7.3 9.6z"/></svg></div>
             <div class="hl__body">
               <p class="hl__value">
-                35.7
-                <small>%</small>
-              </p>
-              <span class="hl__label">Fed a minimum acceptable diet</span>
-              <span class="hl__note">age 6 to 23 months</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
-            </div>
-          </button>
-          <button type="button" class="hl" data-page="ch11" data-nav-input="nav">
-            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3S4.7 15.8 4.7 10.7a3.9 3.9 0 0 1 7.3-2 3.9 3.9 0 0 1 7.3 2c0 5.1-7.3 9.6-7.3 9.6z"/></svg></div>
-            <div class="hl__body">
-              <p class="hl__value">
-                46.6
+                42.7
                 <small>%</small>
               </p>
               <span class="hl__label">Fed a minimum dietary diversity</span>
-              <span class="hl__note">age 6 to 23 months</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
+              <span class="hl__note">children age 6 to 23 months</span>
+              <span class="hl__move hl__move--flat">No earlier round on record</span>
             </div>
           </button>
-          <button type="button" class="hl" data-page="ch11" data-nav-input="nav">
+          <button type="button" class="hl" title="Stated in the 2022 KDHS report." data-page="ch11" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3S4.7 15.8 4.7 10.7a3.9 3.9 0 0 1 7.3-2 3.9 3.9 0 0 1 7.3 2c0 5.1-7.3 9.6-7.3 9.6z"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                32.4
+                <small>%</small>
+              </p>
+              <span class="hl__label">Fed a minimum acceptable diet</span>
+              <span class="hl__note">children age 6 to 23 months</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&uarr;</span>
+                from 31% in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 230,10 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 230,10" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="10" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="10" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
+            </div>
+          </button>
+          <button type="button" class="hl" title="Stated in the 2022 KDHS report." data-page="ch11" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2c3.2 4 5.4 6.8 5.4 9.6a5.4 5.4 0 0 1-10.8 0c0-2.8 2.2-5.6 5.4-9.6z"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                68.4
+                <small>%</small>
+              </p>
+              <span class="hl__label">Given vitamin A in the past six months</span>
+              <span class="hl__note">children age 6 to 59 months</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&uarr;</span>
+                from 64% in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 230,10 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 230,10" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="10" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="10" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
+            </div>
+          </button>
+          <button type="button" class="hl" title="Stated in the 2022 KDHS report." data-page="ch11" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V9"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg></div>
             <div class="hl__body">
               <p class="hl__value">
                 49
                 <small>%</small>
               </p>
-              <span class="hl__label">Weighed and measured</span>
-              <span class="hl__note">children under 5</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
+              <span class="hl__label">Weighed and measured by a provider</span>
+              <span class="hl__note">children under five</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&uarr;</span>
+                from 38% in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 230,10 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 230,10" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="10" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="10" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
         </div>
         <div class="band-head">
-          <h3 class="band-title">Demographics</h3>
+          <h3 class="band-title">Fertility and family formation</h3>
         </div>
+        <p class="band-note">When childbearing starts and how much of it there is.</p>
         <div class="highlight-grid">
-          <button type="button" class="hl" data-page="ch15" data-nav-input="nav">
+          <button type="button" class="hl" title="The 2014 and 2022 figures are printed on the same table as this one." data-page="ch5" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3.6"/><path d="M12 10.8V20"/><path d="M8.6 16.4h6.8"/></svg></div>
             <div class="hl__body">
-              <p class="hl__value">3.3</p>
+              <p class="hl__value">3.1</p>
               <span class="hl__label">Total fertility rate</span>
               <span class="hl__note">births per woman</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
+              <span class="hl__move hl__move--flat">
+                <span class="hl__arrow">&darr;</span>
+                from 3.4 in 2022
+              </span>
+              <svg class="hl__spark hl__spark--flat" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,10 120,36.3 230,52 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,10 120,36.3 230,52" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="10" r="3.6"></circle>
+                <circle class="hl__spark-was" cx="120" cy="36.3" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="52" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="52" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2014</text>
+                <text class="hl__spark-year" x="120" y="79" text-anchor="middle">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
-          <button type="button" class="hl" data-page="ch7" data-nav-input="nav">
+          <button type="button" class="hl" title="The 2014 and 2022 figures are printed on the same table as this one." data-page="ch5" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.6" y="5.4" width="16.8" height="15" rx="2"/><path d="M3.6 10.2h16.8"/><path d="M8.4 3.4v4M15.6 3.4v4"/></svg></div>
             <div class="hl__body">
-              <p class="hl__value">
-                56.1
-                <small>%</small>
-              </p>
-              <span class="hl__label">Women using a modern method</span>
-              <span class="hl__note">currently married</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
+              <p class="hl__value">20.9</p>
+              <span class="hl__label">Median age at first birth</span>
+              <span class="hl__note">women age 25 to 49</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&uarr;</span>
+                from 20.7 in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 120,24 230,10 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 120,24 230,10" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-was" cx="120" cy="24" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="10" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="10" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2014</text>
+                <text class="hl__spark-year" x="120" y="79" text-anchor="middle">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
-          <button type="button" class="hl" data-page="ch5" data-nav-input="nav">
+          <button type="button" class="hl" title="Stated in the 2022 KDHS report." data-page="ch5" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="3.6"/><path d="M12 10.8V20"/><path d="M8.6 16.4h6.8"/></svg></div>
             <div class="hl__body">
               <p class="hl__value">
                 11.9
                 <small>%</small>
               </p>
-              <span class="hl__label">Teenagers who have been pregnant</span>
+              <span class="hl__label">Teenagers who have ever been pregnant</span>
               <span class="hl__note">age 15 to 19</span>
-              <span class="hl__move hl__move--flat">No earlier round printed</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&darr;</span>
+                from 15% in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,10 230,52 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,10 230,52" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="10" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="52" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="52" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
-          <button type="button" class="hl" data-page="ch13" data-nav-input="nav">
+        </div>
+        <div class="band-head">
+          <h3 class="band-title">Living conditions</h3>
+        </div>
+        <p class="band-note">What the household has, which is where most of the difference between counties sits.</p>
+        <div class="highlight-grid">
+          <button type="button" class="hl" title="The 2022 figure is printed on the same table as this one." data-page="ch13" data-nav-input="nav">
             <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2c3.2 4 5.4 6.8 5.4 9.6a5.4 5.4 0 0 1-10.8 0c0-2.8 2.2-5.6 5.4-9.6z"/></svg></div>
             <div class="hl__body">
               <p class="hl__value">
@@ -390,6 +652,41 @@
                 <span class="hl__arrow">&uarr;</span>
                 from 67.9% in 2022
               </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 230,10 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 230,10" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="10" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="10" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
+            </div>
+          </button>
+          <button type="button" class="hl" title="The 2022 figure is printed on the same table as this one." data-page="ch13" data-nav-input="nav">
+            <div class="hl__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 10.2 12 3.4l8.4 6.8"/><path d="M5.6 9.4V20h12.8V9.4"/><path d="M10 20v-5.4h4V20"/></svg></div>
+            <div class="hl__body">
+              <p class="hl__value">
+                44.8
+                <small>%</small>
+              </p>
+              <span class="hl__label">At least basic sanitation</span>
+              <span class="hl__note">the population</span>
+              <span class="hl__move hl__move--good">
+                <span class="hl__arrow">&uarr;</span>
+                from 40.9% in 2022
+              </span>
+              <svg class="hl__spark hl__spark--good" viewBox="0 0 240 84" width="100%" aria-hidden="true" focusable="false">
+                <polygon class="hl__spark-fill" points="10,62 10,52 230,10 230,62"></polygon>
+                <line class="hl__spark-axis" x1="0" x2="240" y1="62" y2="62"></line>
+                <polyline class="hl__spark-line" points="10,52 230,10" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle class="hl__spark-was" cx="10" cy="52" r="3.6"></circle>
+                <circle class="hl__spark-halo" cx="230" cy="10" r="8"></circle>
+                <circle class="hl__spark-now" cx="230" cy="10" r="5"></circle>
+                <text class="hl__spark-year" x="10" y="79" text-anchor="start">2022</text>
+                <text class="hl__spark-year hl__spark-year--now" x="230" y="79" text-anchor="end">2025/26</text>
+              </svg>
             </div>
           </button>
         </div>
@@ -2025,6 +2322,895 @@
           The rounds are whichever ones the published table printed. A table that 
           shows 2022 and not 2014 is not a table where 2014 was zero; it is a table 
           where that question was asked differently, or not at all.
+        </p>
+      </div>
+    </section>
+  </div>
+  <div class="pane" data-page="map">
+    <section class="cross">
+      <div class="shell">
+        <span class="eyebrow">Across the counties</span>
+        <h2 class="chapter-title">County performance map</h2>
+        <p class="lead">Any of the 477 measures the survey publishes for counties, mapped and ranked. The dashed line on the ranking is Kenya.</p>
+        <div class="controls controls--tight">
+          <div class="form-group field">
+            <label class="control-label" id="map-measure-label" for="map-measure">Measure</label>
+            <div>
+              <select id="map-measure" class="shiny-input-select"><optgroup label="Child health">
+<option value="10.1||Among births with a reported birth weight1 · Percentage less than 2.5 kg">Child's size and weight at birth · Percentage less than 2.5 kg</option>
+<option value="10.1||Average or larger">Child's size and weight at birth · Average or larger</option>
+<option value="10.1||Don&#39;t know">Child's size and weight at birth · Don't know</option>
+<option value="10.1||Percentage of births that have a reported birth weight according to · Either">Child's size and weight at birth · Either</option>
+<option value="10.1||Percentage of births that have a reported birth weight according to · Mother&#39;s report">Child's size and weight at birth · Mother's report</option>
+<option value="10.1||Percentage of births that have a reported birth weight according to · Written record">Child's size and weight at birth · Written record</option>
+<option value="10.1||Smaller than average">Child's size and weight at birth · Smaller than average</option>
+<option value="10.1||Very small">Child's size and weight at birth · Very small</option>
+<option value="10.13||Percentage developmentally on track">Global Scales of Early Development · Percentage developmentally on track</option>
+<option value="10.14||Percentage developmentally on track">Early Childhood Development Index 2030 · Percentage developmentally on track</option>
+<option value="10.15||Percentage developmentally on track">Combined Early Chil…les of Early Development · Percentage developmentally on track</option>
+</optgroup>
+<optgroup label="Family planning">
+<option value="7.14.1||Met need for family planning (currently using) · For limiting">Need and demand for…currently married women · Met need for family pl…ently using) · For limiting</option>
+<option value="7.14.1||Met need for family planning (currently using) · For spacing">Need and demand for…currently married women · Met need for family pl…rently using) · For spacing</option>
+<option value="7.14.1||Percentage of demand satisfied">Need and demand for…currently married women · Percentage of demand satisfied</option>
+<option value="7.14.1||Percentage of demand satisfied by modern methods">Need and demand for…currently married women · Percentage of demand satisfied by modern methods</option>
+<option value="7.14.1||Total demand for family planning1 · For limiting">Need and demand for…currently married women · Total demand for family planning1 · For limiting</option>
+<option value="7.14.1||Total demand for family planning1 · For spacing">Need and demand for…currently married women · Total demand for family planning1 · For spacing</option>
+<option value="7.14.1||Unmet need for family planning · For limiting">Need and demand for…currently married women · Unmet need for family planning · For limiting</option>
+<option value="7.14.1||Unmet need for family planning · For spacing">Need and demand for…currently married women · Unmet need for family planning · For spacing</option>
+<option value="7.14.2||Met need for family planning (currently using) · For limiting">Need and demand for…y active unmarried women · Met need for family pl…ently using) · For limiting</option>
+<option value="7.14.2||Met need for family planning (currently using) · For spacing">Need and demand for…y active unmarried women · Met need for family pl…rently using) · For spacing</option>
+<option value="7.14.2||Percentage of demand satisfied">Need and demand for…y active unmarried women · Percentage of demand satisfied</option>
+<option value="7.14.2||Percentage of demand satisfied by modern methods">Need and demand for…y active unmarried women · Percentage of demand satisfied by modern methods</option>
+<option value="7.14.2||Total demand for family planning1 · For limiting">Need and demand for…y active unmarried women · Total demand for family planning1 · For limiting</option>
+<option value="7.14.2||Total demand for family planning1 · For spacing">Need and demand for…y active unmarried women · Total demand for family planning1 · For spacing</option>
+<option value="7.14.2||Unmet need for family planning · For limiting">Need and demand for…y active unmarried women · Unmet need for family planning · For limiting</option>
+<option value="7.14.2||Unmet need for family planning · For spacing">Need and demand for…y active unmarried women · Unmet need for family planning · For spacing</option>
+<option value="7.16||Community meeting or event">Exposure to family planning messages · Community meeting or event</option>
+<option value="7.16||Friends/ peers">Exposure to family planning messages · Friends/ peers</option>
+<option value="7.16||Internet">Exposure to family planning messages · Internet</option>
+<option value="7.16||Mobile phone">Exposure to family planning messages · Mobile phone</option>
+<option value="7.16||Newspaper/ magazine">Exposure to family planning messages · Newspaper/ magazine</option>
+<option value="7.16||None of these 10 media sources">Exposure to family planning messages · None of these 10 media sources</option>
+<option value="7.16||Outdoor sign or billboard">Exposure to family planning messages · Outdoor sign or billboard</option>
+<option value="7.16||Poster/ leaflet/ brochure">Exposure to family planning messages · Poster/ leaflet/ brochure</option>
+<option value="7.16||Radio">Exposure to family planning messages · Radio</option>
+<option value="7.16||Social media">Exposure to family planning messages · Social media</option>
+<option value="7.16||Television">Exposure to family planning messages · Television</option>
+<option value="7.17||Percentage of women who did not discuss family planning either with a fieldworke">Contact of non-user…amily planning providers · Percentage of women wh…ng either with a fieldworke</option>
+<option value="7.17||Percentage of women who were visited by a fieldworker who discussed family plann">Contact of non-user…amily planning providers · Percentage of women wh…who discussed family plann</option>
+<option value="7.2||Heard of any method">Knowledge of contra…ckground characteristics · Heard of any method</option>
+<option value="7.2||Heard of any modern method">Knowledge of contra…ckground characteristics · Heard of any modern method</option>
+<option value="7.4.2||Any method">Current use of cont…ckground characteristics · Any method</option>
+<option value="7.4.2||Any modern method">Current use of cont…ckground characteristics · Any modern method</option>
+<option value="7.4.2||Any traditional method">Current use of cont…ckground characteristics · Any traditional method</option>
+<option value="7.4.2||Modern method · Emergency contraception">Current use of cont…ckground characteristics · Modern method · Emergency contraception</option>
+<option value="7.4.2||Modern method · Female sterilisation">Current use of cont…ckground characteristics · Modern method · Female sterilisation</option>
+<option value="7.4.2||Modern method · IUD">Current use of cont…ckground characteristics · Modern method · IUD</option>
+<option value="7.4.2||Modern method · Implants">Current use of cont…ckground characteristics · Modern method · Implants</option>
+<option value="7.4.2||Modern method · Injectables">Current use of cont…ckground characteristics · Modern method · Injectables</option>
+<option value="7.4.2||Modern method · LAM">Current use of cont…ckground characteristics · Modern method · LAM</option>
+<option value="7.4.2||Modern method · Male condoms">Current use of cont…ckground characteristics · Modern method · Male condoms</option>
+<option value="7.4.2||Modern method · Male sterilisation">Current use of cont…ckground characteristics · Modern method · Male sterilisation</option>
+<option value="7.4.2||Modern method · Other">Current use of cont…ckground characteristics · Modern method · Other</option>
+<option value="7.4.2||Modern method · Pills">Current use of cont…ckground characteristics · Modern method · Pills</option>
+<option value="7.4.2||Modern method · SDM">Current use of cont…ckground characteristics · Modern method · SDM</option>
+<option value="7.4.2||Not currently using">Current use of cont…ckground characteristics · Not currently using</option>
+<option value="7.4.2||Traditional method · Other">Current use of cont…ckground characteristics · Traditional method · Other</option>
+<option value="7.4.2||Traditional method · Rhythm">Current use of cont…ckground characteristics · Traditional method · Rhythm</option>
+<option value="7.4.2||Traditional method · Withdrawal">Current use of cont…ckground characteristics · Traditional method · Withdrawal</option>
+<option value="7.7||Percentage who used emergency contraception">Use of emergency contraception · Percentage who used emergency contraception</option>
+</optgroup>
+<optgroup label="Fertility">
+<option value="5.11||Women age 25-49">Median age at first birth · Women age 25-49</option>
+<option value="5.12||Percentage of women age 15-19 who · Are currently pregnant">Teenage pregnancy · Are currently pregnant</option>
+<option value="5.12||Percentage of women age 15-19 who · Have ever been pregnant">Teenage pregnancy · Have ever been pregnant</option>
+<option value="5.12||Percentage of women age 15-19 who · Have ever had a live birth">Teenage pregnancy · Have ever had a live birth</option>
+<option value="5.12||Percentage of women age 15-19 who · Have ever had a pregnancy loss">Teenage pregnancy · Have ever had a pregnancy loss</option>
+<option value="5.14||Pregnancy outcome · Induced abortion">Pregnancy outcomes…ckground characteristics · Induced abortion</option>
+<option value="5.14||Pregnancy outcome · Live birth">Pregnancy outcomes…ckground characteristics · Live birth</option>
+<option value="5.14||Pregnancy outcome · Miscarriage">Pregnancy outcomes…ckground characteristics · Miscarriage</option>
+<option value="5.14||Pregnancy outcome · Stillbirth">Pregnancy outcomes…ckground characteristics · Stillbirth</option>
+<option value="5.2||Percentage of women age 15-49 currently pregnant">Fertility by background characteristics · Percentage of women age 15-49 currently pregnant</option>
+</optgroup>
+<optgroup label="Households">
+<option value="2.10.1||Completed primary" selected>Educational at…ation categories) · Completed primary  (Table 2.10.1)</option>
+<option value="2.10.1||Completed secondary">Educational at…ation categories) · Completed secondary  (Table 2.10.1)</option>
+<option value="2.10.1||More than secondary">Educational at…ation categories) · More than secondary  (Table 2.10.1)</option>
+<option value="2.10.1||No education">Educational at…ation categories) · No education  (Table 2.10.1)</option>
+<option value="2.10.1||Some primary">Educational at…ation categories) · Some primary  (Table 2.10.1)</option>
+<option value="2.10.1||Some secondary">Educational at…ation categories) · Some secondary  (Table 2.10.1)</option>
+<option value="2.10.2||Completed junior">Educational at…population (CBE) · Completed junior  (Table 2.10.2)</option>
+<option value="2.10.2||Completed primary">Educational at…population (CBE) · Completed primary  (Table 2.10.2)</option>
+<option value="2.10.2||Completed secondary">Educational at…population (CBE) · Completed secondary  (Table 2.10.2)</option>
+<option value="2.10.2||More than secondary">Educational at…population (CBE) · More than secondary  (Table 2.10.2)</option>
+<option value="2.10.2||No education 1">Educational at…population (CBE) · No education 1  (Table 2.10.2)</option>
+<option value="2.10.2||Some junior">Educational at…population (CBE) · Some junior  (Table 2.10.2)</option>
+<option value="2.10.2||Some primary">Educational at…population (CBE) · Some primary  (Table 2.10.2)</option>
+<option value="2.10.2||Some secondary">Educational at…population (CBE) · Some secondary  (Table 2.10.2)</option>
+<option value="2.10.3||Completed primary">Educational at…ation categories) · Completed primary  (Table 2.10.3)</option>
+<option value="2.10.3||Completed secondary">Educational at…ation categories) · Completed secondary  (Table 2.10.3)</option>
+<option value="2.10.3||More than secondary">Educational at…ation categories) · More than secondary  (Table 2.10.3)</option>
+<option value="2.10.3||No education">Educational at…ation categories) · No education  (Table 2.10.3)</option>
+<option value="2.10.3||Some primary">Educational at…ation categories) · Some primary  (Table 2.10.3)</option>
+<option value="2.10.3||Some secondary">Educational at…ation categories) · Some secondary  (Table 2.10.3)</option>
+<option value="2.10.4||Completed junior">Educational at…population (CBE) · Completed junior  (Table 2.10.4)</option>
+<option value="2.10.4||Completed primary">Educational at…population (CBE) · Completed primary  (Table 2.10.4)</option>
+<option value="2.10.4||Completed secondary">Educational at…population (CBE) · Completed secondary  (Table 2.10.4)</option>
+<option value="2.10.4||More than secondary">Educational at…population (CBE) · More than secondary  (Table 2.10.4)</option>
+<option value="2.10.4||No education 1">Educational at…population (CBE) · No education 1  (Table 2.10.4)</option>
+<option value="2.10.4||Some junior">Educational at…population (CBE) · Some junior  (Table 2.10.4)</option>
+<option value="2.10.4||Some primary">Educational at…population (CBE) · Some primary  (Table 2.10.4)</option>
+<option value="2.10.4||Some secondary">Educational at…population (CBE) · Some secondary  (Table 2.10.4)</option>
+<option value="2.11||Any health insurance">Health insurance coverage · Any health insurance</option>
+<option value="2.11||Community-based health insurance">Health insurance coverage · Community-based health insurance</option>
+<option value="2.11||County insurance scheme">Health insurance coverage · County insurance scheme</option>
+<option value="2.11||Employer managed insurance scheme">Health insurance coverage · Employer managed insurance scheme</option>
+<option value="2.11||None/ don&#39;t know">Health insurance coverage · None/ don't know</option>
+<option value="2.11||Private medical insurance">Health insurance coverage · Private medical insurance</option>
+<option value="2.11||Social Health Authority (SHA)">Health insurance coverage · Social Health Authority (SHA)</option>
+<option value="2.12||Percentage of de jure population whose · Don&#39;t know">Status of premium p…al Health Insurance Fund · Don't know</option>
+<option value="2.12||Percentage of de jure population whose · Premiums have been paid for the current month for SHIF">Status of premium p…al Health Insurance Fund · Premiums have been pai…the current month for SHIF</option>
+<option value="2.12||Percentage of de jure population whose · Premiums have not been paid for the current month for SHIF">Status of premium p…al Health Insurance Fund · Premiums have not been…the current month for SHIF</option>
+<option value="2.19||Burial permit issued only · *">Death certificate and burial permit issuance · Burial permit issued only · *</option>
+<option value="2.19||Death certificate issued (Death Certification)1 · *">Death certificate and burial permit issuance · Death certificate issued (Death Certification)1 · *</option>
+<option value="2.19||Either death certificate or burial permit issued (Death Notification) · *">Death certificate and burial permit issuance · Either death certifica…ed (Death Notification) · *</option>
+<option value="2.19||Neither death certificate nor burial permit issued · *">Death certificate and burial permit issuance · Neither death certific…or burial permit issued · *</option>
+<option value="2.19||Number of household deaths (2021-2025) · 41">Death certificate and burial permit issuance · Number of household deaths (2021-2025) · 41</option>
+<option value="2.4||Primary reliance on clean fuels and technologies for cooking">Primary reliance on…n fuels and technologies · Primary reliance on cl…nd technologies for cooking</option>
+<option value="2.4||Primary reliance on clean fuels and technologies for cooking, space heating, and">Primary reliance on…n fuels and technologies · Primary reliance on cl…cooking, space heating, and</option>
+<option value="2.4||Primary reliance on clean fuels and technologies for lighting">Primary reliance on…n fuels and technologies · Primary reliance on cl…d technologies for lighting</option>
+<option value="2.4||Primary reliance on clean fuels and technologies for space heating">Primary reliance on…n fuels and technologies · Primary reliance on cl…hnologies for space heating</option>
+<option value="2.4||Primary reliance on solid fuels for cooking">Primary reliance on…n fuels and technologies · Primary reliance on solid fuels for cooking</option>
+<option value="2.9||Percentage of children whose births are registered and who · Did not have birth certificate">Birth registration of children under age 5 · Did not have birth certificate</option>
+<option value="2.9||Percentage of children whose births are registered and who · Had a birth certificate">Birth registration of children under age 5 · Had a birth certificate</option>
+<option value="2.9||Total percentage of children whose births are registered">Birth registration of children under age 5 · Total percentage of ch…whose births are registered</option>
+</optgroup>
+<optgroup label="Malaria">
+<option value="12.1||Any mosquito net">Household possession of mosquito nets · Any mosquito net</option>
+<option value="12.1||Average number of nets per household · Any mosquito net">Household possession of mosquito nets · Average number of nets…ousehold · Any mosquito net</option>
+<option value="12.1||Average number of nets per household · Insecticide-treated mosquito net (ITN)">Household possession of mosquito nets · Average number of nets…-treated mosquito net (ITN)</option>
+<option value="12.1||Insecticide-treated mosquito net (ITN)">Household possession of mosquito nets · Insecticide-treated mosquito net (ITN)</option>
+<option value="12.1||Percentage of households with at least one mosquito net · Any mosquito net">Household possession of mosquito nets · Percentage of househol…uito net · Any mosquito net</option>
+<option value="12.1||Percentage of households with at least one mosquito net · Insecticide-treated mosquito net (ITN)">Household possession of mosquito nets · Percentage of househol…-treated mosquito net (ITN)</option>
+<option value="12.2||ANC visit">Source of mosquito nets · ANC visit</option>
+<option value="12.2||Child welfare visit/ immunisation visit">Source of mosquito nets · Child welfare visit/ immunisation visit</option>
+<option value="12.2||Community health worker">Source of mosquito nets · Community health worker</option>
+<option value="12.2||Don&#39;t know/ missing">Source of mosquito nets · Don't know/ missing</option>
+<option value="12.2||Government health facility">Source of mosquito nets · Government health facility</option>
+<option value="12.2||Mass distribution campaign">Source of mosquito nets · Mass distribution campaign</option>
+<option value="12.2||Other">Source of mosquito nets · Other</option>
+<option value="12.2||Pharmacy">Source of mosquito nets · Pharmacy</option>
+<option value="12.2||Private health facility">Source of mosquito nets · Private health facility</option>
+<option value="12.2||Religious institution">Source of mosquito nets · Religious institution</option>
+<option value="12.2||School">Source of mosquito nets · School</option>
+<option value="12.2||Shop/ market">Source of mosquito nets · Shop/ market</option>
+<option value="12.3||Percentage of the de facto population with access to an ITN1,2">Access to an insecticide-treated net (ITN) · Percentage of the de f…on with access to an ITN1,2</option>
+<option value="12.4||Household population in households with at least one ITN1 · Percentage who slept under an ITN1 last night">Use of mosquito net…persons in the household · Household population i…pt under an ITN1 last night</option>
+<option value="12.4||Household population · Percentage who slept under an ITN1 last night">Use of mosquito net…persons in the household · Household population ·…pt under an ITN1 last night</option>
+<option value="12.4||Household population · Percentage who slept under any mosquito net last night">Use of mosquito net…persons in the household · Household population ·…any mosquito net last night</option>
+<option value="12.5||Percentage of existing ITNs1 used last night">Use of existing ITNs · Percentage of existing ITNs1 used last night</option>
+<option value="12.6||Children under age 5 in all households · Percentage who slept under an ITN1 last night">Use of mosquito nets by children · Children under age 5 in all hou…ntage who slept under an ITN1 last night</option>
+<option value="12.6||Children under age 5 in all households · Percentage who slept under any mosquito net last night">Use of mosquito nets by children · Children under age 5 i…any mosquito net last night</option>
+<option value="12.6||Children under age 5 in households with at least one ITN1 · Percentage who slept under an ITN1 last night">Use of mosquito nets by children · Children under age 5 in househo…ntage who slept under an ITN1 last night</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Don&#39;t like net shape, colour, and/or size">Main reason mosquit…night before the survey · Don't like net shape, colour, and/or size</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Don&#39;t like smell">Main reason mosquit…night before the survey · Don't like smell</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Extra net/ saving for later">Main reason mosquit…night before the survey · Extra net/ saving for later</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Net brought bed-bugs">Main reason mosquit…night before the survey · Net brought bed-bugs</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Net is too dirty">Main reason mosquit…night before the survey · Net is too dirty</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Net too old/ torn/ damaged">Main reason mosquit…night before the survey · Net too old/ torn/ damaged</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Net too small/ short">Main reason mosquit…night before the survey · Net too small/ short</option>
+<option value="12.8||Main reason each net was not used the night before the survey · No mosquitoes/ no malaria">Main reason mosquit…night before the survey · No mosquitoes/ no malaria</option>
+<option value="12.8||Main reason each net was not used the night before the survey · No place to hang net">Main reason mosquit…night before the survey · No place to hang net</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Other">Main reason mosquit…night before the survey · Other</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Slept outdoors">Main reason mosquit…night before the survey · Slept outdoors</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Too hot">Main reason mosquit…night before the survey · Too hot</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Unable to hang net">Main reason mosquit…night before the survey · Unable to hang net</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Usual user didn&#39;t sleep in household last night">Main reason mosquit…night before the survey · Usual user didn't sleep in household last night</option>
+<option value="12.8||Percentage of nets not used the night before the survey">Main reason mosquit…night before the survey · Percentage of nets not…the night before the survey</option>
+<option value="12.9||Percentage who received one or more doses of SP/Fansidar">Use of Intermi…during pregnancy · Percentage who received one or more doses of SP/Fansidar</option>
+<option value="12.9||Percentage who received three or more doses of SP/Fansidar">Use of Intermi…during pregnancy · Percentage who received three or more doses of SP/Fansidar</option>
+<option value="12.9||Percentage who received two or more doses of SP/Fansidar">Use of Intermi…during pregnancy · Percentage who received two or more doses of SP/Fansidar</option>
+</optgroup>
+<optgroup label="Marriage">
+<option value="4.2||Percentage whose current marriage is registered and who have a marriage certific">Marriage registration · Percentage whose curre…ho have a marriage certific</option>
+<option value="4.2||Percentage whose current marriage or union is registered">Marriage registration · Percentage whose curre…iage or union is registered</option>
+<option value="4.2||Percentage whose current marriage or union is registered and who have any docume">Marriage registration · Percentage whose curre…red and who have any docume</option>
+<option value="4.4||Age · 20-49">Median age at first…ckground characteristics · 20-49</option>
+<option value="4.4||Age · 25-49">Median age at first…ckground characteristics · 25-49</option>
+<option value="4.5||Never had sexual intercourse">Recent sexual activity · Never had sexual intercourse</option>
+<option value="4.5||Timing of last sexual intercourse · Missing">Recent sexual activity · Missing</option>
+<option value="4.5||Timing of last sexual intercourse · Within the past 1 year">Recent sexual activity · Within the past 1 year</option>
+<option value="4.5||Timing of last sexual intercourse · Within the past 4 weeks">Recent sexual activity · Within the past 4 weeks</option>
+</optgroup>
+<optgroup label="Maternal health">
+<option value="9.1||ANC provider · Community health worker/ fieldworker">Antenatal care · Community health worker/ fieldworker</option>
+<option value="9.1||ANC provider · Doctor">Antenatal care · Doctor</option>
+<option value="9.1||ANC provider · Nurse/ midwife/ clinical officer">Antenatal care · Nurse/ midwife/ clinical officer</option>
+<option value="9.1||ANC provider · Traditional birth attendant">Antenatal care · Traditional birth attendant</option>
+<option value="9.1||No ANC">Antenatal care · No ANC</option>
+<option value="9.1||Percentage receiving ANC from a skilled provider">Antenatal care · Percentage receiving ANC from a skilled provider</option>
+<option value="9.11||No postnatal check">Timing of first postnatal check for the mother · No postnatal check</option>
+<option value="9.11||Percentage of women with a postnatal check during the first 2 days after birth">Timing of first postnatal check for the mother · Percentage of women wi…he first 2 days after birth</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · 1-2 days">Timing of first postnatal check for the mother · 1-2 days</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · 3-6 days">Timing of first postnatal check for the mother · 3-6 days</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · 4-23 hours">Timing of first postnatal check for the mother · 4-23 hours</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · 7-41 days">Timing of first postnatal check for the mother · 7-41 days</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · &lt;4 hours">Timing of first postnatal check for the mother · &lt;4 hours</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · Don&#39;t know/ missing">Timing of first postnatal check for the mother · Don't know/ missing</option>
+<option value="9.12||No postnatal check during the first 2 days after birth">Type of provider of…tal check for the mother · No postnatal check dur…he first 2 days after birth</option>
+<option value="9.12||Type of health provider of mother&#39;s first postnatal check · Community health worker/ fieldworker">Type of provider of…tal check for the mother · Community health worker/ fieldworker</option>
+<option value="9.12||Type of health provider of mother&#39;s first postnatal check · Doctor/nurse/ midwife/clinical officer">Type of provider of…tal check for the mother · Doctor/nurse/ midwife/clinical officer</option>
+<option value="9.12||Type of health provider of mother&#39;s first postnatal check · Other">Type of provider of…tal check for the mother · Other</option>
+<option value="9.12||Type of health provider of mother&#39;s first postnatal check · Traditional birth attendant">Type of provider of…tal check for the mother · Traditional birth attendant</option>
+<option value="9.13||Discussed family planning">Content of postnatal care for the mother · Discussed family planning</option>
+<option value="9.13||Discussed vaginal bleeding">Content of postnatal care for the mother · Discussed vaginal bleeding</option>
+<option value="9.13||Measured blood pressure">Content of postnatal care for the mother · Measured blood pressure</option>
+<option value="9.13||Percentage with all three checks performed in the first 2 days after birth">Content of postnatal care for the mother · Percentage with all th…he first 2 days after birth</option>
+<option value="9.14||No postnatal check">Timing of first pos…al check for the newborn · No postnatal check</option>
+<option value="9.14||Percentage of births with a postnatal check during the first 2 days after birth">Timing of first pos…al check for the newborn · Percentage of births w…he first 2 days after birth</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · 1-2 days">Timing of first pos…al check for the newborn · 1-2 days</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · 1-3 hours">Timing of first pos…al check for the newborn · 1-3 hours</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · 3-6 days">Timing of first pos…al check for the newborn · 3-6 days</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · 4-23 hours">Timing of first pos…al check for the newborn · 4-23 hours</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · &lt;1 hour">Timing of first pos…al check for the newborn · &lt;1 hour</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · Don&#39;t know">Timing of first pos…al check for the newborn · Don't know</option>
+<option value="9.15||No postnatal check during the first 2 days after birth">Type of provider of…al check for the newborn · No postnatal check dur…he first 2 days after birth</option>
+<option value="9.15||Type of health provider of newborn&#39;s first postnatal check · Community health worker/ fieldworker">Type of provider of…al check for the newborn · Community health worker/ fieldworker</option>
+<option value="9.15||Type of health provider of newborn&#39;s first postnatal check · Doctor/nurse/ midwife/ clinical officer">Type of provider of…al check for the newborn · Doctor/nurse/ midwife/ clinical officer</option>
+<option value="9.15||Type of health provider of newborn&#39;s first postnatal check · Traditional birth attendant">Type of provider of…al check for the newborn · Traditional birth attendant</option>
+<option value="9.16||Both counselled mother on breastfeeding and observed breastfeeding">Content of postnatal care for the newborn · Both counselled mother…and observed breastfeeding</option>
+<option value="9.16||Counselled mother on breastfeeding">Content of postnatal care for the newborn · Counselled mother on breastfeeding</option>
+<option value="9.16||Examined the cord">Content of postnatal care for the newborn · Examined the cord</option>
+<option value="9.16||Measured temperature">Content of postnatal care for the newborn · Measured temperature</option>
+<option value="9.16||Observed breastfeeding">Content of postnatal care for the newborn · Observed breastfeeding</option>
+<option value="9.16||Percentage with five2 signal functions performed during the first 2 days after">Content of postnatal care for the newborn · Percentage with five2…ring the first 2 days after</option>
+<option value="9.16||Showed how to clean the cord">Content of postnatal care for the newborn · Showed how to clean the cord</option>
+<option value="9.16||Told mother how to recognise if the baby needs immediate medical attention">Content of postnatal care for the newborn · Told mother how to rec…immediate medical attention</option>
+<option value="9.16||Weighed">Content of postnatal care for the newborn · Weighed</option>
+<option value="9.17||Percentage who received a postnatal check1 during the first 2 days after birth · Both mother and newborn">Postnatal health ch…for mothers and newborns · Both mother and newborn</option>
+<option value="9.17||Percentage who received a postnatal check1 during the first 2 days after birth · Mother">Postnatal health ch…for mothers and newborns · Mother</option>
+<option value="9.17||Percentage who received a postnatal check1 during the first 2 days after birth · Neither mother nor newborn">Postnatal health ch…for mothers and newborns · Neither mother nor newborn</option>
+<option value="9.17||Percentage who received a postnatal check1 during the first 2 days after birth · Newborn">Postnatal health ch…for mothers and newborns · Newborn</option>
+<option value="9.18||Percentage examined for breast cancer">Examinations for breast and cervical cancers · Percentage examined for breast cancer</option>
+<option value="9.18||Percentage tested for cervical cancer">Examinations for breast and cervical cancers · Percentage tested for cervical cancer</option>
+<option value="9.19||Problem in accessing health care · At least one problem accessing health care">Problems in accessing health care · At least one problem accessing health care</option>
+<option value="9.19||Problem in accessing health care · Culture">Problems in accessing health care · Culture</option>
+<option value="9.19||Problem in accessing health care · Distance to health facility">Problems in accessing health care · Distance to health facility</option>
+<option value="9.19||Problem in accessing health care · Getting money for treatment">Problems in accessing health care · Getting money for treatment</option>
+<option value="9.19||Problem in accessing health care · Getting permission to go for treatment">Problems in accessing health care · Getting permission to go for treatment</option>
+<option value="9.19||Problem in accessing health care · Not wanting to go alone">Problems in accessing health care · Not wanting to go alone</option>
+<option value="9.19||Problem in accessing health care · Religion">Problems in accessing health care · Religion</option>
+<option value="9.2||4+ ANC visits">Number of antenatal…nd timing of first visit · 4+ ANC visits</option>
+<option value="9.2||Number of ANC visits · 1">Number of antenatal…nd timing of first visit · Number of ANC visits · 1</option>
+<option value="9.2||Number of ANC visits · 2-3">Number of antenatal…nd timing of first visit · Number of ANC visits · 2-3</option>
+<option value="9.2||Number of ANC visits · 4-7">Number of antenatal…nd timing of first visit · Number of ANC visits · 4-7</option>
+<option value="9.2||Number of ANC visits · 8+">Number of antenatal…nd timing of first visit · Number of ANC visits · 8+</option>
+<option value="9.2||Number of ANC visits · Don&#39;t know">Number of antenatal…nd timing of first visit · Number of ANC visits · Don't know</option>
+<option value="9.2||Number of ANC visits · None">Number of antenatal…nd timing of first visit · Number of ANC visits · None</option>
+<option value="9.2||Total (2)">Number of antenatal…nd timing of first visit · Total (2)</option>
+<option value="9.20||Total (2)">Distance from a health care facility · Total (2)</option>
+<option value="9.20||Travel time to nearest health facility · 30-59 minutes">Distance from a health care facility · 30-59 minutes</option>
+<option value="9.20||Travel time to nearest health facility · 60-119 minutes">Distance from a health care facility · 60-119 minutes</option>
+<option value="9.20||Travel time to nearest health facility · &lt;30 minutes">Distance from a health care facility · &lt;30 minutes</option>
+<option value="9.20||Travel time to nearest health facility · ≥2 hours">Distance from a health care facility · ≥2 hours</option>
+<option value="9.21.1||Percentage who ever received an HPV vaccination card">Human papillomaviru…ge among women age 15-19 · Percentage who ever received an HPV vaccination card</option>
+<option value="9.21.1||Percentage who received any HPV vaccination">Human papillomaviru…ge among women age 15-19 · Percentage who received any HPV vaccination</option>
+<option value="9.21.2||Percentage who received any HPV vaccination">Human papillomaviru…ge among women age 20-49 · Percentage who received any HPV vaccination</option>
+<option value="9.22||Place where most recent HPV vaccination was received · NGO health facility">Source of human papillomavirus vaccinations · NGO health facility</option>
+<option value="9.22||Place where most recent HPV vaccination was received · Other">Source of human papillomavirus vaccinations · Other</option>
+<option value="9.22||Place where most recent HPV vaccination was received · Private health facility">Source of human papillomavirus vaccinations · Private health facility</option>
+<option value="9.22||Place where most recent HPV vaccination was received · Public health facility">Source of human papillomavirus vaccinations · Public health facility</option>
+<option value="9.22||Place where most recent HPV vaccination was received · School">Source of human papillomavirus vaccinations · School</option>
+<option value="9.3.1||Asked about vaginal bleeding">Components of anten…receiving antenatal care · Asked about vaginal bleeding</option>
+<option value="9.3.1||Baby&#39;s heartbeat listened for">Components of anten…receiving antenatal care · Baby's heartbeat listened for</option>
+<option value="9.3.1||Blood pressure measured">Components of anten…receiving antenatal care · Blood pressure measured</option>
+<option value="9.3.1||Blood sample taken">Components of anten…receiving antenatal care · Blood sample taken</option>
+<option value="9.3.1||Counselled about breastfeeding">Components of anten…receiving antenatal care · Counselled about breastfeeding</option>
+<option value="9.3.1||Counselled about maternal diet">Components of anten…receiving antenatal care · Counselled about maternal diet</option>
+<option value="9.3.1||Urine sample taken">Components of anten…receiving antenatal care · Urine sample taken</option>
+<option value="9.3.2||Asked about vaginal bleeding">Components of antenatal care among all women · Asked about vaginal bleeding</option>
+<option value="9.3.2||Baby&#39;s heartbeat listened for">Components of antenatal care among all women · Baby's heartbeat listened for</option>
+<option value="9.3.2||Blood pressure measured">Components of antenatal care among all women · Blood pressure measured</option>
+<option value="9.3.2||Blood sample taken">Components of antenatal care among all women · Blood sample taken</option>
+<option value="9.3.2||Counselled about breastfeeding">Components of antenatal care among all women · Counselled about breastfeeding</option>
+<option value="9.3.2||Counselled about maternal diet">Components of antenatal care among all women · Counselled about maternal diet</option>
+<option value="9.3.2||Urine sample taken">Components of antenatal care among all women · Urine sample taken</option>
+<option value="9.4||180+">Deworming and iron-…ntation during pregnancy · 180+</option>
+<option value="9.4||60-89">Deworming and iron-…ntation during pregnancy · 60-89</option>
+<option value="9.4||90-179">Deworming and iron-…ntation during pregnancy · 90-179</option>
+<option value="9.4||&lt;60">Deworming and iron-…ntation during pregnancy · &lt;60</option>
+<option value="9.4||Don&#39;t know">Deworming and iron-…ntation during pregnancy · Don't know</option>
+<option value="9.4||None">Deworming and iron-…ntation during pregnancy · None</option>
+<option value="9.4||Took any iron-containing supplements">Deworming and iron-…ntation during pregnancy · Took any iron-containing supplements</option>
+<option value="9.4||Took deworming medication">Deworming and iron-…ntation during pregnancy · Took deworming medication</option>
+<option value="9.6||Percentage receiving two or more injections during the pregnancy for the last li">Tetanus toxoid injections · Percentage receiving t…e pregnancy for the last li</option>
+<option value="9.6||Percentage whose most recent live birth was protected against neonatal tetanus">Tetanus toxoid injections · Percentage whose most…ed against neonatal tetanus</option>
+<option value="9.7||Health facility · Private medical sector (FBO)">Place of delivery · Private medical sector (FBO)</option>
+<option value="9.7||Health facility · Private medical sector (NGO)">Place of delivery · Private medical sector (NGO)</option>
+<option value="9.7||Health facility · Private medical sector (non-NGO)">Place of delivery · Private medical sector (non-NGO)</option>
+<option value="9.7||Health facility · Public sector">Place of delivery · Public sector</option>
+<option value="9.7||Home">Place of delivery · Home</option>
+<option value="9.7||Other">Place of delivery · Other</option>
+<option value="9.7||Percentage delivered in a health facility">Place of delivery · Percentage delivered in a health facility</option>
+<option value="9.8||Percentage delivered by caesarean section">Caesarean section · Percentage delivered by caesarean section</option>
+<option value="9.9||Among most recent live births2 · Percentage with skin-to-skin contact immediately after birth">Assistance during delivery · Percentage with skin-t…act immediately after birth</option>
+<option value="9.9||Percentage delivered by a skilled provider">Assistance during delivery · Percentage delivered by a skilled provider</option>
+<option value="9.9||Person providing assistance during delivery · Doctor">Assistance during delivery · Doctor</option>
+<option value="9.9||Person providing assistance during delivery · No one">Assistance during delivery · No one</option>
+<option value="9.9||Person providing assistance during delivery · Nurse/ midwife/ clinical officer">Assistance during delivery · Nurse/ midwife/ clinical officer</option>
+<option value="9.9||Person providing assistance during delivery · Relative/ friend/other">Assistance during delivery · Relative/ friend/other</option>
+<option value="9.9||Person providing assistance during delivery · Traditional birth attendant">Assistance during delivery · Traditional birth attendant</option>
+</optgroup>
+<optgroup label="Nutrition">
+<option value="11.1||Height">Child growth monitoring · Height</option>
+<option value="11.1||MUAC">Child growth monitoring · MUAC</option>
+<option value="11.1||Weight">Child growth monitoring · Weight</option>
+<option value="11.1||Weight and height">Child growth monitoring · Weight and height</option>
+<option value="11.1||Weight, height, and MUAC">Child growth monitoring · Weight, height, and MUAC</option>
+</optgroup>
+<optgroup label="Online violence">
+<option value="14.1||Percentage of women who have experienced TFGBV by any perpetrator · Ever">Experience of techn…lence by any perpetrator · Ever</option>
+<option value="14.10||Perceived safety of women in the community · Not very safe">Perceived risk of v…fety for women and girls · Not very safe</option>
+<option value="14.10||Perceived safety of women in the community · Safe">Perceived risk of v…fety for women and girls · Safe</option>
+<option value="14.10||Perceived safety of women in the community · Somewhat safe">Perceived risk of v…fety for women and girls · Somewhat safe</option>
+<option value="14.10||Perceived safety of women in the community · Very safe">Perceived risk of v…fety for women and girls · Very safe</option>
+<option value="14.10||Risk of violence · No">Perceived risk of v…fety for women and girls · No</option>
+<option value="14.10||Risk of violence · Yes">Perceived risk of v…fety for women and girls · Yes</option>
+<option value="14.10||Total (2)">Perceived risk of v…fety for women and girls · Total (2)</option>
+<option value="14.11||Action taken · Do nothing">Perceived community response to femicide · Do nothing</option>
+<option value="14.11||Action taken · Mobilise community rescue">Perceived community response to femicide · Mobilise community rescue</option>
+<option value="14.11||Action taken · Other action">Perceived community response to femicide · Other action</option>
+<option value="14.11||Action taken · Report to NGAO (chief, village leader, or other community leader etc.)">Perceived community response to femicide · Report to NGAO (chief,…ther community leader etc.)</option>
+<option value="14.11||Action taken · Report to police">Perceived community response to femicide · Report to police</option>
+<option value="14.11||Action taken · Talk to family">Perceived community response to femicide · Talk to family</option>
+<option value="14.12||Justification for violence against women and girls · No">Perceived socio-cul…against women and girls · No</option>
+<option value="14.12||Justification for violence against women and girls · Yes">Perceived socio-cul…against women and girls · Yes</option>
+<option value="14.13||Heard of victim blaming · No">Perceptions of vict…acy of domestic violence · Heard of victim blaming · No</option>
+<option value="14.13||Heard of victim blaming · Yes">Perceptions of vict…acy of domestic violence · Heard of victim blaming · Yes</option>
+<option value="14.13||Perceive domestic violence to be private · No">Perceptions of vict…acy of domestic violence · Perceive domestic violence to be private · No</option>
+<option value="14.13||Perceive domestic violence to be private · Yes">Perceptions of vict…acy of domestic violence · Perceive domestic violence to be private · Yes</option>
+<option value="14.13||Total (2)">Perceptions of vict…acy of domestic violence · Total (2)</option>
+<option value="14.3||Form of TFGBV · Any form of TFGBV">Experience of vario…ckground characteristics · Any form of TFGBV</option>
+<option value="14.3||Form of TFGBV · Blackmail/sextortion">Experience of vario…ckground characteristics · Blackmail/sextortion</option>
+<option value="14.3||Form of TFGBV · Cyberbullying">Experience of vario…ckground characteristics · Cyberbullying</option>
+<option value="14.3||Form of TFGBV · Cyberstalking">Experience of vario…ckground characteristics · Cyberstalking</option>
+<option value="14.3||Form of TFGBV · Doxxing">Experience of vario…ckground characteristics · Doxxing</option>
+<option value="14.3||Form of TFGBV · Hacking">Experience of vario…ckground characteristics · Hacking</option>
+<option value="14.3||Form of TFGBV · Online control">Experience of vario…ckground characteristics · Online control</option>
+<option value="14.3||Form of TFGBV · Online harassment">Experience of vario…ckground characteristics · Online harassment</option>
+<option value="14.3||Form of TFGBV · Online sexual harassment or cyber sexual abuse">Experience of vario…ckground characteristics · Online sexual harassment or cyber sexual abuse</option>
+<option value="14.3||Form of TFGBV · Revenge pornography">Experience of vario…ckground characteristics · Revenge pornography</option>
+<option value="14.3||Form of TFGBV · TFGBV from previous partner">Experience of vario…ckground characteristics · TFGBV from previous partner</option>
+<option value="14.4||Often">Experience of techn…by any intimate partner · Often</option>
+<option value="14.4||Often or sometimes">Experience of techn…by any intimate partner · Often or sometimes</option>
+<option value="14.4||Percentage of women who have ever experienced TFGBV by any intimate partner · Ever">Experience of techn…by any intimate partner · Ever</option>
+<option value="14.4||Sometimes">Experience of techn…by any intimate partner · Sometimes</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Displays 3 or more of the specific behaviours">Controlling behavio…ckground characteristics · Displays 3 or more of the specific behaviours</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Displays none of the specific behaviours">Controlling behavio…ckground characteristics · Displays none of the specific behaviours</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Does not permit her to meet her female friends">Controlling behavio…ckground characteristics · Does not permit her to meet her female friends</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Insists on knowing where she is at all times">Controlling behavio…ckground characteristics · Insists on knowing where she is at all times</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Insists on reading call logs/ messages/emails without consent">Controlling behavio…ckground characteristics · Insists on reading cal…ages/emails without consent</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Insists she gives him passwords to phone/ digital platforms">Controlling behavio…ckground characteristics · Insists she gives him…to phone/ digital platforms</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Is jealous or angry if she talks to other men">Controlling behavio…ckground characteristics · Is jealous or angry if she talks to other men</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Tries to limit her contact with her family">Controlling behavio…ckground characteristics · Tries to limit her contact with her family</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Uses technology to track her in ways that make her feel controlled">Controlling behavio…ckground characteristics · Uses technology to tra…at make her feel controlled</option>
+<option value="14.7||Percentage of women whose husband/intimate partner · Wrongly accuses her of being unfaithful">Controlling behavio…ckground characteristics · Wrongly accuses her of being unfaithful</option>
+</optgroup>
+<optgroup label="Respondents">
+<option value="3.1||Number of women · 113322Unweighted number 1 1 3 3 2 2">Background characteristics of respondents · 113322Unweighted number 1 1 3 3 2 2</option>
+<option value="3.10||Among women not registered, reason for not registering · Aware but don&#39;t know how to register">Reasons for not reg…h Authority (SHA) scheme · Aware but don't know how to register</option>
+<option value="3.10||Among women not registered, reason for not registering · Distrust in system/ government">Reasons for not reg…h Authority (SHA) scheme · Distrust in system/ government</option>
+<option value="3.10||Among women not registered, reason for not registering · Financial barriers/ too expensive">Reasons for not reg…h Authority (SHA) scheme · Financial barriers/ too expensive</option>
+<option value="3.10||Among women not registered, reason for not registering · Have not heard of SHA/not aware">Reasons for not reg…h Authority (SHA) scheme · Have not heard of SHA/not aware</option>
+<option value="3.10||Among women not registered, reason for not registering · Inconvenient/ burdensome">Reasons for not reg…h Authority (SHA) scheme · Inconvenient/ burdensome</option>
+<option value="3.10||Among women not registered, reason for not registering · Not interested/ satisfied with other coverage">Reasons for not reg…h Authority (SHA) scheme · Not interested/ satisfied with other coverage</option>
+<option value="3.10||Among women not registered, reason for not registering · Other">Reasons for not reg…h Authority (SHA) scheme · Other</option>
+<option value="3.10||Among women not registered, reason for not registering · Problems with required documentation/ inadequate coverage of needed services">Reasons for not reg…h Authority (SHA) scheme · Problems with required…coverage of needed services</option>
+<option value="3.10||Percentage of women not registered with SHA">Reasons for not reg…h Authority (SHA) scheme · Percentage of women not registered with SHA</option>
+<option value="3.11||Percentage whose services were covered under SHA">Utilisation of Soci…Authority (SHA) services · Percentage whose services were covered under SHA</option>
+<option value="3.12||Accident/ injury">Services received t…l Health Authority (SHA) · Accident/ injury</option>
+<option value="3.12||Antenatal care services">Services received t…l Health Authority (SHA) · Antenatal care services</option>
+<option value="3.12||Chronic illness management">Services received t…l Health Authority (SHA) · Chronic illness management</option>
+<option value="3.12||Delivery and maternity services">Services received t…l Health Authority (SHA) · Delivery and maternity services</option>
+<option value="3.12||Inpatient care/ hospitalisation">Services received t…l Health Authority (SHA) · Inpatient care/ hospitalisation</option>
+<option value="3.12||Laboratory/ diagnostic services">Services received t…l Health Authority (SHA) · Laboratory/ diagnostic services</option>
+<option value="3.12||Medicines/ pharmacy">Services received t…l Health Authority (SHA) · Medicines/ pharmacy</option>
+<option value="3.12||Outpatient services/ consultation">Services received t…l Health Authority (SHA) · Outpatient services/ consultation</option>
+<option value="3.12||Postnatal care services">Services received t…l Health Authority (SHA) · Postnatal care services</option>
+<option value="3.12||Routine medical checkup/ examination">Services received t…l Health Authority (SHA) · Routine medical checkup/ examination</option>
+<option value="3.13||Confusion about benefits">Challenges accessin…Authority (SHA) services · Confusion about benefits</option>
+<option value="3.13||Inadequacy of benefits covered">Challenges accessin…Authority (SHA) services · Inadequacy of benefits covered</option>
+<option value="3.13||Lack of medicines or supplies">Challenges accessin…Authority (SHA) services · Lack of medicines or supplies</option>
+<option value="3.13||Long waiting times">Challenges accessin…Authority (SHA) services · Long waiting times</option>
+<option value="3.13||No challenges faced">Challenges accessin…Authority (SHA) services · No challenges faced</option>
+<option value="3.13||Not accepted at preferred health facility">Challenges accessin…Authority (SHA) services · Not accepted at preferred health facility</option>
+<option value="3.13||Poor provider attitude">Challenges accessin…Authority (SHA) services · Poor provider attitude</option>
+<option value="3.13||Premiums not paid">Challenges accessin…Authority (SHA) services · Premiums not paid</option>
+<option value="3.13||SHA system down">Challenges accessin…Authority (SHA) services · SHA system down</option>
+<option value="3.13||Some services not available at preferred health facility">Challenges accessin…Authority (SHA) services · Some services not avai…t preferred health facility</option>
+<option value="3.14||Percentage of women receiving specific benefits through SHA · Improved personal health">Benefits received t…Authority (SHA) coverage · Improved personal health</option>
+<option value="3.14||Percentage of women receiving specific benefits through SHA · Inclusion of dependents">Benefits received t…Authority (SHA) coverage · Inclusion of dependents</option>
+<option value="3.14||Percentage of women receiving specific benefits through SHA · Increased access to quality health services">Benefits received t…Authority (SHA) coverage · Increased access to quality health services</option>
+<option value="3.14||Percentage of women receiving specific benefits through SHA · Other">Benefits received t…Authority (SHA) coverage · Other</option>
+<option value="3.14||Percentage of women receiving specific benefits through SHA · Reduced out-of-pocket spending on health care">Benefits received t…Authority (SHA) coverage · Reduced out-of-pocket spending on health care</option>
+<option value="3.14||Percentage of women receiving specific benefits through SHA · Reduced stress over health expenses">Benefits received t…Authority (SHA) coverage · Reduced stress over health expenses</option>
+<option value="3.14||Percentage of women receiving specific benefits through SHA · Timely medical attention">Benefits received t…Authority (SHA) coverage · Timely medical attention</option>
+<option value="3.15||Percentage of women satisfied with · Availability of SHA services">Satisfaction with s…l Health Authority (SHA) · Availability of SHA services</option>
+<option value="3.15||Percentage of women satisfied with · Communication and public information provided">Satisfaction with s…l Health Authority (SHA) · Communication and public information provided</option>
+<option value="3.15||Percentage of women satisfied with · Coverage of essential medicines and diagnostics">Satisfaction with s…l Health Authority (SHA) · Coverage of essential medicines and diagnostics</option>
+<option value="3.15||Percentage of women satisfied with · Overall satisfaction">Satisfaction with s…l Health Authority (SHA) · Overall satisfaction</option>
+<option value="3.15||Percentage of women satisfied with · Quality of services">Satisfaction with s…l Health Authority (SHA) · Quality of services</option>
+<option value="3.15||Percentage of women satisfied with · Respect by health care workers">Satisfaction with s…l Health Authority (SHA) · Respect by health care workers</option>
+<option value="3.15||Percentage of women satisfied with · Timeliness of service">Satisfaction with s…l Health Authority (SHA) · Timeliness of service</option>
+<option value="3.15||Percentage of women who would recommend SHA services">Satisfaction with s…l Health Authority (SHA) · Percentage of women who would recommend SHA services</option>
+<option value="3.2||Highest level of schooling · Completed primary">Education · Completed primary</option>
+<option value="3.2||Highest level of schooling · Completed secondary">Education · Completed secondary</option>
+<option value="3.2||Highest level of schooling · Missing">Education · Missing</option>
+<option value="3.2||Highest level of schooling · More than secondary">Education · More than secondary</option>
+<option value="3.2||Highest level of schooling · No education">Education · No education</option>
+<option value="3.2||Highest level of schooling · Some primary">Education · Some primary</option>
+<option value="3.2||Highest level of schooling · Some secondary">Education · Some secondary</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · Blind/ visually impaired">Literacy · Blind/ visually impaired</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · Can read a whole sentence">Literacy · Can read a whole sentence</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · Can read part of a sentence">Literacy · Can read part of a sentence</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · Cannot read at all">Literacy · Cannot read at all</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · No card with required language">Literacy · No card with required language</option>
+<option value="3.3||Higher than secondary schooling">Literacy · Higher than secondary schooling</option>
+<option value="3.4||Accesses all three media at least once a week">Exposure to mass media · Accesses all three media at least once a week</option>
+<option value="3.4||Accesses none of the three media at least once a week">Exposure to mass media · Accesses none of the t…media at least once a week</option>
+<option value="3.4||Listens to the radio at least once a week">Exposure to mass media · Listens to the radio at least once a week</option>
+<option value="3.4||Reads a newspaper at least once a week">Exposure to mass media · Reads a newspaper at least once a week</option>
+<option value="3.4||Watches television at least once a week">Exposure to mass media · Watches television at least once a week</option>
+<option value="3.5||Almost every day">Internet usage · Almost every day</option>
+<option value="3.5||At least once a week">Internet usage · At least once a week</option>
+<option value="3.5||Ever used the internet">Internet usage · Ever used the internet</option>
+<option value="3.5||Less than once a week">Internet usage · Less than once a week</option>
+<option value="3.5||Not at all">Internet usage · Not at all</option>
+<option value="3.6||Percent distribution by residence and place of birth · Always lived in current place of residence">Place of birth and recent migration · Always lived in current place of residence</option>
+<option value="3.6||Percent distribution by residence and place of birth · Born in Kenya but outside of current place of residence">Place of birth and recent migration · Born in Kenya but outs…current place of residence</option>
+<option value="3.6||Percent distribution by residence and place of birth · Born outside of Kenya">Place of birth and recent migration · Born outside of Kenya</option>
+<option value="3.8||Economic reasons/business">Reasons for migration · Economic reasons/business</option>
+<option value="3.8||Education/ training">Reasons for migration · Education/ training</option>
+<option value="3.8||Family reunification/ other family-related reason">Reasons for migration · Family reunification/ other family-related reason</option>
+<option value="3.8||Forced displacement">Reasons for migration · Forced displacement</option>
+<option value="3.8||Marriage formation">Reasons for migration · Marriage formation</option>
+<option value="3.8||Other">Reasons for migration · Other</option>
+<option value="3.9||Percentage of women registered with SHA">Social Health Authority (SHA) registration · Percentage of women registered with SHA</option>
+</optgroup>
+<optgroup label="WASH">
+<option value="13.2||At least basic service">Drinking water service ladder · At least basic service</option>
+<option value="13.2||Limited service">Drinking water service ladder · Limited service</option>
+<option value="13.2||Surface water">Drinking water service ladder · Surface water</option>
+<option value="13.2||Unimproved">Drinking water service ladder · Unimproved</option>
+<option value="13.4||At least basic service">Sanitation service ladder · At least basic service</option>
+<option value="13.4||Limited service">Sanitation service ladder · Limited service</option>
+<option value="13.4||Open defecation">Sanitation service ladder · Open defecation</option>
+<option value="13.4||Unimproved">Sanitation service ladder · Unimproved</option>
+<option value="13.5||Buried in a covered pit">Emptying and remova…te sanitation facilities · Buried in a covered pit</option>
+<option value="13.5||Don&#39;t know if ever emptied">Emptying and remova…te sanitation facilities · Don't know if ever emptied</option>
+<option value="13.5||Don&#39;t know where wastes are taken">Emptying and remova…te sanitation facilities · Don't know where wastes are taken</option>
+<option value="13.5||Never emptied">Emptying and remova…te sanitation facilities · Never emptied</option>
+<option value="13.5||Other">Emptying and remova…te sanitation facilities · Other</option>
+<option value="13.5||Percentage of population with on-site sanitation facilities for which · Excreta are disposed of unsafely">Emptying and remova…te sanitation facilities · Excreta are disposed of unsafely</option>
+<option value="13.5||Percentage of population with on-site sanitation facilities for which · Excreta are removed for treatment">Emptying and remova…te sanitation facilities · Excreta are removed for treatment</option>
+<option value="13.5||Percentage of population with on-site sanitation facilities for which · Excreta are safely disposed of in situ">Emptying and remova…te sanitation facilities · Excreta are safely disposed of in situ</option>
+<option value="13.5||Removed by a service provider to treatment plant">Emptying and remova…te sanitation facilities · Removed by a service provider to treatment plant</option>
+<option value="13.5||Removed by a service provider, don&#39;t know to where">Emptying and remova…te sanitation facilities · Removed by a service provider, don't know to where</option>
+<option value="13.5||Taken to uncovered pit, open ground, water body, or elsewhere">Emptying and remova…te sanitation facilities · Taken to uncovered pit…d, water body, or elsewhere</option>
+<option value="13.6||Connected to sewer">Management of household excreta · Connected to sewer</option>
+<option value="13.6||Percentage connected to sewer, safely disposed of on-site, or removed for treat">Management of household excreta · Percentage connected t…-site, or removed for treat</option>
+<option value="13.6||Practicing open defecation">Management of household excreta · Practicing open defecation</option>
+<option value="13.6||Using improved on-site sanitation facilities · Removal of excreta for treatment offsite">Management of household excreta · Removal of excreta for treatment offsite</option>
+<option value="13.6||Using improved on-site sanitation facilities · Safe disposal in situ of excreta from on-site sanitation facilities">Management of household excreta · Safe disposal in situ…-site sanitation facilities</option>
+<option value="13.6||Using improved on-site sanitation facilities · Unsafe disposal of excreta from on-site sanitation facilities">Management of household excreta · Unsafe disposal of exc…-site sanitation facilities</option>
+<option value="13.6||Using improved sanitation facilities, on-site status unknown">Management of household excreta · Using improved sanitat…ies, on-site status unknown</option>
+<option value="13.6||Using unimproved sanitation facilities">Management of household excreta · Using unimproved sanitation facilities</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Buried">Disposal of children's stools · Buried</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Child used toilet or latrine">Disposal of children's stools · Child used toilet or latrine</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Don&#39;t know">Disposal of children's stools · Don't know</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Left in the open">Disposal of children's stools · Left in the open</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Other">Disposal of children's stools · Other</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Put/rinsed into drain or ditch">Disposal of children's stools · Put/rinsed into drain or ditch</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Put/rinsed into toilet or latrine">Disposal of children's stools · Put/rinsed into toilet or latrine</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Thrown into garbage">Disposal of children's stools · Thrown into garbage</option>
+<option value="13.7||Percentage of children whose stools are disposed of appropriately">Disposal of children's stools · Percentage of children…e disposed of appropriately</option>
+<option value="13.8||Percentage of de jure population for whom place for washing hands was observed · Place for handwashing was a fixed place">Handwashing · Place for handwashing was a fixed place</option>
+<option value="13.8||Percentage of de jure population for whom place for washing hands was observed · Place for handwashing was mobile">Handwashing · Place for handwashing was mobile</option>
+<option value="13.8||Percentage of the de jure population with a basic handwashing facility">Handwashing · Percentage of the de j…basic handwashing facility</option>
+<option value="13.8||Percentage of the de jure population with a limited handwashing facility">Handwashing · Percentage of the de j…imited handwashing facility</option>
+<option value="13.8||Place for handwashing observed and · Cleansing agent other than soap available">Handwashing · Cleansing agent other than soap available</option>
+<option value="13.8||Place for handwashing observed and · Soap available">Handwashing · Soap available</option>
+<option value="13.8||Place for handwashing observed and · Water available">Handwashing · Water available</option>
+<option value="13.9||Cloth">Menstrual hygiene · Cloth</option>
+<option value="13.9||Cotton wool">Menstrual hygiene · Cotton wool</option>
+<option value="13.9||Disposable sanitary pads">Menstrual hygiene · Disposable sanitary pads</option>
+<option value="13.9||Menstrual cup">Menstrual hygiene · Menstrual cup</option>
+<option value="13.9||Nothing">Menstrual hygiene · Nothing</option>
+<option value="13.9||Other">Menstrual hygiene · Other</option>
+<option value="13.9||Percentage able to wash and change in privacy">Menstrual hygiene · Percentage able to wash and change in privacy</option>
+<option value="13.9||Percentage able to wash and change in privacy and who used appropriate materia">Menstrual hygiene · Percentage able to was…ho used appropriate materia</option>
+<option value="13.9||Reusable sanitary pads">Menstrual hygiene · Reusable sanitary pads</option>
+<option value="13.9||Tampons">Menstrual hygiene · Tampons</option>
+<option value="13.9||Toilet paper">Menstrual hygiene · Toilet paper</option>
+<option value="13.9||Underwear only">Menstrual hygiene · Underwear only</option>
+</optgroup></select>
+              <script type="application/json" data-for="map-measure" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+            </div>
+          </div>
+        </div>
+        <div id="map-reading"></div>
+        <div class="map-grid">
+          <div class="plot">
+            <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="map-map" style="width:100%;height:760px;"></div>
+          </div>
+          <div class="plot">
+            <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="map-rank" style="width:100%;height:1280px;"></div>
+          </div>
+        </div>
+        <div class="table-block__head">
+          <span class="table-block__title">All 47 counties on this measure, as a spreadsheet</span>
+          <div class="table-block__tools">
+            <a aria-disabled="true" class="shiny-download-link disabled dl-btn" download href="" id="map-dl" tabindex="-1" target="_blank">Download this measure (CSV)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="pane" data-page="ctrends">
+    <section class="trends">
+      <div class="shell">
+        <span class="eyebrow">Across the counties, across the rounds</span>
+        <h2 class="chapter-title">County performance trends</h2>
+        <p class="lead">245 measures can be followed county by county across more than one round. Every figure is as published; nothing here is estimated or filled in.</p>
+        <div class="controls">
+          <div class="form-group field">
+            <label class="control-label" id="ctrends-measure-label" for="ctrends-measure">Measure</label>
+            <div>
+              <select id="ctrends-measure" class="shiny-input-select"><optgroup label="Family planning">
+<option value="7.14.1||Met need for family planning (currently using) · For limiting">Need and demand for…currently married women · Met need for family pl…ently using) · For limiting</option>
+<option value="7.14.1||Met need for family planning (currently using) · For spacing">Need and demand for…currently married women · Met need for family pl…rently using) · For spacing</option>
+<option value="7.14.1||Percentage of demand satisfied">Need and demand for…currently married women · Percentage of demand satisfied</option>
+<option value="7.14.1||Percentage of demand satisfied by modern methods">Need and demand for…currently married women · Percentage of demand satisfied by modern methods</option>
+<option value="7.14.1||Total demand for family planning1 · For limiting">Need and demand for…currently married women · Total demand for family planning1 · For limiting</option>
+<option value="7.14.1||Total demand for family planning1 · For spacing">Need and demand for…currently married women · Total demand for family planning1 · For spacing</option>
+<option value="7.14.1||Unmet need for family planning · For limiting">Need and demand for…currently married women · Unmet need for family planning · For limiting</option>
+<option value="7.14.1||Unmet need for family planning · For spacing">Need and demand for…currently married women · Unmet need for family planning · For spacing</option>
+<option value="7.17||Percentage of women who did not discuss family planning either with a fieldworke">Contact of non-user…amily planning providers · Percentage of women wh…ng either with a fieldworke</option>
+<option value="7.17||Percentage of women who visited a health facility in the past 12 months and who · Did not discuss family planning">Contact of non-user…amily planning providers · Did not discuss family planning</option>
+<option value="7.17||Percentage of women who visited a health facility in the past 12 months and who · Discussed family planning">Contact of non-user…amily planning providers · Discussed family planning</option>
+<option value="7.17||Percentage of women who were visited by a fieldworker who discussed family plann">Contact of non-user…amily planning providers · Percentage of women wh…who discussed family plann</option>
+<option value="7.2||Heard of any method">Knowledge of contra…ckground characteristics · Heard of any method</option>
+<option value="7.2||Heard of any modern method">Knowledge of contra…ckground characteristics · Heard of any modern method</option>
+<option value="7.4.2||Any method">Current use of cont…ckground characteristics · Any method</option>
+<option value="7.4.2||Any modern method">Current use of cont…ckground characteristics · Any modern method</option>
+<option value="7.4.2||Any traditional method">Current use of cont…ckground characteristics · Any traditional method</option>
+<option value="7.4.2||Modern method · Emergency contraception">Current use of cont…ckground characteristics · Modern method · Emergency contraception</option>
+<option value="7.4.2||Modern method · Female sterilisation">Current use of cont…ckground characteristics · Modern method · Female sterilisation</option>
+<option value="7.4.2||Modern method · IUD">Current use of cont…ckground characteristics · Modern method · IUD</option>
+<option value="7.4.2||Modern method · Implants">Current use of cont…ckground characteristics · Modern method · Implants</option>
+<option value="7.4.2||Modern method · Injectables">Current use of cont…ckground characteristics · Modern method · Injectables</option>
+<option value="7.4.2||Modern method · LAM">Current use of cont…ckground characteristics · Modern method · LAM</option>
+<option value="7.4.2||Modern method · Male condoms">Current use of cont…ckground characteristics · Modern method · Male condoms</option>
+<option value="7.4.2||Modern method · Male sterilisation">Current use of cont…ckground characteristics · Modern method · Male sterilisation</option>
+<option value="7.4.2||Modern method · Other">Current use of cont…ckground characteristics · Modern method · Other</option>
+<option value="7.4.2||Modern method · Pills">Current use of cont…ckground characteristics · Modern method · Pills</option>
+<option value="7.4.2||Modern method · SDM">Current use of cont…ckground characteristics · Modern method · SDM</option>
+<option value="7.4.2||Not currently using">Current use of cont…ckground characteristics · Not currently using</option>
+<option value="7.4.2||Traditional method · Other">Current use of cont…ckground characteristics · Traditional method · Other</option>
+<option value="7.4.2||Traditional method · Rhythm">Current use of cont…ckground characteristics · Traditional method · Rhythm</option>
+<option value="7.4.2||Traditional method · Withdrawal">Current use of cont…ckground characteristics · Traditional method · Withdrawal</option>
+<option value="7.7||Percentage who used emergency contraception">Use of emergency contraception · Percentage who used emergency contraception</option>
+</optgroup>
+<optgroup label="Fertility">
+<option value="5.12||Percentage of women age 15-19 who · Are currently pregnant">Teenage pregnancy · Are currently pregnant</option>
+<option value="5.12||Percentage of women age 15-19 who · Have ever been pregnant">Teenage pregnancy · Have ever been pregnant</option>
+<option value="5.12||Percentage of women age 15-19 who · Have ever had a live birth">Teenage pregnancy · Have ever had a live birth</option>
+<option value="5.12||Percentage of women age 15-19 who · Have ever had a pregnancy loss">Teenage pregnancy · Have ever had a pregnancy loss</option>
+<option value="5.14||Pregnancy outcome · Induced abortion">Pregnancy outcomes…ckground characteristics · Induced abortion</option>
+<option value="5.14||Pregnancy outcome · Live birth">Pregnancy outcomes…ckground characteristics · Live birth</option>
+<option value="5.14||Pregnancy outcome · Miscarriage">Pregnancy outcomes…ckground characteristics · Miscarriage</option>
+<option value="5.14||Pregnancy outcome · Stillbirth">Pregnancy outcomes…ckground characteristics · Stillbirth</option>
+<option value="5.2||Mean number of children ever born to women age 40-49">Fertility by background characteristics · Mean number of children ever born to women age 40-49</option>
+<option value="5.2||Percentage of women age 15-49 currently pregnant">Fertility by background characteristics · Percentage of women age 15-49 currently pregnant</option>
+<option value="5.2||Total fertility rate">Fertility by background characteristics · Total fertility rate</option>
+<option value="5.5||Median number of months since preceding birth">Birth intervals · Median number of months since preceding birth</option>
+<option value="5.5||Months since preceding birth · 18-23">Birth intervals · 18-23</option>
+<option value="5.5||Months since preceding birth · 24-35">Birth intervals · 24-35</option>
+<option value="5.5||Months since preceding birth · 36-47">Birth intervals · 36-47</option>
+<option value="5.5||Months since preceding birth · 48-59">Birth intervals · 48-59</option>
+<option value="5.5||Months since preceding birth · 60+">Birth intervals · 60+</option>
+<option value="5.5||Months since preceding birth · 7-17">Birth intervals · 7-17</option>
+</optgroup>
+<optgroup label="Malaria">
+<option value="12.1||Any mosquito net">Household possession of mosquito nets · Any mosquito net</option>
+<option value="12.1||Average number of nets per household · Any mosquito net">Household possession of mosquito nets · Average number of nets…ousehold · Any mosquito net</option>
+<option value="12.1||Average number of nets per household · Insecticide-treated mosquito net (ITN)">Household possession of mosquito nets · Average number of nets…-treated mosquito net (ITN)</option>
+<option value="12.1||Insecticide-treated mosquito net (ITN)">Household possession of mosquito nets · Insecticide-treated mosquito net (ITN)</option>
+<option value="12.1||Percentage of households with at least one mosquito net · Any mosquito net">Household possession of mosquito nets · Percentage of househol…uito net · Any mosquito net</option>
+<option value="12.1||Percentage of households with at least one mosquito net · Insecticide-treated mosquito net (ITN)">Household possession of mosquito nets · Percentage of househol…-treated mosquito net (ITN)</option>
+<option value="12.2||ANC visit">Source of mosquito nets · ANC visit</option>
+<option value="12.2||Child welfare visit/ immunisation visit">Source of mosquito nets · Child welfare visit/ immunisation visit</option>
+<option value="12.2||Community health worker">Source of mosquito nets · Community health worker</option>
+<option value="12.2||Don&#39;t know/ missing">Source of mosquito nets · Don't know/ missing</option>
+<option value="12.2||Government health facility">Source of mosquito nets · Government health facility</option>
+<option value="12.2||Mass distribution campaign">Source of mosquito nets · Mass distribution campaign</option>
+<option value="12.2||Other">Source of mosquito nets · Other</option>
+<option value="12.2||Pharmacy">Source of mosquito nets · Pharmacy</option>
+<option value="12.2||Private health facility">Source of mosquito nets · Private health facility</option>
+<option value="12.2||Religious institution">Source of mosquito nets · Religious institution</option>
+<option value="12.2||School">Source of mosquito nets · School</option>
+<option value="12.2||Shop/ market">Source of mosquito nets · Shop/ market</option>
+<option value="12.3||Percentage of the de facto population with access to an ITN1,2">Access to an insecticide-treated net (ITN) · Percentage of the de f…on with access to an ITN1,2</option>
+<option value="12.4||Household population in households with at least one ITN1 · Percentage who slept under an ITN1 last night">Use of mosquito net…persons in the household · Household population i…pt under an ITN1 last night</option>
+<option value="12.4||Household population · Percentage who slept under an ITN1 last night">Use of mosquito net…persons in the household · Household population ·…pt under an ITN1 last night</option>
+<option value="12.4||Household population · Percentage who slept under any mosquito net last night">Use of mosquito net…persons in the household · Household population ·…any mosquito net last night</option>
+<option value="12.6||Children under age 5 in all households · Percentage who slept under an ITN1 last night">Use of mosquito nets by children · Children under age 5 in all hou…ntage who slept under an ITN1 last night</option>
+<option value="12.6||Children under age 5 in all households · Percentage who slept under any mosquito net last night">Use of mosquito nets by children · Children under age 5 i…any mosquito net last night</option>
+<option value="12.6||Children under age 5 in households with at least one ITN1 · Percentage who slept under an ITN1 last night">Use of mosquito nets by children · Children under age 5 in househo…ntage who slept under an ITN1 last night</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Don&#39;t like net shape, colour, and/or size">Main reason mosquit…night before the survey · Don't like net shape, colour, and/or size</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Don&#39;t like smell">Main reason mosquit…night before the survey · Don't like smell</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Extra net/ saving for later">Main reason mosquit…night before the survey · Extra net/ saving for later</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Net brought bed-bugs">Main reason mosquit…night before the survey · Net brought bed-bugs</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Net too small/ short">Main reason mosquit…night before the survey · Net too small/ short</option>
+<option value="12.8||Main reason each net was not used the night before the survey · No mosquitoes/ no malaria">Main reason mosquit…night before the survey · No mosquitoes/ no malaria</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Other">Main reason mosquit…night before the survey · Other</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Slept outdoors">Main reason mosquit…night before the survey · Slept outdoors</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Too hot">Main reason mosquit…night before the survey · Too hot</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Unable to hang net">Main reason mosquit…night before the survey · Unable to hang net</option>
+<option value="12.8||Main reason each net was not used the night before the survey · Usual user didn&#39;t sleep in household last night">Main reason mosquit…night before the survey · Usual user didn't sleep in household last night</option>
+<option value="12.8||Percentage of nets not used the night before the survey">Main reason mosquit…night before the survey · Percentage of nets not…the night before the survey</option>
+<option value="12.9||Percentage who received one or more doses of SP/Fansidar">Use of Intermi…during pregnancy · Percentage who received one or more doses of SP/Fansidar</option>
+<option value="12.9||Percentage who received three or more doses of SP/Fansidar">Use of Intermi…during pregnancy · Percentage who received three or more doses of SP/Fansidar</option>
+<option value="12.9||Percentage who received two or more doses of SP/Fansidar">Use of Intermi…during pregnancy · Percentage who received two or more doses of SP/Fansidar</option>
+</optgroup>
+<optgroup label="Maternal health">
+<option value="9.1||ANC provider · Community health worker/ fieldworker">Antenatal care · Community health worker/ fieldworker</option>
+<option value="9.1||ANC provider · Doctor">Antenatal care · Doctor</option>
+<option value="9.1||ANC provider · Nurse/ midwife/ clinical officer">Antenatal care · Nurse/ midwife/ clinical officer</option>
+<option value="9.1||ANC provider · Traditional birth attendant">Antenatal care · Traditional birth attendant</option>
+<option value="9.1||No ANC">Antenatal care · No ANC</option>
+<option value="9.1||Percentage receiving ANC from a skilled provider">Antenatal care · Percentage receiving ANC from a skilled provider</option>
+<option value="9.11||No postnatal check">Timing of first postnatal check for the mother · No postnatal check</option>
+<option value="9.11||Percentage of women with a postnatal check during the first 2 days after birth">Timing of first postnatal check for the mother · Percentage of women wi…he first 2 days after birth</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · 1-2 days">Timing of first postnatal check for the mother · 1-2 days</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · 3-6 days">Timing of first postnatal check for the mother · 3-6 days</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · 4-23 hours">Timing of first postnatal check for the mother · 4-23 hours</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · 7-41 days">Timing of first postnatal check for the mother · 7-41 days</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · &lt;4 hours">Timing of first postnatal check for the mother · &lt;4 hours</option>
+<option value="9.11||Time after delivery of mother&#39;s first postnatal check1 · Don&#39;t know/ missing">Timing of first postnatal check for the mother · Don't know/ missing</option>
+<option value="9.12||No postnatal check during the first 2 days after birth">Type of provider of…tal check for the mother · No postnatal check dur…he first 2 days after birth</option>
+<option value="9.12||Type of health provider of mother&#39;s first postnatal check · Community health worker/ fieldworker">Type of provider of…tal check for the mother · Community health worker/ fieldworker</option>
+<option value="9.12||Type of health provider of mother&#39;s first postnatal check · Doctor/nurse/ midwife/clinical officer">Type of provider of…tal check for the mother · Doctor/nurse/ midwife/clinical officer</option>
+<option value="9.12||Type of health provider of mother&#39;s first postnatal check · Traditional birth attendant">Type of provider of…tal check for the mother · Traditional birth attendant</option>
+<option value="9.13||Discussed family planning">Content of postnatal care for the mother · Discussed family planning</option>
+<option value="9.13||Discussed vaginal bleeding">Content of postnatal care for the mother · Discussed vaginal bleeding</option>
+<option value="9.13||Measured blood pressure">Content of postnatal care for the mother · Measured blood pressure</option>
+<option value="9.13||Percentage with all three checks performed in the first 2 days after birth">Content of postnatal care for the mother · Percentage with all th…he first 2 days after birth</option>
+<option value="9.14||No postnatal check">Timing of first pos…al check for the newborn · No postnatal check</option>
+<option value="9.14||Percentage of births with a postnatal check during the first 2 days after birth">Timing of first pos…al check for the newborn · Percentage of births w…he first 2 days after birth</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · 1-2 days">Timing of first pos…al check for the newborn · 1-2 days</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · 1-3 hours">Timing of first pos…al check for the newborn · 1-3 hours</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · 3-6 days">Timing of first pos…al check for the newborn · 3-6 days</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · 4-23 hours">Timing of first pos…al check for the newborn · 4-23 hours</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · &lt;1 hour">Timing of first pos…al check for the newborn · &lt;1 hour</option>
+<option value="9.14||Time after delivery of newborn&#39;s first postnatal check1 · Don&#39;t know">Timing of first pos…al check for the newborn · Don't know</option>
+<option value="9.3.1||Asked about vaginal bleeding">Components of anten…receiving antenatal care · Asked about vaginal bleeding</option>
+<option value="9.3.1||Baby&#39;s heartbeat listened for">Components of anten…receiving antenatal care · Baby's heartbeat listened for</option>
+<option value="9.3.1||Blood pressure measured">Components of anten…receiving antenatal care · Blood pressure measured</option>
+<option value="9.3.1||Blood sample taken">Components of anten…receiving antenatal care · Blood sample taken</option>
+<option value="9.3.1||Counselled about breastfeeding">Components of anten…receiving antenatal care · Counselled about breastfeeding</option>
+<option value="9.3.1||Counselled about maternal diet">Components of anten…receiving antenatal care · Counselled about maternal diet</option>
+<option value="9.3.1||Urine sample taken">Components of anten…receiving antenatal care · Urine sample taken</option>
+<option value="9.3.2||Asked about vaginal bleeding">Components of antenatal care among all women · Asked about vaginal bleeding</option>
+<option value="9.3.2||Baby&#39;s heartbeat listened for">Components of antenatal care among all women · Baby's heartbeat listened for</option>
+<option value="9.3.2||Blood pressure measured">Components of antenatal care among all women · Blood pressure measured</option>
+<option value="9.3.2||Blood sample taken">Components of antenatal care among all women · Blood sample taken</option>
+<option value="9.3.2||Counselled about breastfeeding">Components of antenatal care among all women · Counselled about breastfeeding</option>
+<option value="9.3.2||Counselled about maternal diet">Components of antenatal care among all women · Counselled about maternal diet</option>
+<option value="9.3.2||Urine sample taken">Components of antenatal care among all women · Urine sample taken</option>
+<option value="9.4||180+">Deworming and iron-…ntation during pregnancy · 180+</option>
+<option value="9.4||60-89">Deworming and iron-…ntation during pregnancy · 60-89</option>
+<option value="9.4||90-179">Deworming and iron-…ntation during pregnancy · 90-179</option>
+<option value="9.4||&lt;60">Deworming and iron-…ntation during pregnancy · &lt;60</option>
+<option value="9.4||Don&#39;t know">Deworming and iron-…ntation during pregnancy · Don't know</option>
+<option value="9.4||None">Deworming and iron-…ntation during pregnancy · None</option>
+<option value="9.4||Took any iron-containing supplements">Deworming and iron-…ntation during pregnancy · Took any iron-containing supplements</option>
+<option value="9.4||Took deworming medication">Deworming and iron-…ntation during pregnancy · Took deworming medication</option>
+<option value="9.7||Health facility · Public sector">Place of delivery · Public sector</option>
+<option value="9.7||Home">Place of delivery · Home</option>
+<option value="9.7||Other">Place of delivery · Other</option>
+<option value="9.7||Percentage delivered in a health facility">Place of delivery · Percentage delivered in a health facility</option>
+<option value="9.9||Percentage delivered by a skilled provider">Assistance during delivery · Percentage delivered by a skilled provider</option>
+<option value="9.9||Person providing assistance during delivery · Doctor">Assistance during delivery · Doctor</option>
+<option value="9.9||Person providing assistance during delivery · No one">Assistance during delivery · No one</option>
+<option value="9.9||Person providing assistance during delivery · Nurse/ midwife/ clinical officer">Assistance during delivery · Nurse/ midwife/ clinical officer</option>
+<option value="9.9||Person providing assistance during delivery · Relative/ friend/other">Assistance during delivery · Relative/ friend/other</option>
+<option value="9.9||Person providing assistance during delivery · Traditional birth attendant">Assistance during delivery · Traditional birth attendant</option>
+</optgroup>
+<optgroup label="Nutrition">
+<option value="11.11||Among children age 12-59 months · Percentage given deworming medication in past 6 months">Micronutrient suppl…deworming among children · Percentage given dewor…medication in past 6 months</option>
+<option value="11.11||Among children age 6-59 months · Percentage given iron tablets or syrups in past 12 months">Micronutrient suppl…deworming among children · Percentage given iron…or syrups in past 12 months</option>
+<option value="11.11||Among children age 6-59 months · Percentage given iron-containing supplements in past 12 months">Micronutrient suppl…deworming among children · Percentage given iron-…pplements in past 12 months</option>
+<option value="11.11||Among children age 6-59 months · Percentage given micronutrient powders in past 12 months">Micronutrient suppl…deworming among children · Percentage given micro…t powders in past 12 months</option>
+<option value="11.11||Among children age 6-59 months · Percentage given vitamin A supplements in past 6 months">Micronutrient suppl…deworming among children · Percentage given vitam…upplements in past 6 months</option>
+</optgroup>
+<optgroup label="Respondents">
+<option value="3.2||Highest level of schooling · Completed primary" selected>Education · Completed primary</option>
+<option value="3.2||Highest level of schooling · Completed secondary">Education · Completed secondary</option>
+<option value="3.2||Highest level of schooling · Missing">Education · Missing</option>
+<option value="3.2||Highest level of schooling · More than secondary">Education · More than secondary</option>
+<option value="3.2||Highest level of schooling · No education">Education · No education</option>
+<option value="3.2||Highest level of schooling · Some primary">Education · Some primary</option>
+<option value="3.2||Highest level of schooling · Some secondary">Education · Some secondary</option>
+<option value="3.2||Median years completed">Education · Median years completed</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · Blind/ visually impaired">Literacy · Blind/ visually impaired</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · Can read a whole sentence">Literacy · Can read a whole sentence</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · Can read part of a sentence">Literacy · Can read part of a sentence</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · Cannot read at all">Literacy · Cannot read at all</option>
+<option value="3.3||Among women with no, primary, or secondary schooling · No card with required language">Literacy · No card with required language</option>
+<option value="3.3||Higher than secondary schooling">Literacy · Higher than secondary schooling</option>
+<option value="3.3||Percentage literate">Literacy · Percentage literate</option>
+<option value="3.4||Accesses all three media at least once a week">Exposure to mass media · Accesses all three media at least once a week</option>
+<option value="3.4||Accesses none of the three media at least once a week">Exposure to mass media · Accesses none of the t…media at least once a week</option>
+<option value="3.4||Listens to the radio at least once a week">Exposure to mass media · Listens to the radio at least once a week</option>
+<option value="3.4||Reads a newspaper at least once a week">Exposure to mass media · Reads a newspaper at least once a week</option>
+<option value="3.4||Watches television at least once a week">Exposure to mass media · Watches television at least once a week</option>
+<option value="3.5||Almost every day">Internet usage · Almost every day</option>
+<option value="3.5||At least once a week">Internet usage · At least once a week</option>
+<option value="3.5||Ever used the internet">Internet usage · Ever used the internet</option>
+<option value="3.5||Less than once a week">Internet usage · Less than once a week</option>
+<option value="3.5||Not at all">Internet usage · Not at all</option>
+<option value="3.5||Used the internet in the past 12 months">Internet usage · Used the internet in the past 12 months</option>
+<option value="3.6||Among women who were born outside of current place of residence · Percentage who moved to current place of residence in the past 5 years">Place of birth and recent migration · Percentage who moved t…sidence in the past 5 years</option>
+<option value="3.6||Percent distribution by residence and place of birth · Born in Kenya but outside of current place of residence">Place of birth and recent migration · Born in Kenya but outs…current place of residence</option>
+<option value="3.6||Percent distribution by residence and place of birth · Born outside of Kenya">Place of birth and recent migration · Born outside of Kenya</option>
+<option value="3.8||Education/ training">Reasons for migration · Education/ training</option>
+<option value="3.8||Family reunification/ other family-related reason">Reasons for migration · Family reunification/ other family-related reason</option>
+<option value="3.8||Forced displacement">Reasons for migration · Forced displacement</option>
+<option value="3.8||Other">Reasons for migration · Other</option>
+</optgroup>
+<optgroup label="WASH">
+<option value="13.2||At least basic service">Drinking water service ladder · At least basic service</option>
+<option value="13.2||Limited service">Drinking water service ladder · Limited service</option>
+<option value="13.2||Surface water">Drinking water service ladder · Surface water</option>
+<option value="13.2||Unimproved">Drinking water service ladder · Unimproved</option>
+<option value="13.4||At least basic service">Sanitation service ladder · At least basic service</option>
+<option value="13.4||Limited service">Sanitation service ladder · Limited service</option>
+<option value="13.4||Open defecation">Sanitation service ladder · Open defecation</option>
+<option value="13.4||Unimproved">Sanitation service ladder · Unimproved</option>
+<option value="13.5||Buried in a covered pit">Emptying and remova…te sanitation facilities · Buried in a covered pit</option>
+<option value="13.5||Don&#39;t know if ever emptied">Emptying and remova…te sanitation facilities · Don't know if ever emptied</option>
+<option value="13.5||Don&#39;t know where wastes are taken">Emptying and remova…te sanitation facilities · Don't know where wastes are taken</option>
+<option value="13.5||Never emptied">Emptying and remova…te sanitation facilities · Never emptied</option>
+<option value="13.5||Other">Emptying and remova…te sanitation facilities · Other</option>
+<option value="13.5||Percentage of population with on-site sanitation facilities for which · Excreta are disposed of unsafely">Emptying and remova…te sanitation facilities · Excreta are disposed of unsafely</option>
+<option value="13.5||Percentage of population with on-site sanitation facilities for which · Excreta are removed for treatment">Emptying and remova…te sanitation facilities · Excreta are removed for treatment</option>
+<option value="13.5||Removed by a service provider to treatment plant">Emptying and remova…te sanitation facilities · Removed by a service provider to treatment plant</option>
+<option value="13.5||Removed by a service provider, don&#39;t know to where">Emptying and remova…te sanitation facilities · Removed by a service provider, don't know to where</option>
+<option value="13.5||Taken to uncovered pit, open ground, water body, or elsewhere">Emptying and remova…te sanitation facilities · Taken to uncovered pit…d, water body, or elsewhere</option>
+<option value="13.6||Connected to sewer">Management of household excreta · Connected to sewer</option>
+<option value="13.6||Percentage connected to sewer, safely disposed of on-site, or removed for treat">Management of household excreta · Percentage connected t…-site, or removed for treat</option>
+<option value="13.6||Practicing open defecation">Management of household excreta · Practicing open defecation</option>
+<option value="13.6||Using improved on-site sanitation facilities · Removal of excreta for treatment offsite">Management of household excreta · Removal of excreta for treatment offsite</option>
+<option value="13.6||Using improved on-site sanitation facilities · Safe disposal in situ of excreta from on-site sanitation facilities">Management of household excreta · Safe disposal in situ…-site sanitation facilities</option>
+<option value="13.6||Using improved on-site sanitation facilities · Unsafe disposal of excreta from on-site sanitation facilities">Management of household excreta · Unsafe disposal of exc…-site sanitation facilities</option>
+<option value="13.6||Using improved sanitation facilities, on-site status unknown">Management of household excreta · Using improved sanitat…ies, on-site status unknown</option>
+<option value="13.6||Using unimproved sanitation facilities">Management of household excreta · Using unimproved sanitation facilities</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Buried">Disposal of children's stools · Buried</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Child used toilet or latrine">Disposal of children's stools · Child used toilet or latrine</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Don&#39;t know">Disposal of children's stools · Don't know</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Left in the open">Disposal of children's stools · Left in the open</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Other">Disposal of children's stools · Other</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Put/rinsed into drain or ditch">Disposal of children's stools · Put/rinsed into drain or ditch</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Put/rinsed into toilet or latrine">Disposal of children's stools · Put/rinsed into toilet or latrine</option>
+<option value="13.7||Manner of disposal of children&#39;s stools · Thrown into garbage">Disposal of children's stools · Thrown into garbage</option>
+<option value="13.7||Percentage of children whose stools are disposed of appropriately">Disposal of children's stools · Percentage of children…e disposed of appropriately</option>
+<option value="13.8||Percentage of de jure population for whom place for washing hands was observed · Place for handwashing was a fixed place">Handwashing · Place for handwashing was a fixed place</option>
+<option value="13.8||Percentage of de jure population for whom place for washing hands was observed · Place for handwashing was mobile">Handwashing · Place for handwashing was mobile</option>
+<option value="13.8||Percentage of the de jure population with a basic handwashing facility">Handwashing · Percentage of the de j…basic handwashing facility</option>
+<option value="13.8||Percentage of the de jure population with a limited handwashing facility">Handwashing · Percentage of the de j…imited handwashing facility</option>
+<option value="13.8||Place for handwashing observed and · Cleansing agent other than soap available">Handwashing · Cleansing agent other than soap available</option>
+<option value="13.8||Place for handwashing observed and · Soap available">Handwashing · Soap available</option>
+<option value="13.8||Place for handwashing observed and · Water available">Handwashing · Water available</option>
+<option value="13.9||Cloth">Menstrual hygiene · Cloth</option>
+<option value="13.9||Cotton wool">Menstrual hygiene · Cotton wool</option>
+<option value="13.9||Disposable sanitary pads">Menstrual hygiene · Disposable sanitary pads</option>
+<option value="13.9||Menstrual cup">Menstrual hygiene · Menstrual cup</option>
+<option value="13.9||Nothing">Menstrual hygiene · Nothing</option>
+<option value="13.9||Other">Menstrual hygiene · Other</option>
+<option value="13.9||Percentage able to wash and change in privacy">Menstrual hygiene · Percentage able to wash and change in privacy</option>
+<option value="13.9||Percentage able to wash and change in privacy and who used appropriate materia">Menstrual hygiene · Percentage able to was…ho used appropriate materia</option>
+<option value="13.9||Reusable sanitary pads">Menstrual hygiene · Reusable sanitary pads</option>
+<option value="13.9||Tampons">Menstrual hygiene · Tampons</option>
+<option value="13.9||Toilet paper">Menstrual hygiene · Toilet paper</option>
+<option value="13.9||Underwear only">Menstrual hygiene · Underwear only</option>
+</optgroup></select>
+              <script type="application/json" data-for="ctrends-measure" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+            </div>
+          </div>
+          <div class="form-group field">
+            <label class="control-label" id="ctrends-sort-label" for="ctrends-sort">Order by</label>
+            <div>
+              <select id="ctrends-sort" class="shiny-input-select"><option value="up">Biggest rise first</option>
+<option value="down">Biggest fall first</option>
+<option value="move" selected>Furthest moved either way</option>
+<option value="now">Highest now</option>
+<option value="low">Lowest now</option>
+<option value="name">County name</option></select>
+              <script type="application/json" data-for="ctrends-sort" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+            </div>
+          </div>
+        </div>
+        <div id="ctrends-reading"></div>
+        <div class="plot">
+          <div id="ctrends-slope_box"></div>
+        </div>
+        <div class="table-block">
+          <div class="table-block__head">
+            <span class="table-block__title">Every county, every round</span>
+            <div class="table-block__tools">
+              <button class="btn btn-default action-button dl-btn dl-btn--toggle" id="ctrends-show_table" type="button"><span class="action-label">Show the table</span></button>
+              <a aria-disabled="true" class="shiny-download-link disabled dl-btn" download href="" id="ctrends-dl" tabindex="-1" target="_blank">Download this table (CSV)</a>
+            </div>
+          </div>
+          <div id="ctrends-table_box"></div>
+        </div>
+        <p class="figure-note">
+          Two or three readings are not a trajectory. A county that moved by less than 
+          its own sampling error has not been shown to have moved, and the published 
+          tables do not carry the error to check it against.
+        </p>
+      </div>
+    </section>
+  </div>
+  <div class="pane" data-page="past">
+    <section class="cross past">
+      <div class="shell">
+        <span class="eyebrow">Straight from the source</span>
+        <h2 class="chapter-title">Get past data</h2>
+        <p class="lead">
+          Every Kenya survey round The DHS Program holds, for one indicator at a time, 
+          fetched from their public data service as you ask for it. This is the one page 
+          that reaches outside this dashboard, so it needs a connection.
+        </p>
+        <div class="controls controls--tight">
+          <div class="field">
+            <label for="past-topic">Topic</label>
+            <select id="past-topic" class="form-control"></select>
+          </div>
+          <div class="field">
+            <label for="past-indicator">Indicator</label>
+            <select id="past-indicator" class="form-control"></select>
+          </div>
+          <div class="field">
+            <label for="past-level">Level</label>
+            <select id="past-level" class="form-control">
+              <option value="national">Kenya as a whole</option>
+              <option value="subnational">The 47 counties</option>
+            </select>
+          </div>
+        </div>
+        <div class="past-status" id="past-status"></div>
+        <div class="plot">
+          <div id="past-chart" style="height:520px"></div>
+        </div>
+        <div id="past-read"></div>
+        <div class="table-block">
+          <div class="table-block__head">
+            <span class="table-block__title">Every round returned</span>
+            <div class="table-block__tools">
+              <button type="button" id="past-show_table" class="dl-btn dl-btn--toggle">Show the table</button>
+              <button type="button" id="past-dl" class="dl-btn">Download this (CSV)</button>
+            </div>
+          </div>
+          <div id="past-table_box"></div>
+        </div>
+        <p class="figure-note">
+          Source: The DHS Program API at api.dhsprogram.com, queried live. A figure here 
+          may differ from the same figure elsewhere on this site: DHS publishes its own 
+          recodes of each survey, and the published report tabulates from the same data 
+          with its own definitions and denominators.
         </p>
       </div>
     </section>
@@ -3689,6 +4875,17 @@
                     </div>
                     <div class="plot">
                       <div id="ch3-a3_1-bar_box"></div>
+                    </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch3-a3_1-year-label" for="ch3-a3_1-year">Survey round</label>
+                        <div>
+                          <select id="ch3-a3_1-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option>
+<option value="2014">2014</option></select>
+                          <script type="application/json" data-for="ch3-a3_1-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
                     </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch3-a3_1-map" style="width:100%;height:680px;"></div>
@@ -6694,6 +7891,17 @@
                     <div class="plot">
                       <div id="ch7-a7_2-bar_box"></div>
                     </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch7-a7_2-year-label" for="ch7-a7_2-year">Survey round</label>
+                        <div>
+                          <select id="ch7-a7_2-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option>
+<option value="2014">2014</option></select>
+                          <script type="application/json" data-for="ch7-a7_2-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
+                    </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch7-a7_2-map" style="width:100%;height:680px;"></div>
                     </div>
@@ -8704,6 +9912,17 @@
                     <div class="plot">
                       <div id="ch9-a9_7-bar_box"></div>
                     </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch9-a9_7-year-label" for="ch9-a9_7-year">Survey round</label>
+                        <div>
+                          <select id="ch9-a9_7-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option>
+<option value="2014">2014</option></select>
+                          <script type="application/json" data-for="ch9-a9_7-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
+                    </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch9-a9_7-map" style="width:100%;height:680px;"></div>
                     </div>
@@ -8852,6 +10071,16 @@
                     <div class="plot">
                       <div id="ch9-a9_9-bar_box"></div>
                     </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch9-a9_9-year-label" for="ch9-a9_9-year">Survey round</label>
+                        <div>
+                          <select id="ch9-a9_9-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option></select>
+                          <script type="application/json" data-for="ch9-a9_9-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
+                    </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch9-a9_9-map" style="width:100%;height:680px;"></div>
                     </div>
@@ -8980,6 +10209,16 @@
                     <div class="plot">
                       <div id="ch9-a9_11-bar_box"></div>
                     </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch9-a9_11-year-label" for="ch9-a9_11-year">Survey round</label>
+                        <div>
+                          <select id="ch9-a9_11-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option></select>
+                          <script type="application/json" data-for="ch9-a9_11-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
+                    </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch9-a9_11-map" style="width:100%;height:680px;"></div>
                     </div>
@@ -9054,6 +10293,16 @@
                     </div>
                     <div class="plot">
                       <div id="ch9-a9_12-bar_box"></div>
+                    </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch9-a9_12-year-label" for="ch9-a9_12-year">Survey round</label>
+                        <div>
+                          <select id="ch9-a9_12-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option></select>
+                          <script type="application/json" data-for="ch9-a9_12-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
                     </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch9-a9_12-map" style="width:100%;height:680px;"></div>
@@ -11683,6 +12932,16 @@
                     <div class="plot">
                       <div id="ch11-a11_11-bar_box"></div>
                     </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch11-a11_11-year-label" for="ch11-a11_11-year">Survey round</label>
+                        <div>
+                          <select id="ch11-a11_11-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option></select>
+                          <script type="application/json" data-for="ch11-a11_11-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
+                    </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch11-a11_11-map" style="width:100%;height:680px;"></div>
                     </div>
@@ -12059,6 +13318,17 @@
                     <div class="plot">
                       <div id="ch12-a12_4-bar_box"></div>
                     </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch12-a12_4-year-label" for="ch12-a12_4-year">Survey round</label>
+                        <div>
+                          <select id="ch12-a12_4-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option>
+<option value="2014">2014</option></select>
+                          <script type="application/json" data-for="ch12-a12_4-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
+                    </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch12-a12_4-map" style="width:100%;height:680px;"></div>
                     </div>
@@ -12193,6 +13463,17 @@
                     <div class="plot">
                       <div id="ch12-a12_6-bar_box"></div>
                     </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch12-a12_6-year-label" for="ch12-a12_6-year">Survey round</label>
+                        <div>
+                          <select id="ch12-a12_6-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option>
+<option value="2014">2014</option></select>
+                          <script type="application/json" data-for="ch12-a12_6-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
+                    </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch12-a12_6-map" style="width:100%;height:680px;"></div>
                     </div>
@@ -12323,6 +13604,16 @@
                     <div class="plot">
                       <div id="ch12-a12_8-bar_box"></div>
                     </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch12-a12_8-year-label" for="ch12-a12_8-year">Survey round</label>
+                        <div>
+                          <select id="ch12-a12_8-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option></select>
+                          <script type="application/json" data-for="ch12-a12_8-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
+                    </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch12-a12_8-map" style="width:100%;height:680px;"></div>
                     </div>
@@ -12395,6 +13686,17 @@
                     </div>
                     <div class="plot">
                       <div id="ch12-a12_9-bar_box"></div>
+                    </div>
+                    <div class="controls controls--tight">
+                      <div class="form-group field">
+                        <label class="control-label" id="ch12-a12_9-year-label" for="ch12-a12_9-year">Survey round</label>
+                        <div>
+                          <select id="ch12-a12_9-year" class="shiny-input-select"><option value="2025/26" selected>2025/26</option>
+<option value="2022">2022</option>
+<option value="2014">2014</option></select>
+                          <script type="application/json" data-for="ch12-a12_9-year" data-nonempty="">{"plugins":["selectize-plugin-a11y"]}</script>
+                        </div>
+                      </div>
                     </div>
                     <div class="plot">
                       <div class="highchart html-widget html-widget-output shiny-report-size html-fill-item" id="ch12-a12_9-map" style="width:100%;height:680px;"></div>
@@ -14372,15 +15674,26 @@
           <img src="cema_logo.png?v=1789131739" class="footer-logo" alt="Centre for Epidemiological Modelling and Analysis"/>
         </div>
         <p class="text-tiny">
-          Built by the Centre for Epidemiological Modelling and Analysis at the 
-          University of Nairobi.
+          Developed by the Centre for Epidemiological Modelling and Analysis at the 
+          University of Nairobi, from the tables published by the Kenya National Bureau 
+          of Statistics.
         </p>
       </div>
       <div>
         <p class="text-tiny">
-          Every figure is taken from a published KDHS table and shown as published, marks 
-          and all. The 2014 and 2022 columns are the surveys of those years; not every 
-          table carries all three rounds. County boundaries follow the 47 counties of the 
+          The Kenya Mini Demographic and Health Survey 2025/26 was carried out by the 
+          Kenya National Bureau of Statistics with the Ministry of Health and technical 
+          assistance from The DHS Program at ICF. Fieldwork ran from November 2025 to 
+          February 2026 and interviewed 21,231 women age 15 to 49 in 1,000 clusters 
+          across all 47 counties. Every figure on this site is taken from a published 
+          table of that survey and shown as published, marks and all.
+        </p>
+        <p class="text-tiny">
+          Where the opening page says what a figure has moved from, the earlier figure 
+          is named. Most come from the 2014 and 2022 Kenya Demographic and Health 
+          Surveys. The maternal mortality ratio is the exception, because the 2022 
+          survey carried no maternal mortality module, so it is shown against the 2019 
+          census and the 2014 survey. County boundaries follow the 47 counties of the 
           2010 Constitution.
         </p>
       </div>
@@ -14395,6 +15708,8 @@
 <script src="site.js"></script>
 <script src="script.js" defer></script>
 <script src="pick.js" defer></script>
+<script src="past.js" defer></script>
+<script src="chat.js" defer></script>
 <script src="tour.js" defer></script>
 </body>
 </html>

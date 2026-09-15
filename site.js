@@ -377,9 +377,11 @@
              '<p class="stat-value">' + esc(c.value) +
              (c.unit ? "<small>" + esc(c.unit) + "</small>" : "") + "</p>" +
              '<span class="stat-label">' + esc(c.label) + "</span>" +
-             '<span class="stat-note stat-note--' + c.trend + '">' +
-             (arrow ? '<span class="stat-note__arrow">' + arrow + "</span>" : "") +
-             '<span class="stat-note__text">' + esc(c.note) + "</span></span>" +
+             (c.note
+               ? '<span class="stat-note stat-note--' + c.trend + '">' +
+                 (arrow ? '<span class="stat-note__arrow">' + arrow + "</span>" : "") +
+                 '<span class="stat-note__text">' + esc(c.note) + "</span></span>"
+               : "") +
              "</div></div>";
     }).join("");
 
@@ -654,6 +656,7 @@
     if (section) { render(r.ns, section.id, "show_table"); return; }
     if (r.ns === "counties") renderCountyTable();
     if (r.ns === "trends") drawTrendTable();
+    if (r.ns === "ctrends") drawCtrendsTable();
   });
 
   // The two download links are the app's own, rendered by Shiny's downloadLink
@@ -1582,6 +1585,315 @@
     });
   });
 
+  // The county performance map ---------------------------------------------------------------------
+
+  // Any measure the survey reports for counties, mapped and ranked at once. The
+  // map says where, the ranking says how far apart, and neither says it alone:
+  // forty seven shapes cannot show that first and second are twenty points
+  // apart, and a bar chart cannot show that the bottom ten are all in one region.
+  function renderMapPage() {
+    return cross().then(function () {
+      var sel = document.getElementById("map-measure");
+      if (sel && !sel.dataset.filled) {
+        fillMeasureSelect(sel, CROSS.measures, CROSS.measures[0].id);
+        sel.dataset.filled = "1";
+      }
+      var m = measureOf(sel && sel.value);
+      if (!m) return;
+      var p = INDEX.palette;
+
+      var rows = [];
+      CROSS.counties.forEach(function (c, i) {
+        if (m.v[i] === null || m.v[i] === undefined) return;
+        rows.push({ county: c, value: m.v[i], rank: m.rank[i] });
+      });
+      if (!rows.length) { emptyChart("map-map", "Nothing reported for this measure"); return; }
+
+      // A choropleth is a map chart, not a chart with a map in it.
+      if (GEO) {
+        draw("map-map", {
+          chart: { map: GEO, height: 740, spacingTop: 6 },
+          title: { text: wrapTitle(shortTitle(m.label, 64), 52) },
+          legend: { enabled: true, align: "center", verticalAlign: "bottom" },
+          mapNavigation: { enabled: true, enableMouseWheelZoom: false,
+                           buttonOptions: { align: "right", verticalAlign: "top" } },
+          colorAxis: { min: Math.min.apply(null, rows.map(function (r) { return r.value; })),
+                       max: Math.max.apply(null, rows.map(function (r) { return r.value; })),
+                       stops: [[0, "#FAF3EC"], [0.25, "#EBD4BE"], [0.5, "#D2A379"],
+                               [0.75, "#AA6340"], [1, "#5E351F"]] },
+          tooltip: { headerFormat: "",
+                     pointFormatter: function () {
+                       return "<b>" + esc(this.county) + "</b><br>" +
+                              this.value + m.unit + "<br>" + ordinal(this.rank) +
+                              " of " + m.n;
+                     } },
+          series: [
+            // The whole country in white underneath, so a county the survey did
+            // not report keeps the shape of the map rather than a hole in it.
+            { mapData: GEO, data: [], joinBy: "county", nullColor: "#FFFFFF",
+              borderColor: "#221C13", borderWidth: 0.5, showInLegend: false,
+              enableMouseTracking: false },
+            { mapData: GEO, joinBy: ["county", "county"], name: shortTitle(m.label, 40),
+              borderColor: "#221C13", borderWidth: 0.5, nullColor: "#FFFFFF",
+              data: rows.map(function (r) {
+                return { county: r.county, value: Math.round(r.value * 10) / 10,
+                         rank: r.rank }; }),
+              dataLabels: { enabled: true, allowOverlap: false,
+                            format: "{point.properties.county}",
+                            style: { fontSize: "11.5px", fontWeight: "600",
+                                     color: "#221C13",
+                                     textOutline: "2.5px rgba(255,255,255,0.92)" } } }
+          ]
+        }, true);
+      }
+
+      var sorted = rows.slice().sort(function (a, b) { return b.value - a.value; });
+      draw("map-rank", {
+        chart: { type: "bar", height: Math.max(700, sorted.length * 25 + 160) },
+        title: { text: wrapTitle(shortTitle(m.label, 64) + ", counties ranked", 52) },
+        legend: { enabled: false },
+        xAxis: categoryAxis(sorted.map(function (r) { return r.county; }), "14px"),
+        yAxis: Highcharts.merge(valueAxis(m.unit, sorted.map(function (r) { return r.value; })), {
+          plotLines: m.nat === null ? [] : [{
+            value: m.nat, color: INDEX.palette.ink, width: 2, dashStyle: "Dash", zIndex: 7,
+            label: { text: "Kenya  " + fmtHeadline(m.nat) + m.unit, align: "left",
+                     verticalAlign: "top", x: 9, y: 20, rotation: 0,
+                     style: { color: INDEX.palette.ink, fontWeight: "700",
+                              textOutline: "3px rgba(255,255,255,0.92)" } } }]
+        }),
+        tooltip: { pointFormat: "<b>{point.y}</b> " + m.unit },
+        plotOptions: { bar: { maxPointWidth: 18, borderRadius: 2 } },
+        series: [{ color: p.blue, borderWidth: 0,
+                   data: sorted.map(function (r) { return Math.round(r.value * 10) / 10; }) }]
+      });
+
+      var note = document.getElementById("map-reading");
+      if (note) {
+        var top = sorted[0], bot = sorted[sorted.length - 1];
+        note.innerHTML =
+          '<div class="trend-read"><span class="eyebrow">' +
+          esc(rows.length + " counties reported this in " + INDEX.surveyYear) + "</span>" +
+          '<p class="trend-read__big">' + esc(fmtHeadline(bot.value) + m.unit + " to " +
+            fmtHeadline(top.value) + m.unit) + "</p>" +
+          '<p class="cross-read__fine">' + esc("Highest: " + top.county + ". Lowest: " +
+            bot.county + ". Kenya as a whole: " + fmtHeadline(m.nat) + m.unit +
+            ". The 47 counties span " + fmtHeadline(top.value - bot.value) +
+            " points, so a place in the order is worth as much or as little as that makes it.") +
+          "</p><p class=\"cross-read__fine\">A county left white was not reported for this " +
+          "measure, which is not the same as a county reporting nothing.</p></div>";
+      }
+    });
+  }
+
+  document.addEventListener("change", function (e) {
+    if (e.target.id === "map-measure") renderMapPage();
+  });
+
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest ? e.target.closest("#map-dl") : null;
+    if (!el) return;
+    e.preventDefault();
+    cross().then(function () {
+      var sel = document.getElementById("map-measure");
+      var m = measureOf(sel && sel.value);
+      if (!m) return;
+      var rows = [];
+      CROSS.counties.forEach(function (c, i) {
+        if (m.v[i] === null || m.v[i] === undefined) return;
+        rows.push([c, fmtCell(m.v[i], "", false), fmtCell(m.nat, "", false),
+                   ordinal(m.rank[i]) + " of " + m.n]);
+      });
+      saveBlob(new Blob([BOM + toCSV(["County", "Value", "Kenya", "Rank"], rows)],
+                        { type: "text/csv;charset=utf-8" }),
+               "KDHS 2025-26 - " + fileStem(m.label, 60) + " - by county.csv");
+    });
+  });
+
+  // County performance trends ------------------------------------------------------------------------
+
+  // What each county did between the rounds. The 2014 and 2022 county figures
+  // come from the earlier reports, matched to this one column by column on the
+  // strength of their own numbers; global.R says how, and anything that did not
+  // match exactly is simply not here.
+  var CT = null, CT_WAIT = null, CT_BY = {};
+
+  function ctrends() {
+    if (CT) return Promise.resolve(CT);
+    if (CT_WAIT) return CT_WAIT;
+    CT_WAIT = getJSON("data/ctrends.json").then(function (d) {
+      CT = d;
+      (d.measures || []).forEach(function (m) { CT_BY[m.id] = m; });
+      return d;
+    });
+    return CT_WAIT;
+  }
+
+  function ctMoves(m) {
+    var out = [];
+    CT.counties.forEach(function (c, i) {
+      var seen = [];
+      m.years.forEach(function (y, k) {
+        var v = m.v[k][i];
+        if (v !== null && v !== undefined) seen.push({ y: y, v: v });
+      });
+      if (seen.length < 2) return;
+      var a = seen[0], b = seen[seen.length - 1];
+      if (a.y === b.y) return;
+      out.push({ county: c, firstRound: a.y, lastRound: b.y,
+                 first: a.v, last: b.v, change: b.v - a.v });
+    });
+    return out;
+  }
+
+  function renderCountyTrends() {
+    return ctrends().then(function () {
+      if (!CT.measures || !CT.measures.length) return;
+      var sel = document.getElementById("ctrends-measure");
+      if (sel && !sel.dataset.filled) {
+        fillMeasureSelect(sel, CT.measures, CT.measures[0].id);
+        sel.dataset.filled = "1";
+      }
+      var m = CT_BY[sel && sel.value] || CT.measures[0];
+      var moves = ctMoves(m);
+      var how = (val("ctrends-sort") || "move");
+      moves.sort(function (a, b) {
+        if (how === "up") return b.change - a.change;
+        if (how === "down") return a.change - b.change;
+        if (how === "now") return b.last - a.last;
+        if (how === "low") return a.last - b.last;
+        if (how === "name") return a.county.localeCompare(b.county);
+        return Math.abs(b.change) - Math.abs(a.change);
+      });
+
+      var box = document.getElementById("ctrends-slope_box");
+      if (box) box.innerHTML = '<div id="ctrends-slope"></div>';
+      if (!moves.length) {
+        emptyChart("ctrends-slope", "Only one round was printed for this measure");
+        var r0 = document.getElementById("ctrends-reading");
+        if (r0) r0.innerHTML = "";
+        return;
+      }
+      document.getElementById("ctrends-slope").style.height =
+        Math.min(1800, 260 + moves.length * 30) + "px";
+
+      var p = INDEX.palette;
+      draw("ctrends-slope", {
+        chart: { type: "dumbbell", inverted: true },
+        title: { text: wrapTitle(shortTitle(m.label, 62) + ", by county", 52) },
+        legend: { enabled: false },
+        xAxis: categoryAxis(moves.map(function (r) { return r.county; }), "13px"),
+        yAxis: snugAxis(m.unit, moves.map(function (r) { return r.first; })
+                          .concat(moves.map(function (r) { return r.last; }))),
+        tooltip: {
+          headerFormat: "",
+          pointFormatter: function () {
+            return "<b>" + esc(this.name) + "</b><br>" +
+                   esc(this.startRound) + ": " + this.startVal + m.unit + "<br>" +
+                   esc(this.endRound) + ": " + this.endVal + m.unit + "<br><b>" +
+                   esc(this.move) + "</b>" + m.unit + " over the period";
+          }
+        },
+        series: [{
+          type: "dumbbell", connectorWidth: 3, connectorColor: p.ruleStrong,
+          marker: { radius: 6 }, lowColor: p.ruleStrong,
+          data: moves.map(function (r) {
+            return { name: r.county,
+                     low: Math.round(Math.min(r.first, r.last) * 10) / 10,
+                     high: Math.round(Math.max(r.first, r.last) * 10) / 10,
+                     // Blue is a rise and orange a fall. Which is the good news
+                     // is a property of the measure and the report does not say.
+                     color: r.change >= 0 ? p.blue : p.orange,
+                     startRound: r.firstRound, endRound: r.lastRound,
+                     startVal: Math.round(r.first * 10) / 10,
+                     endVal: Math.round(r.last * 10) / 10,
+                     move: (r.change >= 0 ? "+" : "") + fmtHeadline(r.change) };
+          })
+        }]
+      });
+
+      var read = document.getElementById("ctrends-reading");
+      if (read) {
+        var up = moves.filter(function (r) { return r.change > 0.05; }).length;
+        var down = moves.filter(function (r) { return r.change < -0.05; }).length;
+        var big = moves.slice().sort(function (a, b) {
+          return Math.abs(b.change) - Math.abs(a.change); })[0];
+        var firsts = moves.map(function (r) { return r.first; });
+        var lasts = moves.map(function (r) { return r.last; });
+        var gapThen = Math.max.apply(null, firsts) - Math.min.apply(null, firsts);
+        var gapNow = Math.max.apply(null, lasts) - Math.min.apply(null, lasts);
+        var shift = gapNow - gapThen;
+        var way = shift < -0.5 ? "narrowed" : shift > 0.5 ? "widened" : "barely moved";
+        read.innerHTML =
+          '<div class="trend-read trend-read--' +
+          (up > down ? "up" : down > up ? "down" : "flat") + '">' +
+          '<span class="eyebrow">' +
+          esc("Between " + moves[0].firstRound + " and " + moves[0].lastRound) + "</span>" +
+          '<p class="trend-read__big">' + esc(up + " counties rose, " + down + " fell") + "</p>" +
+          '<p class="cross-read__fine">' + esc("Furthest moved: " + big.county + ", " +
+            (big.change >= 0 ? "up " : "down ") + fmtHeadline(Math.abs(big.change)) +
+            (m.unit === "%" ? " percentage points" : "") + " from " +
+            fmtHeadline(big.first) + m.unit + " to " + fmtHeadline(big.last) + m.unit + ".") +
+          "</p>" +
+          '<p class="cross-read__fine">' + esc("The distance between the highest and the " +
+            "lowest county " + way + ", from " + fmtHeadline(gapThen) + m.unit + " to " +
+            fmtHeadline(gapNow) + m.unit + ".") + "</p></div>";
+      }
+      drawCtrendsTable();
+    });
+  }
+
+  function ctrendsTable(m) {
+    var cols = ["County"].concat(m.years);
+    var rows = [];
+    CT.counties.forEach(function (c, i) {
+      var line = [c], any = false;
+      m.years.forEach(function (y, k) {
+        var v = m.v[k][i];
+        if (v === null || v === undefined) { line.push(""); }
+        else { line.push(fmtCell(v, "", false)); any = true; }
+      });
+      if (any) rows.push(line);
+    });
+    return { columns: cols, rows: rows };
+  }
+
+  function drawCtrendsTable() {
+    var box = document.getElementById("ctrends-table_box");
+    if (!box || box.dataset.open !== "yes" || !CT) return;
+    var sel = document.getElementById("ctrends-measure");
+    var m = CT_BY[sel && sel.value] || CT.measures[0];
+    var t = ctrendsTable(m);
+    if (TABLES.ctrends) { TABLES.ctrends.destroy(); delete TABLES.ctrends; }
+    box.innerHTML = "";
+    var tbl = document.createElement("table");
+    tbl.className = "display";
+    box.appendChild(tbl);
+    TABLES.ctrends = new DataTable(tbl, {
+      data: t.rows, columns: t.columns.map(function (c) { return { title: c }; }),
+      pageLength: 15, lengthMenu: [10, 15, 25, 47], autoWidth: false, order: [],
+      language: { search: "Search this table", lengthMenu: "Show _MENU_ rows" }
+    });
+  }
+
+  document.addEventListener("change", function (e) {
+    if (e.target.id === "ctrends-measure" || e.target.id === "ctrends-sort") {
+      renderCountyTrends();
+    }
+  });
+
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest ? e.target.closest("#ctrends-dl") : null;
+    if (!el) return;
+    e.preventDefault();
+    ctrends().then(function () {
+      var sel = document.getElementById("ctrends-measure");
+      var m = CT_BY[sel && sel.value] || CT.measures[0];
+      var t = ctrendsTable(m);
+      saveBlob(new Blob([BOM + toCSV(t.columns, t.rows)], { type: "text/csv;charset=utf-8" }),
+               "KDHS 2025-26 - " + fileStem(m.label, 60) + " - by county and round.csv");
+    });
+  });
+
   // Getting about ----------------------------------------------------------------------------------
 
   // Shiny's navset showed one pane and hid the rest; that job moves here. Every
@@ -1598,6 +1910,8 @@
     if (page === "counties" && !CHARTS["counties-locator"]) renderCounty("county");
     if (page === "compare" && !CHARTS["compare-scatter"]) renderCompare();
     if (page === "trends" && !CHARTS["trends-overall"]) renderTrends("all");
+    if (page === "map" && !CHARTS["map-rank"]) renderMapPage();
+    if (page === "ctrends" && !CHARTS["ctrends-slope"]) renderCountyTrends();
     //' The theme the chapter sits in opens with it. script.js owns the opening
     //' itself; this only says which one, because navigation here is ours.
     var tab = document.querySelector('[data-chapters-for] [data-page="' + page + '"]');
@@ -1795,12 +2109,44 @@
     showPage("overview");
   }
 
+  // What the assistant drives -----------------------------------------------------------------------
+
+  // chat.js answers a question and then offers to show where the answer came
+  // from. Rather than let it reach into the page, it gets these two calls: open
+  // a page, or open a page on one measure. Setting the value is not enough on
+  // its own, because everything on those pages is drawn off the change event.
+  var NAV_RENDER = { map: renderMapPage, ctrends: renderCountyTrends, compare: renderCompare };
+  var NAV_SELECT = { map: "map-measure", ctrends: "ctrends-measure", compare: "compare-x" };
+
+  function navPage(page) {
+    if (!showPage(page)) return false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return true;
+  }
+
+  function navMeasure(page, id) {
+    if (!navPage(page)) return Promise.resolve(false);
+    var draw = NAV_RENDER[page];
+    return Promise.resolve(draw ? draw() : null).then(function () {
+      var sel = document.getElementById(NAV_SELECT[page]);
+      if (!sel || !id || sel.value === id) return false;
+      var known = Array.prototype.some.call(sel.options, function (o) { return o.value === id; });
+      if (!known) return false;
+      sel.value = id;
+      // pick.js is listening for this too, so the search box above the list
+      // catches up with what was chosen for it.
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    });
+  }
+
   // Starting up -------------------------------------------------------------------------------------
 
   function boot() {
     return getJSON("data/index.json").then(function (ix) {
       INDEX = ix;
-      window.KDHS = { index: ix, area: area, render: render };
+      window.KDHS = { index: ix, area: area, render: render,
+                      nav: { page: navPage, measure: navMeasure } };
       return getJSON("counties.geojson");
     }).then(function (geo) {
       GEO = geo;
