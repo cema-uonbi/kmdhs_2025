@@ -235,7 +235,7 @@
       // "by residence" where there is a breakdown, and nothing where there is
       // not: a title reading "Forms of controlling behaviours by " is worse
       // than no qualifier at all.
-      title: { text: wrapTitle(shortTitle(ind, 70) +
+      title: { text: wrapTitle(ind +
                                (group ? " by " + group.toLowerCase() : ""), 64) },
       xAxis: categoryAxis(cats.map(function (c) { return wrapLabel(c, 26); })),
       yAxis: valueAxis(unit, all),
@@ -271,7 +271,7 @@
 
     draw(elId, {
       chart: { map: GEO, spacingTop: 14, height: 680 },
-      title: { text: wrapTitle(shortTitle(p.ind[indIdx], 70) + ", by county, " + year, 64) },
+      title: { text: wrapTitle(p.ind[indIdx] + ", by county, " + year, 64) },
       mapNavigation: { enabled: false },
       colorAxis: {
         min: 0,
@@ -324,7 +324,7 @@
 
     draw(elId, {
       chart: { type: "bar", spacingTop: 14, height: 1280 },
-      title: { text: wrapTitle(shortTitle(p.ind[indIdx], 70) + ", counties ranked, " + year, 64) },
+      title: { text: wrapTitle(p.ind[indIdx] + ", counties ranked, " + year, 64) },
       xAxis: categoryAxis(keep.map(function (r) { return r.c; }), "14px"),
       yAxis: axis,
       legend: { enabled: false },
@@ -1105,7 +1105,7 @@
     });
     draw("counties-strip", {
       chart: { type: "scatter", height: 300 },
-      title: { text: wrapTitle(shortTitle(m.label, 68), 56) },
+      title: { text: wrapTitle(m.full || m.label, 56) },
       legend: { enabled: false },
       xAxis: Highcharts.merge(snugAxis(m.unit, pts.map(function (q) { return q.x; }), m.nat), {
         plotLines: m.nat === null ? [] : [{
@@ -1198,8 +1198,7 @@
       var xn = d.a.nat, yn = d.b.nat;
       draw("compare-scatter", {
         chart: { type: "scatter", zoomType: "xy", height: 660 },
-        title: { text: wrapTitle(shortTitle(d.b.label, 52) + " against " +
-                                 shortTitle(d.a.label, 52), 56) },
+        title: { text: wrapTitle((d.b.full || d.b.label) + " against " + (d.a.full || d.a.label), 56) },
         legend: { enabled: false },
         xAxis: Highcharts.merge(
           snugAxis("%", d.rows.map(function (r) { return r.x; }), xn),
@@ -1409,7 +1408,7 @@
     var p = INDEX.palette;
     draw("trends-overall", {
       chart: { type: "line", height: 420 },
-      title: { text: wrapTitle("Kenya, " + shortTitle(meta.label, 58), 48) },
+      title: { text: wrapTitle("Kenya, " + (meta.full || meta.label), 48) },
       legend: { enabled: false },
       xAxis: categoryAxis(d.map(function (r) { return r.y; })),
       yAxis: snugAxis(meta.unit, d.map(function (r) { return r.v; }), null, true),
@@ -1468,7 +1467,7 @@
     var p = INDEX.palette;
     draw("trends-slope", {
       chart: { type: "dumbbell", inverted: true },
-      title: { text: wrapTitle(shortTitle(meta.label, 60) + ", by " +
+      title: { text: wrapTitle((meta.full || meta.label) + ", by " +
                                String(group || "group").toLowerCase(), 48) },
       legend: { enabled: false },
       xAxis: categoryAxis(m.map(function (r) { return r.category; }), "14px"),
@@ -1613,7 +1612,7 @@
       if (GEO) {
         draw("map-map", {
           chart: { map: GEO, height: 740, spacingTop: 6 },
-          title: { text: wrapTitle(shortTitle(m.label, 64), 52) },
+          title: { text: wrapTitle((m.full || m.label), 52) },
           legend: { enabled: true, align: "center", verticalAlign: "bottom" },
           mapNavigation: { enabled: true, enableMouseWheelZoom: false,
                            buttonOptions: { align: "right", verticalAlign: "top" } },
@@ -1650,7 +1649,7 @@
       var sorted = rows.slice().sort(function (a, b) { return b.value - a.value; });
       draw("map-rank", {
         chart: { type: "bar", height: Math.max(700, sorted.length * 25 + 160) },
-        title: { text: wrapTitle(shortTitle(m.label, 64) + ", counties ranked", 52) },
+        title: { text: wrapTitle((m.full || m.label) + ", counties ranked", 52) },
         legend: { enabled: false },
         xAxis: categoryAxis(sorted.map(function (r) { return r.county; }), "14px"),
         yAxis: Highcharts.merge(valueAxis(m.unit, sorted.map(function (r) { return r.value; })), {
@@ -1779,7 +1778,7 @@
       var p = INDEX.palette;
       draw("ctrends-slope", {
         chart: { type: "dumbbell", inverted: true },
-        title: { text: wrapTitle(shortTitle(m.label, 62) + ", by county", 52) },
+        title: { text: wrapTitle((m.full || m.label) + ", by county", 52) },
         legend: { enabled: false },
         xAxis: categoryAxis(moves.map(function (r) { return r.county; }), "13px"),
         yAxis: snugAxis(m.unit, moves.map(function (r) { return r.first; })

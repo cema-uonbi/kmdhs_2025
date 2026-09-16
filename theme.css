@@ -296,11 +296,14 @@ a:hover { color: var(--orange-600); }
 /* The opening band is a solid plate of the brand blue, as tall as the report
    cover standing beside it. Solid rather than graded: the colour is the mark,
    and a gradient reads as a decoration of it. */
+/* No overflow clipping here. The search results hang out of the bottom of this
+   band, and hiding the overflow cut the list down to the one row that happened
+   to fit inside the brown. The wash below is kept inside the band by its own
+   geometry instead. */
 .hero {
   background: var(--blue);
   color: #fff;
   position: relative;
-  overflow: hidden;
   margin-top: -1px;
 }
 /* The orange rule closes the whole blue block - masthead, band and tabs - so it
@@ -310,9 +313,9 @@ a:hover { color: var(--orange-600); }
 .hero::before {
   content: "";
   position: absolute;
-  top: -20%; right: -6%;
-  width: 60%; height: 140%;
-  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.16), transparent);
+  inset: 0 0 0 auto;
+  width: 54%;
+  background: radial-gradient(120% 140% at 82% 12%, rgba(255, 255, 255, 0.16), transparent 70%);
   pointer-events: none;
 }
 
@@ -1632,7 +1635,7 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 
 .site-search__list {
   position: absolute;
-  z-index: 40;
+  z-index: 70;
   left: 0; right: 0; top: calc(100% + 7px);
   margin: 0; padding: 6px;
   list-style: none;
@@ -2036,6 +2039,13 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 .hl__spark-fill { fill: var(--spark); opacity: 0.16; }
 .hl__spark-line { stroke: var(--spark); }
 .hl__spark-axis { stroke: var(--rule); stroke-width: 1; }
+.hl__spark-grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 4; }
+.hl__spark-tick {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--weight-medium);
+  fill: var(--ink-faint);
+}
 /* Every round the survey has, marked. The earlier ones are hollow so the
    current one is the only solid mark on the line. */
 .hl__spark-was { fill: var(--paper); stroke: var(--spark); stroke-width: 2.2; }
@@ -2059,3 +2069,9 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 .hl__move--flat { color: var(--ink-faint); }
 .hl__move { font-size: var(--size-small); font-weight: var(--weight-semibold); }
 .hl__arrow { font-size: 1.15em; }
+
+/* The results list has to sit over the sticky theme bar, and it cannot while
+   the band it lives in is held at a lower layer than that bar. The band is
+   lifted only for as long as there are results to show, so nothing overlaps
+   the bar at any other moment. */
+.hero-grid:has(.site-search__list:not([hidden])) { z-index: 70; }
