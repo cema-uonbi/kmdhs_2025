@@ -2075,3 +2075,32 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
    lifted only for as long as there are results to show, so nothing overlaps
    the bar at any other moment. */
 .hero-grid:has(.site-search__list:not([hidden])) { z-index: 70; }
+
+/* ==================================================================================
+   The report's own summary of a chapter
+   ================================================================================== */
+.key-findings {
+  margin: 0 auto 22px;
+  padding: 20px 26px 22px;
+  background: var(--blue-050);
+  border-left: 4px solid var(--blue);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.key-findings__title {
+  margin: 0 0 12px;
+  font-family: var(--font-body);
+  font-size: var(--size-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--blue-600);
+}
+.key-findings__list { margin: 0; padding-left: 22px; }
+.key-findings__list li {
+  margin-bottom: 9px;
+  font-size: var(--size-small);
+  line-height: 1.55;
+  color: var(--ink);
+}
+.key-findings__list li:last-child { margin-bottom: 0; }
+.key-findings__list b { color: var(--blue-800); }

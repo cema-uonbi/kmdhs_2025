@@ -118,7 +118,7 @@
                style: { fontFamily: INDEX.fonts.body, fontSize: "16px" } },
       credits: { enabled: false },
       accessibility: { enabled: false },
-      title: { align: "center", margin: 30, useHTML: true,
+      title: { align: "left", x: 0, widthAdjust: 0, margin: 26, useHTML: true,
                style: { fontFamily: INDEX.fonts.display, fontSize: "24px",
                         fontWeight: "bold", color: p.ink } },
       subtitle: { text: null },
@@ -146,6 +146,21 @@
     };
   }
 
+  // An axis with nothing written on it leaves a reader counting gridlines and
+  // guessing what they count. These two put the words back.
+  function unitWords(unit) {
+    if (unit === "%") return "Per cent";
+    return unit || "";
+  }
+
+  function axisTitled(axis, text) {
+    var p = INDEX.palette;
+    var out = Object.assign({}, axis);
+    out.title = { text: text || "",
+                  style: { fontSize: "17px", fontWeight: "600", color: p.inkSoft } };
+    return out;
+  }
+
   function categoryAxis(cats, size) {
     var p = INDEX.palette;
     return {
@@ -156,7 +171,12 @@
     };
   }
 
+  // The wrap widths at the call sites were chosen for a title centred over the
+  // plot, which stacked a long indicator into a narrow tower in the middle of
+  // the chart. The title now runs along the top from the left, so it has the
+  // whole width to use and wraps far later.
   function wrapTitle(text, at) {
+    at = Math.max(at || 64, 96);
     var words = String(text).split(" "), line = "", out = [];
     words.forEach(function (w) {
       if ((line + " " + w).trim().length > at) { out.push(line.trim()); line = w; }
@@ -791,8 +811,8 @@
     if (!rows.length) { host.innerHTML = ""; return; }
     var tiles = rows.map(function (r, i) {
       var note = r.national === null
-        ? ordinal(r.rank) + " of " + r.n + " counties"
-        : ordinal(r.rank) + " of " + r.n + ", Kenya " + r.national.toFixed(1) + "%";
+        ? "Ranked " + ordinal(r.rank) + " of " + r.n + " counties"
+        : "Ranked " + ordinal(r.rank) + " of " + r.n + ", Kenya " + r.national.toFixed(1) + "%";
       return '<div class="stat' + (i === 0 ? " stat--accent" : "") + '">' +
              '<div class="stat__icon">' + svgIcon(["chart", "people", "pin", "calendar"][i % 4]) + "</div>" +
              '<div class="stat__body">' +
@@ -813,7 +833,7 @@
         return [r.chapter, r.section, r.topic, r.indicator,
                 fmtCell(r.value, r.flag, false),
                 r.national === null ? "" : r.national.toFixed(1),
-                r.rank === null ? "" : ordinal(r.rank) + " of " + r.n];
+                r.rank === null ? "" : "Ranked " + ordinal(r.rank) + " of " + r.n];
       })
     };
   }
@@ -1056,7 +1076,7 @@
             color: m.gap >= 0 ? p.blue : p.orange,
             full: m.label, countyVal: Math.round(m.value * 10) / 10,
             kenyaVal: Math.round(m.nat * 10) / 10,
-            place: ordinal(m.rank) + " of " + m.n
+            place: "Ranked " + ordinal(m.rank) + " of " + m.n + " counties"
           };
         })
       }]
@@ -1391,13 +1411,22 @@
       }
       var group = (gsel && gsel.value) || groups[0] || "";
 
-      drawTrendOverall(meta, trendOverall(rows));
-      drawTrendSlope(meta, trendMoves(rows, group), group);
+      // The two charts answer the same question at two levels, so they are
+      // drawn on one scale. Read side by side on scales of their own, a group
+      // that moved two points can look like it moved further than Kenya did.
+      var ov = trendOverall(rows);
+      var mv = trendMoves(rows, group);
+      var all = ov.map(function (r) { return r.v; })
+        .concat(mv.map(function (r) { return r.first; }))
+        .concat(mv.map(function (r) { return r.last; }));
+      var scale = snugAxis(meta.unit, all, null, true);
+      drawTrendOverall(meta, ov, scale);
+      drawTrendSlope(meta, mv, group, scale);
       drawTrendTable();
     });
   }
 
-  function drawTrendOverall(meta, d) {
+  function drawTrendOverall(meta, d, scale) {
     var read = document.getElementById("trends-overall_read");
     if (!d.length) {
       emptyChart("trends-overall",
@@ -1410,8 +1439,9 @@
       chart: { type: "line", height: 420 },
       title: { text: wrapTitle("Kenya, " + (meta.full || meta.label), 48) },
       legend: { enabled: false },
-      xAxis: categoryAxis(d.map(function (r) { return r.y; })),
-      yAxis: snugAxis(meta.unit, d.map(function (r) { return r.v; }), null, true),
+      xAxis: axisTitled(categoryAxis(d.map(function (r) { return r.y; })), "Survey round"),
+      yAxis: axisTitled(scale || snugAxis(meta.unit, d.map(function (r) { return r.v; }), null, true),
+                        unitWords(meta.unit)),
       tooltip: { pointFormat: "<b>{point.y}</b> " + meta.unit },
       series: [{
         name: "Kenya", color: p.ink, lineWidth: 3,
@@ -1448,7 +1478,7 @@
           (change > 0 ? "rise" : "fall") + " on where it started") + ".") + "</p></div>";
   }
 
-  function drawTrendSlope(meta, m, group) {
+  function drawTrendSlope(meta, m, group, scale) {
     var box = document.getElementById("trends-slope_box");
     var sum = document.getElementById("trends-summary");
     if (!box) return;
@@ -1470,12 +1500,14 @@
       title: { text: wrapTitle((meta.full || meta.label) + ", by " +
                                String(group || "group").toLowerCase(), 48) },
       legend: { enabled: false },
-      xAxis: categoryAxis(m.map(function (r) { return r.category; }), "14px"),
-      // A dumbbell is a distance between two readings, not a length measured
-      // from nought, so nothing is exaggerated by leaving the floor out.
-      yAxis: snugAxis(meta.unit,
+      xAxis: axisTitled(categoryAxis(m.map(function (r) { return r.category; }), "14px"),
+                        String(group || "Group")),
+      // The same scale the chart beside it uses, so the two can be read against
+      // each other rather than each against itself.
+      yAxis: axisTitled(scale || snugAxis(meta.unit,
                       m.map(function (r) { return r.first; })
                        .concat(m.map(function (r) { return r.last; }))),
+                        unitWords(meta.unit)),
       tooltip: {
         headerFormat: "",
         pointFormatter: function () {
@@ -1623,8 +1655,8 @@
           tooltip: { headerFormat: "",
                      pointFormatter: function () {
                        return "<b>" + esc(this.county) + "</b><br>" +
-                              this.value + m.unit + "<br>" + ordinal(this.rank) +
-                              " of " + m.n;
+                              this.value + m.unit + "<br>Ranked " + ordinal(this.rank) +
+                              " of " + m.n + " counties";
                      } },
           series: [
             // The whole country in white underneath, so a county the survey did
