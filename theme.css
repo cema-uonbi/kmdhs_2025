@@ -1838,6 +1838,112 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
   margin-bottom: 5px;
 }
 
+/* Live DHS explorer.  It deliberately uses the dashboard's existing type,
+   paper, rule, blue and orange tokens rather than importing the standalone
+   prototype's visual system. */
+.past-live-controls {
+  position: sticky;
+  top: var(--pinned);
+  z-index: 50;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(290px, 2fr) minmax(210px, 1fr) minmax(250px, 1.15fr) auto;
+  gap: 16px;
+  /* The indicator field has a second, confirmatory line containing its DHS ID.
+     Keep the other controls aligned to its input, rather than its bottom edge. */
+  align-items: start;
+  padding: 14px 18px;
+  margin: 24px 0 8px;
+  background: rgba(250, 246, 238, .78);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  -webkit-backdrop-filter: blur(14px) saturate(92%);
+  backdrop-filter: blur(14px) saturate(92%);
+}
+.past-live-controls::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -8px -10px;
+  border-radius: calc(var(--radius) + 8px);
+  background: rgba(250, 246, 238, .48);
+  -webkit-backdrop-filter: blur(10px) saturate(92%);
+  backdrop-filter: blur(10px) saturate(92%);
+  pointer-events: none;
+}
+.past-field { min-width: 0; position: relative; }
+.past-field label, .past-field__label {
+  display: block;
+  margin: 0 0 6px;
+  font-family: var(--font-body);
+  font-size: var(--size-tiny);
+  font-weight: var(--weight-semibold);
+  color: var(--ink-soft);
+}
+.past-field .form-control { width: 100%; }
+.past-field--id .form-control { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.past-field--action { min-width: max-content; }
+.past-fetch { min-height: 42px; color: var(--paper); background: var(--blue); border-color: var(--blue); }
+.past-fetch:hover { color: var(--paper); background: var(--blue-800); border-color: var(--blue-800); }
+.past-fetch:disabled { opacity: .65; cursor: wait; }
+.past-selection { min-height: 1.3em; margin: 6px 0 0; color: var(--ink-faint); font-size: var(--size-tiny); }
+.past-options {
+  position: absolute; z-index: 50; top: calc(100% - 22px); left: 0; right: 0;
+  max-height: 340px; overflow-y: auto; padding: 5px;
+  background: var(--paper); border: 1px solid var(--rule-strong); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}
+.past-option { display: block; width: 100%; padding: 9px 10px; border: 0; border-radius: 6px; text-align: left; background: transparent; color: var(--ink); cursor: pointer; }
+.past-option:hover, .past-option:focus { background: var(--blue-050); outline: 0; }
+.past-option__label { display: block; font-size: var(--size-tiny); font-weight: var(--weight-medium); line-height: 1.35; }
+.past-option__meta { display: block; margin-top: 2px; color: var(--ink-faint); font-size: var(--size-tiny); }
+.past-options__note { padding: 9px 10px; color: var(--ink-soft); font-size: var(--size-tiny); line-height: 1.45; }
+.past-query { margin: 8px 0 4px; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.past-query b { color: var(--ink-soft); font-family: var(--font-body); }
+.past-results { margin-top: 18px; }
+.past-result-head { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; flex-wrap: wrap; margin: 26px 0 12px; }
+.past-result-head h3 { margin: 0; font-family: var(--font-display); font-size: var(--size-section); color: var(--ink); }
+.past-result-note { margin: 5px 0 0; color: var(--ink-soft); font-size: var(--size-small); }
+.past-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 16px 0 24px; }
+.past-summary__item { padding: 16px; border: 1px solid var(--rule); border-radius: var(--radius-sm); background: var(--paper); }
+.past-summary__label { display: block; color: var(--ink-faint); font-size: var(--size-tiny); font-weight: var(--weight-semibold); }
+.past-summary__value { display: block; margin-top: 5px; color: var(--ink); font-family: var(--font-display); font-size: var(--size-lead); line-height: 1.1; }
+.past-layout { display: grid; grid-template-columns: minmax(260px, .8fr) minmax(0, 1.5fr); gap: 22px; align-items: start; margin: 18px 0 28px; }
+.past-map { min-height: 380px; }
+.past-layout--national { align-items: stretch; }
+.past-layout--national .past-map { min-height: 475px; }
+.past-layout--geographic .past-map { min-height: 475px; }
+.past-layout__data { min-width: 0; }
+.past-layout__data .past-summary { margin: 0 0 18px; }
+.past-map-frame { position: relative; }
+.past-national-badge {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  min-width: 116px; padding: 10px 14px; border: 1px solid var(--rule-strong);
+  border-radius: var(--radius); background: color-mix(in srgb, var(--paper) 94%, transparent);
+  box-shadow: var(--shadow-md); text-align: center; pointer-events: none;
+}
+.past-national-badge strong { display: block; color: var(--blue); font-family: var(--font-display); font-size: var(--size-subsection); line-height: 1.1; }
+.past-national-badge span { display: block; margin-top: 4px; color: var(--ink-faint); font-size: var(--size-tiny); }
+.past-map-note { margin: 7px 0 0; color: var(--ink-soft); font-size: var(--size-tiny); line-height: 1.45; }
+.past-chart { min-height: 380px; }
+.past-trends { margin: 24px 0; }
+.past-trends__head { display: flex; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
+.past-trends__head .past-field { min-width: min(100%, 360px); flex: 1 1 300px; }
+.past-tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 8px 0 12px; }
+.past-tag { display: inline-flex; gap: 6px; align-items: center; padding: 5px 8px 5px 10px; border: 1px solid var(--rule-strong); border-radius: 999px; background: var(--paper); color: var(--ink-soft); font-size: var(--size-tiny); }
+.past-tag button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font-size: 16px; line-height: 1; }
+.past-table-wrap { overflow-x: auto; }
+/* Report tables elsewhere may shrink to the width of their contents. The live
+   DHS result is an explorer: its returned-records table should use the whole
+   reading column beneath the map/chart composition. */
+.past .table-block, .past .past-table-wrap, .past .past-table-wrap .dataTables_wrapper { width: 100%; }
+.past .past-table-wrap table.dataTable { width: 100% !important; }
+.past-raw-link { margin: 12px 0 0; font-size: var(--size-tiny); }
+.past-raw-link a { color: var(--blue); font-weight: var(--weight-semibold); }
+.past-empty { padding: 18px; border-left: 3px solid var(--orange); background: var(--orange-050); color: var(--ink-soft); border-radius: var(--radius-sm); }
+@media (max-width: 1100px) { .past-live-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } .past-field--action { min-width: 0; } }
+@media (max-width: 760px) { .past-live-controls, .past-summary, .past-layout { grid-template-columns: minmax(0, 1fr); } .past-layout { gap: 12px; } .past-map, .past-chart { min-height: 320px; } }
+
 /* ==================================================================================
    The dashboard assistant
    ==================================================================================

@@ -3300,42 +3300,40 @@
         <span class="eyebrow">Straight from the source</span>
         <h2 class="chapter-title">Get past data</h2>
         <p class="lead">
-          Every Kenya survey round The DHS Program holds, for one indicator at a time, 
-          fetched from their public data service as you ask for it. This is the one page 
-          that reaches outside this dashboard, so it needs a connection.
+          Search the Kenya indicators held by The DHS Program, then fetch the survey
+          rounds they have published. This is the one page that reaches outside this
+          dashboard, so it needs a connection.
         </p>
-        <div class="controls controls--tight">
-          <div class="field">
-            <label for="past-topic">Topic</label>
-            <select id="past-topic" class="form-control"></select>
+        <div class="past-live-controls">
+          <div class="past-field past-field--indicator">
+            <label for="past-indicator-search">Indicator</label>
+            <input id="past-indicator-search" class="form-control" type="text" autocomplete="off"
+                   spellcheck="false" placeholder="Try “measles”, “stunting”, “anaemia”…"
+                   aria-controls="past-indicator-options" aria-expanded="false">
+            <div id="past-indicator-options" class="past-options" role="listbox" hidden></div>
+            <p id="past-indicator-selection" class="past-selection"></p>
           </div>
-          <div class="field">
-            <label for="past-indicator">Indicator</label>
-            <select id="past-indicator" class="form-control"></select>
-          </div>
-          <div class="field">
-            <label for="past-level">Level</label>
+          <div class="past-field">
+            <label for="past-level">Geographic level</label>
             <select id="past-level" class="form-control">
-              <option value="national">Kenya as a whole</option>
-              <option value="subnational">The 47 counties</option>
+              <option value="national">Kenya, nationally</option>
+              <option value="province">Former provinces (8)</option>
+              <option value="county">Counties (47)</option>
             </select>
           </div>
-        </div>
-        <div class="past-status" id="past-status"></div>
-        <div class="plot">
-          <div id="past-chart" style="height:520px"></div>
-        </div>
-        <div id="past-read"></div>
-        <div class="table-block">
-          <div class="table-block__head">
-            <span class="table-block__title">Every round returned</span>
-            <div class="table-block__tools">
-              <button type="button" id="past-show_table" class="dl-btn dl-btn--toggle">Show the table</button>
-              <button type="button" id="past-dl" class="dl-btn">Download this (CSV)</button>
-            </div>
+          <div class="past-field past-field--id">
+            <label for="past-custom-id">Or enter an exact DHS indicator ID</label>
+            <input id="past-custom-id" class="form-control" type="text" autocomplete="off"
+                   spellcheck="false" placeholder="For example: CH_VACC_C_BAS">
           </div>
-          <div id="past-table_box"></div>
+          <div class="past-field past-field--action">
+            <span class="past-field__label">Live data</span>
+            <button type="button" id="past-fetch" class="dl-btn past-fetch">Fetch live data</button>
+          </div>
         </div>
+        <p id="past-query" class="past-query"></p>
+        <div class="past-status" id="past-status"></div>
+        <div id="past-results" aria-live="polite"></div>
         <p class="figure-note">
           Source: The DHS Program API at api.dhsprogram.com, queried live. A figure here 
           may differ from the same figure elsewhere on this site: DHS publishes its own 
