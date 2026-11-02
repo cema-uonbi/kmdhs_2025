@@ -91,6 +91,9 @@ body { font-size: var(--size-base); }
 .brand-name { font-size: var(--size-brand); }
 .report-link { font-size: var(--size-button); }
 .report-link__kind { font-size: var(--size-tiny); }
+.report-link--header { font-size: var(--size-nav-link); }
+.report-link--hero .report-link__main { font-size: var(--size-lead); }
+.report-link--hero .report-link__sub { font-size: var(--size-small); }
 .report-link--footer { font-size: var(--size-tiny); }
 
 label,
