@@ -89,6 +89,9 @@ body { font-size: var(--size-base); }
 .rail-theme { font-size: var(--size-rail-theme); }
 .rail-link { font-size: var(--size-rail-link); }
 .brand-name { font-size: var(--size-brand); }
+.report-link { font-size: var(--size-button); }
+.report-link__kind { font-size: var(--size-tiny); }
+.report-link--footer { font-size: var(--size-tiny); }
 
 label,
 .control-label,
