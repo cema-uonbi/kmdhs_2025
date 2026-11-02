@@ -132,12 +132,33 @@
         // DHS returns regions at whatever level each survey published. Only the
         // ones whose name matches a county of this survey are kept, so the page
         // never mixes the eight old provinces in among the 47 counties.
+        //
+        // DHS writes a county under its old province with two leading dots,
+        // "..Mombasa", and spells some names its own way: "Murang'a",
+        // "Trans-Nzoia", "Elgeyo Marakwet". Stripping only one dot left
+        // ".Mombasa", which matched nothing, so Nairobi, the one county DHS
+        // prints without dots, was the only one shown. Names are now compared
+        // on their letters alone, so dots, spaces, hyphens and apostrophes
+        // cannot stop a match.
+        var key = function (s) { return String(s || "").toLowerCase().replace(/[^a-z]/g, ""); };
         var keep = {};
         (window.KDHS && window.KDHS.index && window.KDHS.index.counties || []).forEach(
-          function (c) { keep[c.toLowerCase()] = c; });
+          function (c) { keep[key(c)] = c; });
+        // The Shiny app has no county list in the browser, so there the counties
+        // are read off DHS's own layout: a name under a province carries the two
+        // dots, and Nairobi stands alone as both province and county.
+        var listed = Object.keys(keep).length > 0;
+        var seen = {};
         rows = rows.map(function (r) {
-          var hit = keep[String(r.CharacteristicLabel || "").toLowerCase().replace(/^\.\s*/, "")];
-          return hit ? Object.assign({}, r, { CharacteristicLabel: hit }) : null;
+          var raw = String(r.CharacteristicLabel || "");
+          var hit = listed ? keep[key(raw)]
+            : (/^\.\./.test(raw) || key(raw) === "nairobi") ? raw.replace(/^[.\s]+/, "") : null;
+          if (!hit) return null;
+          // One figure per county per round, in case a round lists a county twice.
+          var k = hit + "|" + r.SurveyYear;
+          if (seen[k]) return null;
+          seen[k] = 1;
+          return Object.assign({}, r, { CharacteristicLabel: hit });
         }).filter(Boolean);
       }
       STATE.rows = rows;
