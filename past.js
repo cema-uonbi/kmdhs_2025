@@ -194,6 +194,7 @@
     var p = palette();
 
     if (STATE.level === "national") {
+      host.style.height = "520px";
       var by = {};
       STATE.rows.forEach(function (r) { by[r.SurveyYear] = r.Value; });
       var years = Object.keys(by).sort(function (a, b) { return a - b; });
@@ -216,8 +217,13 @@
         return +r.SurveyYear; })));
       var rows = STATE.rows.filter(function (r) { return String(r.SurveyYear) === latest; })
         .sort(function (a, b) { return b.Value - a.Value; });
+      // The box the chart sits in was a fixed 520 pixels, room for about
+      // nineteen bars. Highcharts drew all 47 at their full height and the box
+      // cut the rest off, axis included. The box now grows with the chart.
+      var tall = Math.max(520, rows.length * 24 + 140);
+      host.style.height = tall + "px";
       CHART = Highcharts.chart(host, {
-        chart: { type: "bar", height: Math.max(520, rows.length * 24 + 140),
+        chart: { type: "bar", height: tall,
                  backgroundColor: "transparent" },
         title: { text: STATE.label + ", " + latest, align: "center",
                  style: { fontWeight: "bold", color: p.ink } },
