@@ -47,11 +47,22 @@
   //' Scrolling by measurement rather than with scrollIntoView, which knows
   //' nothing about the two bars sitting over the top of the page and drops the
   //' reader into the middle of the section they asked for.
-  function scrollToEl(el) {
+  function scrollToEl(el, instant) {
     if (!el) return;
     var top = el.getBoundingClientRect().top + window.scrollY - pinnedHeight() - 18;
-    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    window.scrollTo({ top: Math.max(0, top), behavior: instant ? "instant" : "smooth" });
+    return Math.max(0, top);
   }
+
+  //' The app's search list hangs off the page body, so when the page scrolls it
+  //' would carry on down the screen after its box has gone up under the pinned
+  //' bars. It closes once the box is out of sight.
+  window.addEventListener("scroll", function () {
+    var box = document.getElementById("search");
+    var sz = box && box.selectize;
+    if (!sz || !sz.isOpen) return;
+    if (sz.$control[0].getBoundingClientRect().bottom < pinnedHeight()) sz.close();
+  }, { passive: true });
 
   // --- ask every chart on screen to measure itself again --------------------
   function reflowCharts() {
@@ -192,8 +203,12 @@
     document.body.classList.toggle("on-overview", page === "overview");
     //' Arriving at a chapter opens the theme it sits in, so the second row
     //' always shows where you are rather than where you last clicked.
+    //' A page that sits in no theme (the opening page) closes them all.
+    //' Before, only arriving somewhere opened a theme, so coming back to the
+    //' opening page left the last theme white beside Overview, and its row of
+    //' chapters open under it, as though two tabs were current.
     var order = themeOfPage(page);
-    if (order) openTheme(order, true);
+    openTheme(order, true);
     document.querySelectorAll(".chapter-tab").forEach(function (tab) {
       tab.classList.toggle("is-active", tab.getAttribute("data-page") === page);
     });
@@ -336,15 +351,70 @@
       }
       if (m.anchor) {
         writeUrl(m.page, m.anchor);
+        //' The page is kept out of sight from here until it has landed. Where
+        //' the table sits in another part of the chapter, the chapter is shown
+        //' a frame or two before that part is, and the reader saw its opening
+        //' and then the jump. theme.css hides .app-main while this class is on.
+        var root = document.documentElement;
+        root.classList.add("kdhs-landing");
+        var reveal = function () {
+          requestAnimationFrame(function () { root.classList.remove("kdhs-landing"); });
+        };
+        setTimeout(function () { root.classList.remove("kdhs-landing"); }, 2000);
         //' A topic is shown now rather than scrolled to: only one is on the
         //' page at a time, and the one the search picked may not be it.
-        (function land(tries) {
-          if (showArea(m.anchor) || tries > 30) {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            syncPinned(); reflowSoon(); return;
+        //' Then straight to it: the table's title, its cards under it, clear of
+        //' the two pinned bars. Not smoothly, and not by way of the top of the
+        //' chapter: a smooth scroll starts from wherever the page was, so the
+        //' reader saw the chapter's opening first and then watched the page
+        //' slide down to the table. The jump waits until the chapter is on
+        //' screen, because a table on a hidden page has no position to jump to.
+        //' Shiny switches the page itself, a moment after this message. An
+        //' observer on the page's own class runs the instant it is switched,
+        //' before the browser draws anything, which a check on each frame was
+        //' two frames too late for.
+        //' The chapter's own pane, and everything in it, since the part of the
+        //' chapter (its theme) is switched inside it as well.
+        var paneOf = document.querySelector('.tab-pane[data-value="' + m.page + '"]');
+        var landed = false;
+        if (paneOf) {
+          var obs = new MutationObserver(function () {
+            if (landed) { obs.disconnect(); return; }
+            var a = document.querySelector('.area-page[data-area="' + m.anchor + '"]');
+            if (a && a.offsetParent !== null) land(0);
+          });
+          obs.observe(paneOf, { attributes: true, subtree: true, attributeFilter: ["class", "style"] });
+          setTimeout(function () { obs.disconnect(); }, 4000);
+        }
+        function land(tries) {
+          if (landed) return;
+          var area = showArea(m.anchor) &&
+            document.querySelector('.area-page[data-area="' + m.anchor + '"]');
+          if (area && area.offsetParent !== null) {
+            landed = true;
+            syncPinned(); reflowSoon();
+            var expected = scrollToEl(area, true);
+            reveal();
+            //' Scroll anchoring was switched off when the result was picked
+            //' (see survey_search); it comes back once the page has landed.
+            setTimeout(function () {
+              document.documentElement.style.overflowAnchor = "";
+              document.body.style.overflowAnchor = "";
+            }, 800);
+            //' Anything above the table that draws late would push it down, so
+            //' the landing is checked once, unless the reader has moved since.
+            setTimeout(function () {
+              var now = area.getBoundingClientRect().top - pinnedHeight() - 18;
+              if (Math.abs(window.scrollY - expected) < 4 && Math.abs(now) > 6) scrollToEl(area, true);
+            }, 700);
+            return;
           }
-          setTimeout(function () { land(tries + 1); }, 60);
-        })(0);
+          //' And checked on every frame as well, for a page that was already
+          //' showing or that is switched some other way.
+          if (tries > 150) return;
+          requestAnimationFrame(function () { land(tries + 1); });
+        }
+        land(0);
       } else {
         writeUrl(m.page, null);
         window.scrollTo({ top: 0, behavior: "smooth" });

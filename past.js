@@ -24,16 +24,102 @@
     ["ED_LITR_W_LIT", "Women who are literate", "%"]
   ].map(function (r) { return { id: r[0], label: r[1], unit: r[2], hay: (r[0] + " " + r[1]).toLowerCase() }; });
   var PROVINCES = {
-    "Nairobi": ["Nairobi"], "Central": ["Kiambu", "Kirinyaga", "Murang'a", "Nyandarua", "Nyeri"],
+    "Nairobi": ["Nairobi"], "Central": ["Kiambu", "Kirinyaga", "Muranga", "Nyandarua", "Nyeri"],
     "Coast": ["Kilifi", "Kwale", "Lamu", "Mombasa", "Taita Taveta", "Tana River"],
     "Eastern": ["Embu", "Isiolo", "Kitui", "Machakos", "Makueni", "Marsabit", "Meru", "Tharaka-Nithi"],
     "North Eastern": ["Garissa", "Mandera", "Wajir"], "Nyanza": ["Homa Bay", "Kisii", "Kisumu", "Migori", "Nyamira", "Siaya"],
     "Rift Valley": ["Baringo", "Bomet", "Elgeyo-Marakwet", "Kajiado", "Kericho", "Laikipia", "Nakuru", "Nandi", "Narok", "Samburu", "Trans Nzoia", "Turkana", "Uasin Gishu", "West Pokot"],
     "Western": ["Bungoma", "Busia", "Kakamega", "Vihiga"]
-  }, COUNTY_NAMES = { "Trans-Nzoia": "Trans Nzoia", "Elgeyo Marakwet": "Elgeyo-Marakwet" };
+  }, COUNTY_NAMES = { "Murang'a": "Muranga", "Trans-Nzoia": "Trans Nzoia", "Elgeyo Marakwet": "Elgeyo-Marakwet" };
   var LINE_COLORS = ["#AA6340", "#E7A83E", "#6E402A", "#0D465E", "#C0834F", "#635A46", "#7C6E51", "#CDBF9A"];
   var STATE = { indicator: STARTERS[0], catalog: [], catalogById: {}, catalogStatus: "idle", rows: [], request: 0, trendRegions: [], table: null };
 
+
+  // Where each indicator is published ---------------------------------------------
+  // dhs_availability.json is written by the site build from the indicator list
+  // pulled from the DHS API: one digit per Kenya survey, 1 for a national figure,
+  // 2 for former provinces and 4 for counties, added together. With it the
+  // explorer can say where an indicator is published before it asks, and after
+  // an empty answer, instead of only reporting that nothing came back.
+  var LEVEL_BIT = { national: 1, province: 2, county: 4 };
+  var LEVEL_WORDS = { national: "nationally", province: "by former province", county: "by county" };
+  var AVAIL = null, AVAIL_WAIT = null;
+  function loadAvail() {
+    if (!AVAIL_WAIT) AVAIL_WAIT = fetch("dhs_availability.json").then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+      .then(function (d) { AVAIL = d; return d; })
+      .catch(function () { AVAIL = { rounds: [], a: {} }; return AVAIL; });
+    return AVAIL_WAIT;
+  }
+  function availOf(id) {
+    var code = AVAIL && AVAIL.a && AVAIL.a[id];
+    if (!code) return null;
+    return AVAIL.rounds.map(function (r, i) { return { id: r.id, year: r.year, type: r.type, code: Number(code.charAt(i)) || 0 }; });
+  }
+  function roundsAt(av, wanted) { return av.filter(function (r) { return r.code & LEVEL_BIT[wanted]; }); }
+  function finestOf(av) { return ["county", "province", "national"].find(function (l) { return roundsAt(av, l).length; }) || null; }
+  function roundName(r) { return r.year + (r.type === "MIS" ? " MIS" : ""); }
+  function listYears(rs) {
+    var n = rs.map(roundName);
+    return n.length <= 2 ? n.join(" and ") : n.slice(0, -1).join(", ") + " and " + n[n.length - 1];
+  }
+  function availBadge(id) {
+    var av = availOf(id); if (!av) return "";
+    var f = finestOf(av);
+    return f === "county" ? "by county" : f === "province" ? "by former province" : f === "national" ? "national only" : "no Kenya figures";
+  }
+  // One cell per Kenya survey: the year, and the finest level DHS published it at.
+  // The cells that hold figures at the level being looked at are marked.
+  function availStrip(av, wanted) {
+    return '<div class="past-avail__strip" role="list">' + av.map(function (r) {
+      var lv = r.code & 4 ? "county" : r.code & 2 ? "province" : r.code & 1 ? "national" : "none";
+      // Marked only below the national level: nationally every published survey counts.
+      var here = wanted !== "national" && (r.code & LEVEL_BIT[wanted]);
+      var word = { county: "County", province: "Province", national: "National", none: "Not published" }[lv];
+      return '<span role="listitem" class="past-avail__cell past-avail__cell--' + lv + (here ? " is-here" : "") + '" title="' + esc(roundName(r) + ": " + (lv === "none" ? "not published" : "finest level " + word.toLowerCase())) + '"><b>' + esc(roundName(r)) + '</b><span>' + word + '</span></span>';
+    }).join("") + '</div>';
+  }
+  function availButtons(av, wanted) {
+    return ["national", "province", "county"].filter(function (l) { return l !== wanted && roundsAt(av, l).length; }).map(function (l) {
+      return '<button type="button" class="dl-btn past-avail__go" data-past-level="' + l + '">Show ' + LEVEL_WORDS[l] + '</button>';
+    }).join("");
+  }
+  // The panel shown in place of a result when there is nothing at this level.
+  function availPanel(id, wanted, fallback) {
+    var av = availOf(id);
+    if (!av) return '<p class="past-empty">' + esc(fallback) + '</p>';
+    var here = roundsAt(av, wanted), any = finestOf(av), title, text;
+    if (here.length) {
+      title = "No records came back just now";
+      text = "DHS lists this indicator " + LEVEL_WORDS[wanted] + " for " + listYears(here) + ", but the service returned nothing usable. Try again in a moment" + (availButtons(av, wanted) ? ", or look at another level." : ".");
+    } else if (any) {
+      title = "Not published " + LEVEL_WORDS[wanted] + " for Kenya";
+      // Finest level first, and each coarser level only for the surveys the finer
+      // ones leave out: a province figure already implies a national one.
+      var seen = {}, parts = [];
+      ["county", "province", "national"].forEach(function (l) {
+        var rs = roundsAt(av, l).filter(function (r) { return !seen[r.id]; });
+        rs.forEach(function (r) { seen[r.id] = 1; });
+        if (rs.length) parts.push(LEVEL_WORDS[l] + " for " + listYears(rs));
+      });
+      text = "DHS publishes it " + parts.join(", and ") + ".";
+      var prov = roundsAt(av, "province");
+      if (wanted === "county" && prov.length && prov.every(function (r) { return Number(r.year) < 2014; }))
+        text += " Kenya's surveys before 2014 were designed for the eight former provinces, not the 47 counties.";
+    } else {
+      title = "Not published for Kenya";
+      text = "The DHS Program has no Kenya figure for this indicator in any survey, at any level. It is in the catalogue because other countries report it. Try a similar indicator in the list above.";
+    }
+    return '<section class="past-avail" role="status"><span class="eyebrow">' + esc(selectedLabel()) + '</span><h3 class="past-avail__title">' + esc(title) + '</h3><p class="past-avail__text">' + esc(text) + '</p>' +
+      (any ? '<p class="past-avail__lead">Where DHS publishes it, survey by survey</p>' + availStrip(av, wanted) : "") +
+      (any ? '<div class="past-avail__actions">' + availButtons(av, wanted) + '</div>' : "") +
+      '<p class="past-avail__note">The 2025/26 survey is not on the DHS API yet; its figures are in the rest of this dashboard.</p></section>';
+  }
+  // The same strip, small, under a result that did come back.
+  function addAvailLine() {
+    var av = availOf(selectedId()), head = document.querySelector("#past-results .past-result-head");
+    if (!av || !head || document.querySelector("#past-results .past-avail--inline")) return;
+    head.insertAdjacentHTML("afterend", '<div class="past-avail past-avail--inline"><span class="past-avail__lead">Where DHS publishes this, survey by survey</span>' + availStrip(av, level()) + '<div class="past-avail__actions">' + availButtons(av, level()) + '</div></div>');
+  }
   function el(id) { return document.getElementById(id); }
   function ready() { return !!el("past-results"); }
   function esc(v) { return String(v === null || v === undefined ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -60,14 +146,14 @@
   function renderOptions() {
     var input = el("past-indicator-search"), box = el("past-indicator-options"); if (!input || !box) return;
     var q = input.value.trim(), results = searchIndicators(q), html = q ? "" : '<p class="past-options__note">Start typing to search all Kenya DHS indicators. A verified starting list is shown first.</p>';
-    html += results.length ? results.map(function (r) { return '<button type="button" class="past-option" role="option" data-id="' + esc(r.id) + '"><span class="past-option__label">' + esc(r.label) + '</span><span class="past-option__meta">' + esc(r.id + (r.level1 ? " · " + r.level1 : "")) + '</span></button>'; }).join("") : '<p class="past-options__note">No match has loaded yet. You can enter an exact DHS indicator ID instead.</p>';
+    html += results.length ? results.map(function (r) { return '<button type="button" class="past-option" role="option" data-id="' + esc(r.id) + '"><span class="past-option__label">' + esc(r.label) + '</span><span class="past-option__meta">' + esc(r.id + (r.level1 ? " · " + r.level1 : "") + (availBadge(r.id) ? " · " + availBadge(r.id) : "")) + '</span></button>'; }).join("") : '<p class="past-options__note">No match has loaded yet. You can enter an exact DHS indicator ID instead.</p>';
     if (STATE.catalogStatus === "loading") html += '<p class="past-options__note">Loading the full Kenya indicator catalog…</p>';
     else if (STATE.catalogStatus === "ready" && q) html += '<p class="past-options__note">Searched ' + STATE.catalog.length.toLocaleString("en-US") + ' Kenya DHS indicators.</p>';
     box.innerHTML = html;
   }
   function closeOptions() { var input = el("past-indicator-search"), box = el("past-indicator-options"); if (box) box.hidden = true; if (input) input.setAttribute("aria-expanded", "false"); }
-  function openOptions() { var input = el("past-indicator-search"), box = el("past-indicator-options"); if (!input || !box) return; box.hidden = false; input.setAttribute("aria-expanded", "true"); renderOptions(); loadCatalog(); }
-  function chooseIndicator(id, refetch) { var row = STATE.catalogById[id] || STARTERS.find(function (r) { return r.id === id; }); if (!row) return; STATE.indicator = row; el("past-indicator-search").value = row.label; el("past-custom-id").value = ""; el("past-indicator-selection").textContent = row.id + (row.level1 ? " · " + row.level1 : ""); closeOptions(); updateQuery(); if (refetch) { STATE.rows = []; STATE.round = null; STATE.trendRegions = []; clearCharts(); fetchData(); } }
+  function openOptions() { var input = el("past-indicator-search"), box = el("past-indicator-options"); if (!input || !box) return; box.hidden = false; input.setAttribute("aria-expanded", "true"); renderOptions(); loadCatalog(); loadAvail().then(renderOptions); }
+  function chooseIndicator(id, refetch) { var row = STATE.catalogById[id] || STARTERS.find(function (r) { return r.id === id; }); if (!row) return; STATE.indicator = row; el("past-indicator-search").value = row.label; el("past-custom-id").value = ""; el("past-indicator-selection").textContent = row.id + (row.level1 ? " · " + row.level1 : "") + (availBadge(row.id) ? " · " + availBadge(row.id) : ""); closeOptions(); updateQuery(); if (refetch) { STATE.rows = []; STATE.round = null; STATE.trendRegions = []; clearCharts(); fetchData(); } }
   function loadCatalog() {
     if (STATE.catalogStatus === "loading" || STATE.catalogStatus === "ready") return;
     STATE.catalogStatus = "loading"; renderOptions();
@@ -105,7 +191,7 @@
   function renderNational(rows, rawUrl) {
     var points = onePerRound(rows), latest = points[points.length - 1], title = indicatorTitle(points), p = palette();
     el("past-results").innerHTML = '<div class="past-result-head"><div><h3>' + esc(title) + '</h3><p class="past-result-note">Kenya nationally · ' + points.length + ' survey round' + (points.length === 1 ? "" : "s") + ' returned by DHS</p></div></div><div class="past-layout past-layout--national"><div><div class="past-map-frame"><div id="past-map" class="past-map" aria-label="Map of Kenya showing the national estimate"></div><div class="past-national-badge" aria-hidden="true"><strong>' + esc(fmt(value(latest), latest) + (unit() ? " " + unit() : "")) + '</strong><span>Kenya · ' + esc(latest.SurveyYearLabel || latest.SurveyYear) + '</span></div></div><p class="past-map-note">A national figure applies to every county equally. Choose Province or County above for a geographic breakdown.</p></div><div class="past-layout__data">' + summary([{ label: "Latest value (" + (latest.SurveyYearLabel || latest.SurveyYear) + ")", value: fmt(value(latest), latest) + (unit() ? " " + unit() : "") }, { label: "Survey", value: latest.SurveyId || "—" }, { label: "Unweighted N", value: latest.DenominatorUnweighted === null || latest.DenominatorUnweighted === undefined ? "—" : latest.DenominatorUnweighted }]) + '<div id="past-chart" class="past-chart"></div></div></div>' + actionBar(rawUrl, { columns: ["Survey", "Year", "Value", "Unweighted N"], rows: points.map(function (r) { return [r.SurveyId || "", r.SurveyYearLabel || r.SurveyYear || "", fmt(value(r), r) + (unit() ? " " + unit() : ""), r.DenominatorUnweighted === null || r.DenominatorUnweighted === undefined ? "" : r.DenominatorUnweighted]; }) });
-    drawNationalMap(latest); CHART = Highcharts.chart("past-chart", Highcharts.merge(chartBase(), { chart: { type: "line", height: 410 }, title: { text: title }, legend: { enabled: false }, xAxis: { categories: points.map(function (r) { return r.SurveyYearLabel || r.SurveyYear; }) }, yAxis: { min: unit() === "%" ? 0 : null }, series: [{ name: "Kenya", color: p.blue, lineWidth: 3, marker: { enabled: true, radius: 5 }, data: points.map(function (r) { return value(r); }) }] })); drawTable();
+    drawNationalMap(latest); CHART = Highcharts.chart("past-chart", Highcharts.merge(chartBase(), { chart: { type: "line", height: 410 }, title: { text: title }, legend: { enabled: false }, xAxis: { categories: points.map(function (r) { return r.SurveyYearLabel || r.SurveyYear; }) }, yAxis: { min: unit() === "%" ? 0 : null }, series: [{ name: "Kenya", color: p.blue, lineWidth: 3, marker: { enabled: true, radius: 5 }, data: points.map(function (r) { return value(r); }) }] })); drawTable(); addAvailLine();
   }
   function regionRows(rows, wanted, round) { var seen = {}, out = []; rowsForLevel(rows, wanted).filter(function (r) { return (r.SurveyId || String(r.SurveyYear)) === round.id; }).forEach(function (r) { var name = cleanName(r); if (!seen[name]) { seen[name] = true; out.push({ name: name, row: r, value: value(r) }); } }); return out.sort(function (a, b) { return b.value - a.value; }); }
   function geographicValues(rows, wanted) { var out = {}; if (wanted === "county") rows.forEach(function (r) { out[r.name] = r.value; }); else rows.forEach(function (r) { (PROVINCES[r.name] || []).forEach(function (c) { out[c] = r.value; }); }); return out; }
@@ -134,20 +220,28 @@
     TREND = Highcharts.chart(host, Highcharts.merge(chartBase(), { chart: { type: "line", height: 360 }, title: { text: "" }, xAxis: { categories: rounds.map(function (r) { return r.label || r.year; }) }, yAxis: { min: unit() === "%" ? 0 : null }, series: STATE.trendRegions.map(function (name, i) { return { name: name, color: LINE_COLORS[i % LINE_COLORS.length], data: rounds.map(function (r) { return history[name] && history[name][r.id] !== undefined ? history[name][r.id] : null; }), connectNulls: false }; }) }));
   }
   function renderGeo(rows, rawUrl) {
-    var wanted = level(), rounds = roundsFor(rows, wanted); if (!rounds.length) { el("past-results").innerHTML = '<p class="past-empty">DHS returned data for this indicator, but not enough ' + esc(wanted === "county" ? "county" : "province") + '-level records to display a geographic comparison.</p>'; return; }
+    var wanted = level(), rounds = roundsFor(rows, wanted); if (!rounds.length) { el("past-results").innerHTML = availPanel(selectedId(), wanted, "DHS returned data for this indicator, but not enough " + (wanted === "county" ? "county" : "province") + "-level records to display a geographic comparison."); return; }
     if (!STATE.round || !rounds.some(function (r) { return r.id === STATE.round; })) STATE.round = rounds[rounds.length - 1].id;
     var round = rounds.find(function (r) { return r.id === STATE.round; }), selected = regionRows(rows, wanted, round), title = indicatorTitle(selected.map(function (r) { return r.row; })), highest = selected[0], lowest = selected[selected.length - 1], label = wanted === "county" ? "county" : "former province";
     el("past-results").innerHTML = '<div class="past-result-head"><div><h3>' + esc(title) + '</h3><p class="past-result-note">Kenya by ' + esc(label) + ' · live DHS data</p></div><div class="past-field"><label for="past-round">Survey round</label><select id="past-round" class="form-control">' + rounds.map(function (r) { return '<option value="' + esc(r.id) + '"' + (r.id === round.id ? " selected" : "") + '>' + esc((r.label || r.year) + " (" + r.id + ")") + '</option>'; }).join("") + '</select></div></div><div class="past-layout past-layout--geographic"><div id="past-map" class="past-map"></div><div class="past-layout__data">' + summary([{ label: "Highest · " + highest.name, value: fmt(highest.value, highest.row) + (unit() ? " " + unit() : "") }, { label: "Lowest · " + lowest.name, value: fmt(lowest.value, lowest.row) + (unit() ? " " + unit() : "") }, { label: (wanted === "county" ? "Counties" : "Provinces") + " reporting", value: selected.length }]) + '<div id="past-chart" class="past-chart"></div></div></div>' + trendMarkup(rows, wanted, rounds) + actionBar(rawUrl, { columns: [wanted === "county" ? "County" : "Province", "Value", "Unweighted N"], rows: selected.map(function (r) { return [r.name, fmt(r.value, r.row) + (unit() ? " " + unit() : ""), r.row.DenominatorUnweighted === null || r.row.DenominatorUnweighted === undefined ? "" : r.row.DenominatorUnweighted]; }) });
     el("past-round").addEventListener("change", function (event) { STATE.round = event.target.value; clearCharts(); renderGeo(rows, rawUrl); }); drawMap(selected, wanted, title);
-    var p = palette(); CHART = Highcharts.chart("past-chart", Highcharts.merge(chartBase(), { chart: { type: "bar", height: Math.max(400, selected.length * 26 + 110) }, title: { text: (round.label || round.year) + " ranking" }, legend: { enabled: false }, xAxis: { categories: selected.map(function (r) { return r.name; }) }, yAxis: { min: unit() === "%" ? 0 : null }, series: [{ name: title, color: p.blue, data: selected.map(function (r) { return r.value; }) }] })); drawTrend(rows, wanted, rounds); drawTable();
+    var p = palette(); CHART = Highcharts.chart("past-chart", Highcharts.merge(chartBase(), { chart: { type: "bar", height: Math.max(400, selected.length * 26 + 110) }, title: { text: (round.label || round.year) + " ranking" }, legend: { enabled: false }, xAxis: { categories: selected.map(function (r) { return r.name; }) }, yAxis: { min: unit() === "%" ? 0 : null }, series: [{ name: title, color: p.blue, data: selected.map(function (r) { return r.value; }) }] })); drawTrend(rows, wanted, rounds); drawTable(); addAvailLine();
   }
   function toCSV(columns, rows) { function quote(v) { v = v === null || v === undefined ? "" : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; } return [columns.map(quote).join(",")].concat(rows.map(function (r) { return r.map(quote).join(","); })).join("\n"); }
   function download() { if (!STATE.table || !STATE.table.rows.length) return; var blob = new Blob([String.fromCharCode(0xFEFF) + toCSV(STATE.table.columns, STATE.table.rows)], { type: "text/csv;charset=utf-8" }), link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "DHS Program - Kenya - " + selectedLabel().replace(/[^A-Za-z0-9 ]/g, " ").replace(/\s+/g, " ").trim() + ".csv"; document.body.appendChild(link); link.click(); setTimeout(function () { URL.revokeObjectURL(link.href); link.remove(); }, 1000); }
-  function render() { clearCharts(); var rows = validRows(STATE.rows), rawUrl = buildUrl(selectedId(), breakdown(), 1); if (!rows.length) { el("past-results").innerHTML = '<p class="past-empty">DHS returned no usable Kenya records for this indicator and level.</p>'; return; } if (level() === "national") renderNational(rows, rawUrl); else renderGeo(rows, rawUrl); }
+  function render() { clearCharts(); var rows = validRows(STATE.rows), rawUrl = buildUrl(selectedId(), breakdown(), 1); if (!rows.length) { el("past-results").innerHTML = availPanel(selectedId(), level(), "DHS returned no usable Kenya records for this indicator and level."); return; } if (level() === "national") renderNational(rows, rawUrl); else renderGeo(rows, rawUrl); }
   function fetchData() {
     var id = selectedId(), ticket = ++STATE.request, button = el("past-fetch"); if (!id) { say("Choose an indicator or enter an exact DHS indicator ID.", true); return; }
-    button.disabled = true; say("Fetching live Kenya data from The DHS Program…"); el("past-results").innerHTML = "";
-    fetchAll(id, breakdown()).then(function (rows) { if (ticket !== STATE.request) return; STATE.rows = rows; STATE.round = null; STATE.trendRegions = []; say(rows.length ? "Loaded " + rows.length + " record" + (rows.length === 1 ? "" : "s") + " from The DHS Program." : ""); render(); }).catch(function (error) { if (ticket === STATE.request) say("Could not reach The DHS Program: " + error.message + " Everything else on this site works without a connection.", true); }).finally(function () { if (ticket === STATE.request) button.disabled = false; });
+    button.disabled = true; el("past-results").innerHTML = "";
+    loadAvail().then(function () {
+      if (ticket !== STATE.request) return null;
+      // Where the saved list says there is nothing at this level, say so and
+      // offer the levels that do have figures, without a wasted round trip.
+      var av = availOf(id);
+      if (av && !roundsAt(av, level()).length) { STATE.rows = []; clearCharts(); say(""); el("past-results").innerHTML = availPanel(id, level(), ""); return null; }
+      say("Fetching live Kenya data from The DHS Program…");
+      return fetchAll(id, breakdown());
+    }).then(function (rows) { if (ticket !== STATE.request || rows === null) return; STATE.rows = rows; STATE.round = null; STATE.trendRegions = []; say(rows.length ? "Loaded " + rows.length + " record" + (rows.length === 1 ? "" : "s") + " from The DHS Program." : ""); render(); }).catch(function (error) { if (ticket === STATE.request) say("Could not reach The DHS Program: " + error.message + " Everything else on this site works without a connection.", true); }).finally(function () { if (ticket === STATE.request) button.disabled = false; });
   }
 
   function start() {
@@ -160,6 +254,13 @@
     el("past-custom-id").addEventListener("input", updateQuery);
     el("past-level").addEventListener("change", function () { updateQuery(); STATE.rows = []; STATE.round = null; STATE.trendRegions = []; clearCharts(); fetchData(); });
     el("past-fetch").addEventListener("click", fetchData);
+    document.addEventListener("click", function (event) {
+      var go = event.target.closest ? event.target.closest("[data-past-level]") : null;
+      if (!go) return;
+      var sel = el("past-level"); sel.value = go.dataset.pastLevel;
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      var top = el("past-results"); if (top && top.scrollIntoView) top.scrollIntoView({ block: "nearest" });
+    });
     document.addEventListener("click", function (event) { if (event.target.id === "past-download") download(); var remove = event.target.closest("[data-past-remove]"); if (remove) { STATE.trendRegions = STATE.trendRegions.filter(function (name) { return name !== remove.dataset.pastRemove; }); clearCharts(); renderGeo(STATE.rows, buildUrl(selectedId(), "subnational", 1)); } });
     document.addEventListener("change", function (event) { if (event.target.id === "past-region-add" && event.target.value && STATE.trendRegions.length < 8) { STATE.trendRegions.push(event.target.value); clearCharts(); renderGeo(STATE.rows, buildUrl(selectedId(), "subnational", 1)); } });
     // A populated default makes the live explorer useful on first arrival;

@@ -109,3 +109,14 @@ label,
 
 table.dataTable thead th { font-size: var(--size-table-header); }
 table.dataTable tbody td { font-size: var(--size-table-cell); }
+
+/* The search list's own pieces */
+.site-search__count { font-size: var(--size-tiny); }
+.site-search__kind { font-size: var(--size-tiny); }
+
+/* The static site's pickers (Tom Select), the same sizes as the app's boxes */
+.ts-wrapper .ts-control, .ts-wrapper .ts-control > input { font-size: var(--size-input); }
+.ts-dropdown { font-size: var(--size-small); }
+.ts-dropdown .dropdown-input { font-size: var(--size-small); }
+.ts-dropdown .optgroup-header { font-size: var(--size-tiny); }
+.table-year .ts-wrapper .ts-control, .table-year .ts-wrapper .ts-control > input { font-size: var(--size-small); }

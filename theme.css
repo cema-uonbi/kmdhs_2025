@@ -1714,8 +1714,34 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
   font-weight: var(--weight-semibold);
   color: var(--ink);
 }
-.site-search__where { font-size: var(--size-tiny); color: var(--ink-faint); }
-.site-search__miss { padding: 11px 13px; font-size: var(--size-small); color: var(--ink-soft); }
+.site-search__where { font-size: var(--size-tiny); color: var(--blue-800); }
+.site-search__miss { padding: 11px 13px; font-size: var(--size-small); color: var(--ink); }
+.site-search__miss b { font-weight: var(--weight-semibold); }
+
+/* The search now finds indicators as well as tables. Each hit says which it is
+   in a small tag above its name, the words typed are picked out in gold, and a
+   line at the top of the list says how many matched. */
+.site-search__count {
+  padding: 8px 13px 6px;
+  font-weight: var(--weight-semibold);
+  color: var(--blue-800);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4px;
+}
+.site-search__kind {
+  align-self: flex-start;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--blue-800);
+  background: var(--blue-050);
+  border: 1px solid var(--blue-200);
+  border-radius: 5px;
+  padding: 1px 7px;
+  margin-bottom: 2px;
+}
+.site-search__hit--t .site-search__kind { color: var(--navy-900); background: var(--orange-050); border-color: var(--orange-100); }
+.site-search__title mark { background: var(--orange-100); color: var(--navy-900); border-radius: 3px; padding: 0 1px; }
 
 /* ==================================================================================
    THE THREE THINGS A DHS MEASURES
@@ -1851,6 +1877,97 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 .pick__hit:hover, .pick__hit.is-on { background: var(--blue-050); }
 .pick__hit.is-current { color: var(--blue-800); font-weight: var(--weight-semibold); }
 .pick__miss { padding: 10px 12px; font-size: var(--size-tiny); color: var(--ink-soft); }
+
+/* ==================================================================================
+   THE STATIC SITE'S PICKERS
+   Tom Select boxes (site_src/pickers.js), dressed to match the app's selectize
+   boxes: a white field with a fine border and a caret, the list opening under
+   it. Sizes are in sizes.css. Nothing here applies in the app, which has no
+   .ts-wrapper.
+   ================================================================================== */
+.ts-wrapper { width: 100%; max-width: 100%; }
+/* Without Shiny's own stylesheet a picker's container shrinks to its text, and
+   the box with it: the caret sat on the last word. They take the column instead,
+   up to the same 440px the app allows. */
+/* The static site's own markup puts each picker in a .field that is a flex
+   item sized to its text, so it is given a width: 440px for a table's pickers,
+   up to 720px on the Analytics pages, whose measures have long names. */
+.controls .field:has(.ts-wrapper) { flex: 0 1 440px; min-width: 260px; max-width: 100%; }
+.cross .controls .field:has(.ts-wrapper) { flex-basis: 720px; }
+.county-pick .field:has(.ts-wrapper) { width: 100%; }
+.field:has(.ts-wrapper) > div { width: 100%; }
+.controls .ts-wrapper, .county-pick .ts-wrapper { width: 100% !important; }
+.ts-wrapper .ts-control { min-width: 0; }
+.ts-wrapper.single .ts-control > .item { flex: 0 1 auto; min-width: 0; }
+.ts-wrapper.single .ts-control > input { flex: 1 1 0; min-width: 0 !important; }
+/* The search field at the top of an open list */
+.ts-dropdown .dropdown-input-wrap { padding: 8px; border-bottom: 1px solid var(--rule); background: var(--paper); }
+.ts-dropdown .dropdown-input {
+  width: 100%; padding: 8px 12px 8px 36px;
+  border: 1px solid var(--rule-strong); border-radius: var(--radius-sm);
+  color: var(--ink); background: var(--paper)
+    url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23AA6340' stroke-width='2.1' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E")
+    no-repeat 11px center;
+  background-size: 17px 17px;
+}
+.ts-dropdown .dropdown-input:focus { outline: 0; border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-100); }
+.ts-dropdown .dropdown-input::placeholder { color: var(--ink-soft); }
+.ts-wrapper .ts-control {
+  min-height: 44px;
+  padding: 8px 40px 8px 14px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: none;
+  align-items: center;
+  flex-wrap: nowrap;
+  cursor: pointer;
+}
+.ts-wrapper .ts-control > .item {
+  color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
+}
+.ts-wrapper .ts-control > input { color: var(--ink); min-width: 4rem; }
+.ts-wrapper .ts-control > input::placeholder { color: var(--ink-soft); }
+/* the caret, as the app draws it */
+.ts-wrapper.single .ts-control::after {
+  content: ""; position: absolute; right: 16px; top: 50%; margin-top: -3px;
+  border-style: solid; border-width: 6px 6px 0; border-color: var(--ink) transparent transparent;
+}
+.ts-wrapper.single.dropdown-active .ts-control::after {
+  margin-top: -4px; border-width: 0 6px 6px; border-color: transparent transparent var(--ink);
+}
+.ts-wrapper.focus .ts-control { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-100); }
+.ts-wrapper.dropdown-active .ts-control { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.ts-wrapper.single.input-active .ts-control { cursor: text; }
+
+.ts-dropdown {
+  z-index: 45;
+  margin: 0;
+  border: 1px solid var(--blue);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--shadow-md);
+}
+.ts-dropdown .ts-dropdown-content { max-height: min(50vh, 440px); }
+.ts-dropdown .option { padding: 9px 14px; color: var(--ink); line-height: 1.35; }
+.ts-dropdown .option.active { background: var(--blue-050); color: var(--ink); }
+.ts-dropdown .option.selected { color: var(--blue-800); font-weight: var(--weight-semibold); }
+.ts-dropdown .optgroup-header {
+  padding: 11px 14px 4px;
+  font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  color: var(--blue-600); background: var(--paper);
+}
+.ts-dropdown .no-results { padding: 12px 14px; color: var(--ink); }
+.ts-dropdown .highlight { background: var(--orange-050); color: inherit; border-radius: 2px; }
+/* The round picker in a table's header row stays compact. */
+.table-year .ts-wrapper { width: auto; min-width: 140px; }
+.table-year .ts-wrapper .ts-control { min-height: 38px; padding-block: 5px; }
+
 
 /* ==================================================================================
    THE COUNTY PERFORMANCE MAP, AND THE PAGE THAT LEAVES THE SITE
@@ -1995,6 +2112,28 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
 .past-raw-link { margin: 12px 0 0; font-size: var(--size-tiny); }
 .past-raw-link a { color: var(--blue); font-weight: var(--weight-semibold); }
 .past-empty { padding: 18px; border-left: 3px solid var(--orange); background: var(--orange-050); color: var(--ink-soft); border-radius: var(--radius-sm); }
+/* Where an indicator is published. Shown in place of a result when there is
+   nothing at the level asked for, and small under every result that did come
+   back. One cell per Kenya survey, shaded by the finest level DHS published:
+   counties darkest, then former provinces, then the country alone. */
+.past-avail { margin: 22px 0; padding: 20px 22px; border: 1px solid var(--rule-strong); border-left: 4px solid var(--orange); border-radius: var(--radius-sm); background: var(--paper); }
+.past-avail .eyebrow { display: block; margin-bottom: 4px; }
+.past-avail__title { margin: 0 0 6px; font-family: var(--font-display); font-size: var(--size-section); color: var(--ink); }
+.past-avail__text { margin: 0 0 14px; color: var(--ink-soft); max-width: 72ch; line-height: 1.55; }
+.past-avail__lead { display: block; margin: 0 0 8px; color: var(--ink-soft); font-size: var(--size-tiny); font-weight: var(--weight-semibold); text-transform: uppercase; letter-spacing: .04em; }
+.past-avail__strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 6px; }
+.past-avail__cell { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: var(--radius-sm); font-size: var(--size-tiny); line-height: 1.25; }
+.past-avail__cell b { font-size: var(--size-small); }
+.past-avail__cell--county { background: var(--blue); border-color: var(--blue); color: #fff; }
+.past-avail__cell--province { background: var(--orange); border-color: var(--orange); color: var(--ink); }
+.past-avail__cell--national { background: var(--blue-100); border-color: var(--blue-100); color: var(--ink); }
+.past-avail__cell--none { background: transparent; border-style: dashed; color: var(--ink-faint); }
+.past-avail__cell.is-here { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); }
+.past-avail__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.past-avail__actions:empty { display: none; }
+.past-avail__note { margin: 12px 0 0; color: var(--ink-faint); font-size: var(--size-tiny); }
+.past-avail--inline { margin: 0 0 18px; padding: 14px 16px; border-left-width: 1px; background: transparent; }
+.past-avail--inline .past-avail__actions { margin-top: 10px; }
 @media (max-width: 1100px) { .past-live-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } .past-field--action { min-width: 0; } }
 @media (max-width: 760px) { .past-live-controls, .past-summary, .past-layout { grid-template-columns: minmax(0, 1fr); } .past-layout { gap: 12px; } .past-map, .past-chart { min-height: 320px; } }
 
@@ -2235,6 +2374,13 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
    lifted only for as long as there are results to show, so nothing overlaps
    the bar at any other moment. */
 .hero-grid:has(.site-search__list:not([hidden])) { z-index: 70; }
+/* In the app the box is selectize, and its list is attached to the page body
+   rather than to the band (dropdownParent in survey_search), so it can sit
+   over the sticky theme bar without lifting the band, whose text would then
+   paint over the pinned header. Above the theme bar (55), below the header (60). */
+body > .selectize-dropdown { z-index: 58 !important; }
+/* Room for a dozen results rather than selectize's three and a half. */
+body > .selectize-dropdown .selectize-dropdown-content { max-height: min(60vh, 560px); }
 
 /* ==================================================================================
    The report's own summary of a chapter
@@ -2272,3 +2418,9 @@ body:not(.on-overview) .chapter-bar--inline { display: none; }
   .report-link--header .report-link__kind { display: none; }
   .report-link--hero { padding: 14px 18px; gap: 12px; }
 }
+
+/* While the app carries a reader from the search to a table (script.js,
+   kdhs-goto) the page is held out of sight, so the chapter's opening is never
+   drawn before the jump, and it fades back in at the table. */
+html.kdhs-landing .app-main { opacity: 0; }
+html:not(.kdhs-landing) .app-main { transition: opacity 0.15s ease; }

@@ -175,7 +175,14 @@
   // plot, which stacked a long indicator into a narrow tower in the middle of
   // the chart. The title now runs along the top from the left, so it has the
   // whole width to use and wraps far later.
-  function wrapTitle(text, at) {
+  // A chart's title is left to Highcharts to wrap. It breaks a title to the
+  // chart's own width, which this cannot know; breaking it here as well, at a
+  // fixed 96 characters, gave ragged titles whose lines broke twice.
+  function wrapTitle(text) {
+    return String(text).replace(/\s+/g, " ").trim();
+  }
+
+  function breakLong(text, at) {
     at = Math.max(at || 64, 96);
     var words = String(text).split(" "), line = "", out = [];
     words.forEach(function (w) {
@@ -232,6 +239,21 @@
       return keep.some(function (r) { return r.y === y; });
     });
 
+    // A list with no order of its own (possessions, water sources, places of
+    // delivery) is drawn largest first by the latest round. A sequence (ages,
+    // quintiles, schooling) keeps the order the table prints. R decides which
+    // is which and says so in sortGroups.
+    if ((p.sortGroups || []).indexOf(group) !== -1 && years.length) {
+      var latest = years[years.length - 1], by = {};
+      keep.forEach(function (r) {
+        if (r.y === latest && (by[r.c] === undefined || r.v > by[r.c])) by[r.c] = r.v;
+      });
+      cats.sort(function (a, b) {
+        var va = by[a] === undefined ? -Infinity : by[a], vb = by[b] === undefined ? -Infinity : by[b];
+        return vb - va;
+      });
+    }
+
     var series = years.map(function (y) {
       return {
         name: y,
@@ -255,8 +277,11 @@
       // "by residence" where there is a breakdown, and nothing where there is
       // not: a title reading "Forms of controlling behaviours by " is worse
       // than no qualifier at all.
-      title: { text: wrapTitle(ind +
-                               (group ? " by " + group.toLowerCase() : ""), 64) },
+      // Where the columns are urban, rural and total (table 2.1) the usual
+      // title reads backwards, so it becomes "Electricity · Urban".
+      title: { text: wrapTitle(!group ? ind
+                               : p.swapped ? group + " \u00b7 " + ind.split("\u00b7").pop().trim()
+                               : ind + " by " + group.toLowerCase(), 64) },
       xAxis: categoryAxis(cats.map(function (c) { return wrapLabel(c, 26); })),
       yAxis: valueAxis(unit, all),
       plotOptions: { bar: { groupPadding: 0.14, pointPadding: 0.03, borderWidth: 0,
@@ -561,8 +586,20 @@
     return x.slice(0, n).replace(/\s+\S*$/, "").trim() + "...";
   }
 
+  // Line breaks at a width the caller chooses, for an axis title, a bar's
+  // label or a tooltip, where Highcharts would cut the text short instead.
+  function breakAt(text, at) {
+    var words = String(text).replace(/\s+/g, " ").trim().split(" "), line = "", out = [];
+    words.forEach(function (w) {
+      if (line && (line + " " + w).length > at) { out.push(line); line = w; }
+      else line = line ? line + " " + w : w;
+    });
+    if (line) out.push(line);
+    return out.join("<br>");
+  }
+
   function wrapLabel(x, at) {
-    return wrapTitle(x, at);
+    return breakLong(x, at);
   }
 
   function val(id) {
@@ -979,7 +1016,11 @@
     });
     el.innerHTML = byChap.map(function (c) {
       return '<optgroup label="' + esc(c) + '">' + seen[c].map(function (m) {
-        return '<option value="' + esc(m.id) + '">' + esc(m.label) + "</option>";
+        // The full name goes with it: the label is shortened in the middle to
+        // fit the box, which cut out the very words a reader types
+        // ("contraception" in "Current use of cont…"). pickers.js searches both.
+        return '<option value="' + esc(m.id) + '" data-full="' + esc(m.full || m.label) + '">' +
+          esc(m.label) + "</option>";
       }).join("") + "</optgroup>";
     }).join("");
     if (keep && items.some(function (m) { return m.id === keep; })) el.value = keep;
@@ -997,7 +1038,7 @@
     return CROSS.measures.map(function (m) {
       var v = m.v[k];
       if (v === null || v === undefined || m.nat === null) return null;
-      return { id: m.id, label: m.label, unit: m.unit, chap: m.chap,
+      return { id: m.id, label: m.label, full: m.full, unit: m.unit, chap: m.chap,
                value: v, nat: m.nat, gap: v - m.nat, rank: m.rank[k], n: m.n };
     }).filter(Boolean);
   }
@@ -1047,14 +1088,16 @@
     box.innerHTML = '<div class="plot"><div id="counties-gap"></div></div>';
     if (!d.length) { emptyChart("counties-gap", "Nothing comparable in that chapter"); return; }
     document.getElementById("counties-gap").style.height =
-      Math.min(1000, 240 + d.length * 38) + "px";
+      Math.min(1400, 240 + d.length * 58) + "px";
 
     var p = INDEX.palette;
     draw("counties-gap", {
       chart: { type: "bar" },
       title: { text: wrapTitle(name + ", percentage points from the national figure", 64) },
       legend: { enabled: false },
-      xAxis: categoryAxis(d.map(function (m) { return shortTitle(m.label, 72); }), "14px"),
+      // Each measure by its full name, broken over lines, rather than cut short
+      // with an ellipsis; the bars are spaced to give the lines room.
+      xAxis: categoryAxis(d.map(function (m) { return breakAt(m.full || m.label, 46); }), "14px"),
       yAxis: Highcharts.merge(valueAxis("percentage points from Kenya", []), {
         min: null, max: null, startOnTick: true, endOnTick: true,
         plotLines: [{ value: 0, color: p.ink, width: 2, zIndex: 5 }]
@@ -1222,14 +1265,15 @@
         legend: { enabled: false },
         xAxis: Highcharts.merge(
           snugAxis("%", d.rows.map(function (r) { return r.x; }), xn),
-          { title: { text: shortTitle(d.a.label, 60) },
+          { title: { text: breakAt(d.a.full || d.a.label, 80) },
             plotLines: xn === null ? [] : [{
               value: xn, color: p.ink, width: 1.5, dashStyle: "Dash", zIndex: 4,
               label: { text: "Kenya " + fmtHeadline(xn) + "%",
                        style: { color: p.ink, fontSize: "13px" } } }] }),
         yAxis: Highcharts.merge(
           snugAxis("%", d.rows.map(function (r) { return r.y; }), yn),
-          { title: { text: shortTitle(d.b.label, 60) },
+          // The upright axis wraps its own title to the plot's height.
+          { title: { text: wrapTitle(d.b.full || d.b.label) },
             plotLines: yn === null ? [] : [{
               value: yn, color: p.ink, width: 1.5, dashStyle: "Dash", zIndex: 4,
               label: { text: "Kenya " + fmtHeadline(yn) + "%", align: "right",
@@ -1238,8 +1282,8 @@
           headerFormat: "",
           pointFormatter: function () {
             return "<b>" + esc(this.name) + "</b><br>" +
-                   esc(shortTitle(d.a.label, 40)) + ": " + this.x + "%<br>" +
-                   esc(shortTitle(d.b.label, 40)) + ": " + this.y + "%";
+                   breakAt(esc(d.a.full || d.a.label), 44) + ": " + this.x + "%<br>" +
+                   breakAt(esc(d.b.full || d.b.label), 44) + ": " + this.y + "%";
           }
         },
         series: [{
@@ -1664,7 +1708,7 @@
             { mapData: GEO, data: [], joinBy: "county", nullColor: "#FFFFFF",
               borderColor: "#221C13", borderWidth: 0.5, showInLegend: false,
               enableMouseTracking: false },
-            { mapData: GEO, joinBy: ["county", "county"], name: shortTitle(m.label, 40),
+            { mapData: GEO, joinBy: ["county", "county"], name: breakAt(m.full || m.label, 44),
               borderColor: "#221C13", borderWidth: 0.5, nullColor: "#FFFFFF",
               data: rows.map(function (r) {
                 return { county: r.county, value: Math.round(r.value * 10) / 10,
@@ -1973,43 +2017,203 @@
 
   // The search on the opening page ----------------------------------------------------------------
 
-  // A text field and a list under it. The whole survey is already in the page,
-  // so there is nothing to fetch and no library to load: a hundred and eighty
-  // titles filter faster than a keystroke.
+  // The search box. It used to carry the 180 table titles; it now carries every
+  // indicator in every table as well, about fifteen hundred entries, written by
+  // the build to data/search.json and fetched the first time a reader clicks
+  // into the box, so the opening page does not wait for it.
   //
-  // Matching is on every word typed, in any order and anywhere in the entry, so
-  // "net household" finds "Household possession of mosquito nets" and does not
-  // ask a reader to guess the published word order.
+  // Matching is on every word typed, in any order. A word matches the start of
+  // any word in an entry, so "vacc" finds vaccinated and vaccination. A long
+  // word one letter out still matches, so "vaccinaton" finds vaccination. The
+  // names programmes use are mapped to the words the report prints: "IPTp"
+  // finds the SP/Fansidar columns and "DPT3" finds DPT-HepB-Hib 3. An entry's
+  // own name counts for more than the title of the table it sits in, so the
+  // indicator a reader asked for comes before tables that merely mention it.
   var SEARCH_AT = -1;
+  var SEARCH = null, SEARCH_LOADING = null;
+
+  function normWords(s) {
+    return String(s || "").toLowerCase().replace(/[’']/g, "")
+      .replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean);
+  }
+
+  function loadSearch() {
+    if (SEARCH) return Promise.resolve(SEARCH);
+    if (SEARCH_LOADING) return SEARCH_LOADING;
+    SEARCH_LOADING = fetch("data/search.json").then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    }).then(function (d) {
+      d.entries.forEach(function (e) {
+        e._t = normWords(e.t);
+        e._cx = normWords(e.cx);
+        e._x = normWords(e.x + " " + e.b);
+        e._c = normWords(e.c);
+      });
+      SEARCH = d;
+      return d;
+    }).catch(function () {
+      // Without the index the box still searches the table titles it always had.
+      SEARCH = { entries: (INDEX.search || []).map(function (r) {
+        return { t: r.t, x: r.t, b: r.b, c: r.c, p: r.p, th: r.th, a: r.a, i: "", g: "", k: "t",
+                 cx: "", _t: normWords(r.t), _cx: [], _x: normWords(r.b), _c: normWords(r.c) };
+      }), synonyms: {} };
+      return SEARCH;
+    });
+    return SEARCH_LOADING;
+  }
+
+  // One edit apart: a letter added, dropped or changed.
+  function nearly(a, b) {
+    if (Math.abs(a.length - b.length) > 1) return false;
+    var i = 0, j = 0, edits = 0;
+    while (i < a.length && j < b.length) {
+      if (a[i] === b[j]) { i++; j++; continue; }
+      if (++edits > 1) return false;
+      if (a.length > b.length) i++; else if (b.length > a.length) j++; else { i++; j++; }
+    }
+    return edits + (a.length - i) + (b.length - j) <= 1;
+  }
+
+  // Whether one typed word is found among an entry's words. Numbers match only
+  // whole, so "3" finds the third dose and not 30 or 35.
+  function wordIn(w, words) {
+    var num = /^\d+$/.test(w);
+    for (var k = 0; k < words.length; k++) {
+      var t = words[k];
+      if (num ? t === w : t.indexOf(w) === 0) return 2;
+    }
+    if (!num && w.length >= 5) {
+      for (k = 0; k < words.length; k++) {
+        var t2 = words[k];
+        if (t2.length >= w.length - 1 && nearly(w, t2.slice(0, w.length)) ) return 1;
+        if (nearly(w, t2)) return 1;
+      }
+    }
+    return 0;
+  }
+
+  // A phrase is found when all of its words are.
+  function phraseIn(words, field) {
+    var q = 2;
+    for (var k = 0; k < words.length; k++) {
+      var m = wordIn(words[k], field);
+      if (!m) return 0;
+      q = Math.min(q, m);
+    }
+    return q;
+  }
+
+  // What one typed word may stand for: itself, the report's own name for it,
+  // and, for a word like "dpt3" or "opv3", the name and the dose apart.
+  function alternatives(w, syn) {
+    var alts = [[w]];
+    var more = Object.prototype.hasOwnProperty.call(syn, w) ? syn[w] : [];
+    if (typeof more === "string") more = [more];
+    more.forEach(function (a) { alts.push(normWords(a)); });
+    var split = w.match(/^([a-z]+)(\d+)$/);
+    if (split) alts.push([split[1], split[2]]);
+    return alts;
+  }
+
+  function scoreEntry(e, groups) {
+    var score = 0, matched = 0;
+    var fields = [[e._t, 3], [e._cx, 2], [e._x, 1.4], [e._c, 0.6]];
+    for (var g = 0; g < groups.length; g++) {
+      var best = 0;
+      for (var a = 0; a < groups[g].length; a++) {
+        for (var f = 0; f < fields.length; f++) {
+          var m = phraseIn(groups[g][a], fields[f][0]);
+          if (m) best = Math.max(best, fields[f][1] * (m === 2 ? 1 : 0.6));
+        }
+      }
+      if (best) { matched++; score += best; }
+    }
+    return { score: score, matched: matched };
+  }
 
   function searchHits(q) {
-    var words = String(q).toLowerCase().split(/\s+/).filter(Boolean);
-    if (!words.length || !INDEX.search) return [];
-    return INDEX.search.filter(function (r) {
-      var hay = (r.t + " " + r.c + " " + r.b).toLowerCase();
-      return words.every(function (w) { return hay.indexOf(w) !== -1; });
-    }).slice(0, 12);
+    if (!SEARCH) return { hits: [], close: false, total: 0 };
+    var words = normWords(q);
+    if (!words.length) return { hits: [], close: false, total: 0 };
+    var syn = SEARCH.synonyms || {};
+    var groups = words.map(function (w) { return alternatives(w, syn); });
+    var phrase = words.join(" ");
+    var scored = [];
+    SEARCH.entries.forEach(function (e) {
+      var r = scoreEntry(e, groups);
+      if (!r.matched) return;
+      var label = e._t.join(" ");
+      if (label.indexOf(phrase) === 0) r.score += 3;
+      else if (label.indexOf(phrase) !== -1) r.score += 1.5;
+      if (e.k !== "t") r.score += 0.4;
+      r.score -= Math.min(e._t.length, 30) / 60;
+      scored.push({ e: e, s: r.score, m: r.matched });
+    });
+    var full = scored.filter(function (r) { return r.m === words.length; });
+    var close = false;
+    if (!full.length) {
+      // Nothing has every word, so show what has most of them and say so.
+      var need = Math.max(1, Math.ceil(words.length / 2));
+      full = scored.filter(function (r) { return r.m >= need; });
+      close = full.length > 0;
+    }
+    full.sort(function (a, b) { return b.m - a.m || b.s - a.s; });
+    return { hits: full.slice(0, 30).map(function (r) { return r.e; }), close: close, total: full.length };
   }
+
+  function mark(text, words) {
+    var out = esc(text);
+    words.filter(function (w) { return w.length > 1; }).forEach(function (w) {
+      var re = new RegExp("\\b(" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+      out = out.replace(re, "<mark>$1</mark>");
+    });
+    return out;
+  }
+
+  var KIND = { i: "Indicator", r: "Indicator", t: "Whole table" };
 
   function paintSearch(q) {
     var list = document.getElementById("search-results");
     if (!list) return;
-    var hits = searchHits(q);
     SEARCH_AT = -1;
-    if (!hits.length) {
-      list.innerHTML = q.trim()
-        ? '<li class="site-search__miss">Nothing matches ' + esc(q) + "</li>" : "";
-      list.hidden = !q.trim();
+    if (!q.trim()) { list.innerHTML = ""; list.hidden = true; return; }
+    if (!SEARCH) {
+      list.innerHTML = '<li class="site-search__miss">Loading the indicators…</li>';
+      list.hidden = false;
+      loadSearch().then(function () {
+        var box = document.getElementById("search");
+        if (box && box.value === q) paintSearch(q);
+      });
       return;
     }
-    list.innerHTML = hits.map(function (r, i) {
-      return '<li><button type="button" class="site-search__hit" data-i="' + i + '" ' +
-             'data-page="' + esc(r.p) + '" data-theme="' + esc(r.th) + '" ' +
-             'data-anchor="' + esc(r.a) + '">' +
-             '<span class="site-search__title">' + esc(r.t) + "</span>" +
-             '<span class="site-search__where">' + esc(r.c) + " \u00b7 Table " +
-             esc(r.b) + "</span></button></li>";
-    }).join("");
+    var res = searchHits(q), words = normWords(q);
+    if (!res.hits.length) {
+      // Some things are missed because this survey did not ask about them.
+      var why = words.some(function (w) { return /^(stunt|wast|underweight|overweight|anthropom|bmi|height)/.test(w); })
+        ? " No child or woman was weighed or measured in this survey, so it has no stunting, " +
+          "wasting, underweight or body mass figures. The 2022 KDHS has the most recent ones."
+        : " Try a single word such as vaccination, nets, water, contraception or " +
+          "breastfeeding, or the name of a table.";
+      list.innerHTML = '<li class="site-search__miss"><b>Nothing matches ' + esc(q) + '.</b>' +
+        esc(why) + '</li>';
+      list.hidden = false;
+      return;
+    }
+    var head = res.close
+      ? "No entry has every word, so these have most of them"
+      : res.total + (res.total === 1 ? " match" : " matches") +
+        (res.total > res.hits.length ? ", showing the first " + res.hits.length : "");
+    list.innerHTML = '<li class="site-search__count">' + esc(head) + "</li>" +
+      res.hits.map(function (r, i) {
+        var where = (r.cx ? r.cx + " · " : "") + "Table " + r.b + ", " + r.x + " · " + r.c;
+        return '<li><button type="button" class="site-search__hit site-search__hit--' + r.k + '" ' +
+               'data-i="' + i + '" data-page="' + esc(r.p) + '" data-theme="' + esc(r.th) + '" ' +
+               'data-anchor="' + esc(r.a) + '" data-ind="' + esc(r.i) + '" data-group="' + esc(r.g) + '">' +
+               '<span class="site-search__kind">' + KIND[r.k] + "</span>" +
+               '<span class="site-search__title">' + mark(r.t, words) + "</span>" +
+               '<span class="site-search__where">' + esc(where) + "</span></button></li>";
+      }).join("");
     list.hidden = false;
   }
 
@@ -2019,13 +2223,48 @@
     SEARCH_AT = -1;
   }
 
+  // Set one of a topic's pickers and let the page redraw from it, the same way
+  // a reader's own choice would.
+  function choose(id, value) {
+    var el = document.getElementById(id);
+    if (!el || !value) return;
+    var has = Array.prototype.some.call(el.options || [], function (o) { return o.value === value; });
+    if (!has) return;
+    el.value = value;
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
   function takeHit(btn) {
     if (!btn) return;
+    // The browser's scroll anchoring would move the opening page as the
+    // results list closes, a frame before the jump. Off until it has landed.
+    var root = document.documentElement;
+    root.style.overflowAnchor = "none"; document.body.style.overflowAnchor = "none";
+    setTimeout(function () { root.style.overflowAnchor = ""; document.body.style.overflowAnchor = ""; }, 800);
     var box = document.getElementById("search");
     if (box) box.value = "";
     closeSearch();
-    goTo(btn.dataset.page, btn.dataset.theme, btn.dataset.anchor);
+    var page = btn.dataset.page, aid = btn.dataset.anchor;
+    // Straight to the table's title and its cards, under the pinned header.
+    // goTo() would first scroll smoothly to the top of the chapter, so the
+    // reader saw the chapter open and then watched the page slide down to the
+    // table; the page is shown here without that and the jump is immediate.
+    showPage(page);
+    showTheme(page, btn.dataset.theme);
+    if (!showArea(aid)) showFirstArea(btn.dataset.theme);
+    var ns = page + "-" + aid;
+    choose(ns + "-indicator", btn.dataset.ind);
+    choose(ns + "-group", btn.dataset.group);
+    // At once, in the same moment the page is switched, so no frame is ever
+    // drawn at the old position; and once more on the next frame, in case
+    // anything above the table changed size as it was drawn.
+    scrollTo_(aid, true);
+    requestAnimationFrame(function () { scrollTo_(aid, true); });
   }
+
+  document.addEventListener("focusin", function (e) {
+    if (e.target.id === "search") loadSearch();
+  });
 
   document.addEventListener("input", function (e) {
     if (e.target.id !== "search") return;
@@ -2112,13 +2351,26 @@
     else showFirstArea(el.dataset.theme);
   });
 
-  function scrollTo_(id) {
+  // The bars pinned over the top of the window, measured now. --pinned is set
+  // a moment after a page changes, and a chapter's bar is a row taller than the
+  // opening page's, so reading it straight after a jump left the table's
+  // number under the bar.
+  function pinnedNow() {
+    var h = 0;
+    var head = document.querySelector("header.app-header");
+    if (head && getComputedStyle(head).position === "sticky") h += head.offsetHeight;
+    document.querySelectorAll("nav.chapter-bar").forEach(function (bar) {
+      if (bar.offsetParent !== null && getComputedStyle(bar).position === "sticky") h += bar.offsetHeight;
+    });
+    return h > 0 ? h + 22 : 24;
+  }
+
+  function scrollTo_(id, instant) {
     var el = document.getElementById(id);
     if (!el) return;
-    var pinned = parseInt(getComputedStyle(document.documentElement)
-                          .getPropertyValue("--pinned"), 10) || 0;
+    var pinned = pinnedNow();
     window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top - pinned - 18,
-                      behavior: "smooth" });
+                      behavior: instant ? "instant" : "smooth" });
   }
 
   function goTo(page, theme, anchor) {
