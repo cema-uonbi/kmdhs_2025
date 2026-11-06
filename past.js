@@ -57,7 +57,27 @@
   }
   function roundsAt(av, wanted) { return av.filter(function (r) { return r.code & LEVEL_BIT[wanted]; }); }
   function finestOf(av) { return ["county", "province", "national"].find(function (l) { return roundsAt(av, l).length; }) || null; }
-  function roundName(r) { return r.year + (r.type === "MIS" ? " MIS" : ""); }
+  // The 2025/26 Mini DHS is KE2025DHS on the API, labelled plainly "2025". It
+  // is named here as the rest of the dashboard names it, so the same survey is
+  // not 2025/26 on one page and 2025 on the next.
+  var ROUND_LABELS = { KE2025DHS: "2025/26" };
+  function roundName(r) { return (ROUND_LABELS[r.id] || r.year) + (r.type === "MIS" ? " MIS" : ""); }
+  // Some indicators come back more than once for a survey: births in the two
+  // years before it and in the three, deaths in the five years and in the ten,
+  // DPT3 at 12 to 23 months and at 24 to 35. DHS marks the one its report
+  // uses as preferred, and that is the one kept, for the country and for each
+  // county alike. Taking whichever came first showed skilled birth attendance
+  // in 2025/26 as 92.3% where the report says 91.9%, and counted each county
+  // twice.
+  function tidyRows(rows) {
+    var pref = {};
+    function key(r) { return (r.SurveyId || r.SurveyYear) + "|" + r.CharacteristicLabel; }
+    rows.forEach(function (r) {
+      if (ROUND_LABELS[r.SurveyId]) r.SurveyYearLabel = ROUND_LABELS[r.SurveyId];
+      if (Number(r.IsPreferred) === 1) pref[key(r)] = true;
+    });
+    return rows.filter(function (r) { return !pref[key(r)] || Number(r.IsPreferred) === 1; });
+  }
   function listYears(rs) {
     var n = rs.map(roundName);
     return n.length <= 2 ? n.join(" and ") : n.slice(0, -1).join(", ") + " and " + n[n.length - 1];
@@ -112,7 +132,7 @@
     return '<section class="past-avail" role="status"><span class="eyebrow">' + esc(selectedLabel()) + '</span><h3 class="past-avail__title">' + esc(title) + '</h3><p class="past-avail__text">' + esc(text) + '</p>' +
       (any ? '<p class="past-avail__lead">Where DHS publishes it, survey by survey</p>' + availStrip(av, wanted) : "") +
       (any ? '<div class="past-avail__actions">' + availButtons(av, wanted) + '</div>' : "") +
-      '<p class="past-avail__note">The 2025/26 survey is not on the DHS API yet; its figures are in the rest of this dashboard.</p></section>';
+      '<p class="past-avail__note">The 2025/26 Mini DHS is on the DHS API from November 2026. It was a shorter survey than a full DHS, so many indicators have no 2025/26 figure.</p></section>';
   }
   // The same strip, small, under a result that did come back.
   function addAvailLine() {
@@ -241,7 +261,7 @@
       if (av && !roundsAt(av, level()).length) { STATE.rows = []; clearCharts(); say(""); el("past-results").innerHTML = availPanel(id, level(), ""); return null; }
       say("Fetching live Kenya data from The DHS Program…");
       return fetchAll(id, breakdown());
-    }).then(function (rows) { if (ticket !== STATE.request || rows === null) return; STATE.rows = rows; STATE.round = null; STATE.trendRegions = []; say(rows.length ? "Loaded " + rows.length + " record" + (rows.length === 1 ? "" : "s") + " from The DHS Program." : ""); render(); }).catch(function (error) { if (ticket === STATE.request) say("Could not reach The DHS Program: " + error.message + " Everything else on this site works without a connection.", true); }).finally(function () { if (ticket === STATE.request) button.disabled = false; });
+    }).then(function (rows) { if (ticket !== STATE.request || rows === null) return; rows = tidyRows(rows); STATE.rows = rows; STATE.round = null; STATE.trendRegions = []; say(rows.length ? "Loaded " + rows.length + " record" + (rows.length === 1 ? "" : "s") + " from The DHS Program." : ""); render(); }).catch(function (error) { if (ticket === STATE.request) say("Could not reach The DHS Program: " + error.message + " Everything else on this site works without a connection.", true); }).finally(function () { if (ticket === STATE.request) button.disabled = false; });
   }
 
   function start() {
